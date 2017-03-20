@@ -15,13 +15,15 @@ namespace LateStartStudio.AdventureGame.Game
     using System.Collections.Generic;
     using AdventureGame;
     using Engine.Graphics;
+    using Regions;
 
     /// <summary>
     /// A class that represents a character in a game, this character can be PC and NPC.
     /// </summary>
-    public abstract class Character : AdventureGameElement
+    public abstract class Character : AdventureGameElement, IWalkBehind
     {
         private Point location;
+        private int baselineOffset;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Character"/> class.
@@ -82,6 +84,20 @@ namespace LateStartStudio.AdventureGame.Game
         public IList<InventoryItem> Inventory
         {
             get; set;
+        }
+
+        /// <summary>
+        /// Gets or sets the character's base line for walk behind areas. If the character's base
+        /// line is below the base line of the walk behind area, then the character should render
+        /// in front, if else, the walk behind area should render in front.
+        /// </summary>
+        /// <value>
+        /// The character's base line.
+        /// </value>
+        public int Baseline
+        {
+            get { return this.Location.Y + this.baselineOffset; }
+            set { this.baselineOffset = value; }
         }
 
         /// <inheritdoc />

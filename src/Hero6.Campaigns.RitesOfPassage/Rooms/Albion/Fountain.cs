@@ -26,12 +26,15 @@ namespace LateStartStudio.Hero6.Campaigns.RitesOfPassage.Rooms.Albion
         private static readonly Color HotspotSouthExit = new Color(255, 255, 255, 255);
         private static readonly Color HotspotFountainSpot = new Color(255, 0, 0, 255);
 
+        private static readonly Color WalkBehindFountain = new Color(255, 255, 255, 255);
+
         public Fountain(Campaign campaign)
             : base(
                   campaign,
                   "Campaigns/Rites of Albion/Rooms/Albion/Fountain/Background",
                   "Campaigns/Rites of Albion/Rooms/Albion/Fountain/Walk Area",
-                  "Campaigns/Rites of Albion/Rooms/Albion/Fountain/Hotspots")
+                  "Campaigns/Rites of Albion/Rooms/Albion/Fountain/Hotspots",
+                  "Campaigns/Rites of Albion/Rooms/Albion/Fountain/Walk Behind")
         {
             Character llewella = Campaign.GetCharacter(Llewella.Name);
             llewella.Location = new Point(200, 150);
@@ -45,6 +48,11 @@ namespace LateStartStudio.Hero6.Campaigns.RitesOfPassage.Rooms.Albion
             this.Hotspots[HotspotFountainSpot].Look += this.OnLookFountain;
             this.Hotspots[HotspotFountainSpot].Grab += this.OnGrabFountain;
             this.Hotspots[HotspotFountainSpot].Talk += this.OnTalkFountain;
+        }
+
+        protected override void InitializeWalkBehindAreas()
+        {
+            this.WalkBehindAreas[WalkBehindFountain].Baseline = 189;
         }
 
         private void OnLookFountain(object sender, EventArgs eventArgs)

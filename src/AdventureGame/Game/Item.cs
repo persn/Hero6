@@ -14,15 +14,17 @@ namespace LateStartStudio.AdventureGame.Game
     using System;
     using AdventureGame;
     using Engine.Graphics;
+    using Regions;
 
     /// <summary>
     /// A class that represents an item in a game.
     /// </summary>
-    public abstract class Item : AdventureGameElement
+    public abstract class Item : AdventureGameElement, IWalkBehind
     {
         private readonly string spriteID;
 
         private Texture2D sprite;
+        private int baselineOffset;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Item"/> class.
@@ -57,6 +59,20 @@ namespace LateStartStudio.AdventureGame.Game
 
         /// <inheritdoc />
         public override sealed int Height => this.sprite.Height;
+
+        /// <summary>
+        /// Gets or sets the item's base line for walk behind areas. If the item's base line is
+        /// below the base line of the walk behind area, then the item should render in front, if
+        /// else, the walk behind area should render in front.
+        /// </summary>
+        /// <value>
+        /// The item's base line.
+        /// </value>
+        public int Baseline
+        {
+            get { return this.Location.Y + this.baselineOffset; }
+            set { this.baselineOffset = value; }
+        }
 
         /// <inheritdoc />
         public override sealed bool Interact(int x, int y, Interaction interaction)

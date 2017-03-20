@@ -39,13 +39,16 @@ namespace LateStartStudio.AdventureGame.Game
         private readonly string backgroundID;
         private readonly string walkAreaID;
         private readonly string hotSpotMaskID;
+        private readonly string walkBehindID;
 
         private Texture2D background;
         private Texture2D walkAreaMask;
         private Texture2D hotspotsMask;
+        private Texture2D walkBehindMask;
         private Color[,] walkAreaBuffer;
         private Node[,] walkAreaNodes;
         private Color[,] hotspotMaskBuffer;
+        private Color[,] walkBehindBuffer;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="Room"/> class.
@@ -54,20 +57,24 @@ namespace LateStartStudio.AdventureGame.Game
         /// <param name="backgroundID">The ID of the room background.</param>
         /// <param name="walkAreaID">The ID of the room walk area.</param>
         /// <param name="hotSpotMaskID">The ID of the room hot spot mask.</param>
+        /// <param name="walkBehindID">The ID of the room walk behind area.</param>
         protected Room(
             Campaign campaign,
             string backgroundID,
             string walkAreaID,
-            string hotSpotMaskID)
+            string hotSpotMaskID,
+            string walkBehindID)
             : base(campaign)
         {
             this.pathfinder = new AStar(2500, (node, neighbor) => 1, this.CalculateOctileHeuristic);
             this.backgroundID = backgroundID;
             this.walkAreaID = walkAreaID;
             this.hotSpotMaskID = hotSpotMaskID;
+            this.walkBehindID = walkBehindID;
             this.Characters = new List<Character>();
             this.Items = new List<Item>();
             this.Hotspots = new Dictionary<Color, Hotspot>();
+            this.WalkBehindAreas = new Dictionary<Color, WalkBehindArea>();
         }
 
         /// <summary>
@@ -93,6 +100,14 @@ namespace LateStartStudio.AdventureGame.Game
         /// A dictionary of all hotspots contained in this room.
         /// </value>
         public IDictionary<Color, Hotspot> Hotspots { get; }
+
+        /// <summary>
+        /// Gets a dictionary of all walk behind areas contained in this room.
+        /// </summary>
+        /// <value>
+        /// A dictionary of all walk behind areas contained in this room.
+        /// </value>
+        public IDictionary<Color, WalkBehindArea> WalkBehindAreas { get; }
 
         /// <inheritdoc />
         public sealed override int Width => this.background.Width;
@@ -163,7 +178,19 @@ namespace LateStartStudio.AdventureGame.Game
             this.hotspotsMask = this.Content.LoadTexture2D(this.hotSpotMaskID);
             this.hotspotMaskBuffer = this.FindHotspots(this.hotspotsMask);
 
+            this.walkBehindMask = this.Content.LoadTexture2D(this.walkBehindID);
+            this.walkBehindBuffer = CopyTextureData(this.walkBehindMask);
+
+            foreach (Color pixel in this.walkBehindBuffer)
+            {
+                if (!this.WalkBehindAreas.ContainsKey(pixel) && !pixel.Equals(Color.Transparent))
+                {
+                    this.WalkBehindAreas.Add(pixel, new WalkBehindArea());
+                }
+            }
+
             this.InitializeEvents();
+            this.InitializeWalkBehindAreas();
         }
 
         /// <inheritdoc />
@@ -206,11 +233,27 @@ namespace LateStartStudio.AdventureGame.Game
             foreach (Item item in this.Items)
             {
                 item.Draw(totalTime, elapsedTime, isRunningSlowly);
+
+                ////foreach (KeyValuePair<Color, WalkBehindArea> walkBehindArea in this.WalkBehindAreas)
+                ////{
+                ////    if (item.Baseline < walkBehindArea.Value.Baseline)
+                ////    {
+                ////        this.Campaign.Engine.Graphics.Draw(this.walkBehindMask, this.Location);
+                ////    }
+                ////}
             }
 
             foreach (Character character in this.Characters)
             {
                 character.Draw(totalTime, elapsedTime, isRunningSlowly);
+
+                foreach (KeyValuePair<Color, WalkBehindArea> walkBehindArea in this.WalkBehindAreas)
+                {
+                    if (character.Baseline < walkBehindArea.Value.Baseline)
+                    {
+                        this.Campaign.Engine.Graphics.Draw(this.walkBehindMask, this.Location);
+                    }
+                }
             }
         }
 
@@ -251,6 +294,11 @@ namespace LateStartStudio.AdventureGame.Game
         /// Initializes the events associated with this room.
         /// </summary>
         protected abstract void InitializeEvents();
+
+        /// <summary>
+        /// Initializes the walk behind areas associated with this room.
+        /// </summary>
+        protected abstract void InitializeWalkBehindAreas();
 
         private static Color[,] CopyTextureData(Texture2D texture)
         {

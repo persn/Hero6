@@ -535,3 +535,33 @@
 /processorParam:TextureFormat=Color
 /build:Campaigns/Rites of Albion/Sprites/Items/Bent Sword.png
 
+#begin Campaigns/Rites of Albion/Rooms/Albion/Hill Over Albion/Walk Behind.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Campaigns/Rites of Albion/Rooms/Albion/Hill Over Albion/Walk Behind.png
+
+#begin Campaigns/Rites of Albion/Rooms/Albion/Fountain/Walk Behind.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Campaigns/Rites of Albion/Rooms/Albion/Fountain/Walk Behind.png
+
+#begin Core/Shaders/WalkBehind.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:Core/Shaders/WalkBehind.fx
+

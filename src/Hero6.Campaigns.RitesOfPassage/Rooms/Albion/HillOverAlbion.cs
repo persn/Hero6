@@ -27,12 +27,15 @@ namespace LateStartStudio.Hero6.Campaigns.RitesOfPassage.Rooms.Albion
         private static readonly Color HotspotNorthExit = new Color(255, 255, 255, 255);
         private static readonly Color HotspotAlbionSign = new Color(255, 0, 0, 255);
 
+        private static readonly Color WalkBehindRock = new Color(255, 255, 255, 255);
+
         public HillOverAlbion(Campaign campaign)
             : base(
                   campaign,
                   "Campaigns/Rites of Albion/Rooms/Albion/Hill Over Albion/Background",
                   "Campaigns/Rites of Albion/Rooms/Albion/Hill Over Albion/Walk Area",
-                  "Campaigns/Rites of Albion/Rooms/Albion/Hill Over Albion/Hotspots")
+                  "Campaigns/Rites of Albion/Rooms/Albion/Hill Over Albion/Hotspots",
+                  "Campaigns/Rites of Albion/Rooms/Albion/Hill over Albion/Walk Behind")
         {
             Character hero = Campaign.GetCharacter(Hero.Name);
             hero.Location = new Point(250, 220);
@@ -50,6 +53,11 @@ namespace LateStartStudio.Hero6.Campaigns.RitesOfPassage.Rooms.Albion
             this.Hotspots[HotspotAlbionSign].Look += this.OnLookAlbionSign;
             this.Hotspots[HotspotAlbionSign].Grab += this.OnGrabAlbionSign;
             this.Hotspots[HotspotAlbionSign].Talk += this.OnTalkAlbionSign;
+        }
+
+        protected override void InitializeWalkBehindAreas()
+        {
+            WalkBehindAreas[WalkBehindRock].Baseline = 224;
         }
 
         private void OnWhileStandingInNorthExit(object sender, HotspotWalkingEventArgs e)

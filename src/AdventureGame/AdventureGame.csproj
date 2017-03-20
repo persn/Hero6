@@ -59,6 +59,8 @@
     <Compile Include="Game\Interaction.cs" />
     <Compile Include="Game\InventoryItem.cs" />
     <Compile Include="Game\Item.cs" />
+    <Compile Include="Game\Regions\IWalkBehind.cs" />
+    <Compile Include="Game\Regions\WalkBehindArea.cs" />
     <Compile Include="Game\Room.cs" />
     <Compile Include="Game\SpriteSheet.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
