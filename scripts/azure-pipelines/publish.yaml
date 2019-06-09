@@ -1,0 +1,4 @@
+# Publish steps
+
+steps:
+  - bash: echo Hello!!

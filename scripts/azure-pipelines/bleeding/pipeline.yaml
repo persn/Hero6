@@ -1,0 +1,30 @@
+# Bleeding pipeline
+
+trigger:
+- master
+- feature/*
+
+jobs:
+- template: job.yaml
+  parameters:
+    name: Windows_Debug
+    vmImage: 'windows-2019'
+    buildConfiguration: Debug
+
+- template: job.yaml
+  parameters:
+    name: Windows_Release
+    vmImage: 'windows-2019'
+    buildConfiguration: Release
+
+- template: job.yaml
+  parameters:
+    name: Ubuntu_16_04_Debug
+    vmImage: 'ubuntu-16.04'
+    buildConfiguration: Debug
+
+- template: job.yaml
+  parameters:
+    name: macOS_Mojave_Debug
+    vmImage: 'macOS-10.14'
+    buildConfiguration: Debug
