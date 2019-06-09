@@ -15,5 +15,5 @@ jobs:
   - template: install.yaml
   - template: build.yaml
   - template: run-tests.yaml
-  - ${{ if eq(parameters['buildConfiguration'], 'Release') && not eq(variables['Build.Reason'], 'PullRequest') }}:
+  - ${{ if and(eq(parameters['buildConfiguration'], 'Release'), not(eq(variables['Build.Reason'], 'PullRequest'))) }}:
     - template: publish.yaml
