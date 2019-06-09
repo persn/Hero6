@@ -12,8 +12,8 @@ jobs:
   variables:
     buildConfiguration: ${{ parameters.buildConfiguration }}
   steps:
-  - template: ../install.yaml
-  - template: ../build.yaml
-  - template: ../run-tests.yaml
+  - template: install.yaml
+  - template: build.yaml
+  - template: run-tests.yaml
   - ${{ if eq(parameters['buildConfiguration'], 'Release') && not eq(variables['Build.Reason'], 'PullRequest') }}:
-    - template: ../publish.yaml
+    - template: publish.yaml
