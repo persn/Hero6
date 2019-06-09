@@ -1,4 +1,4 @@
-# Bleeding pipeline
+# Cotinious build pipeline
 
 trigger:
 - master
@@ -25,6 +25,18 @@ jobs:
 
 - template: job.yaml
   parameters:
+    name: Ubuntu_16_04_Release
+    vmImage: 'ubuntu-16.04'
+    buildConfiguration: Release
+
+- template: job.yaml
+  parameters:
     name: macOS_Mojave_Debug
     vmImage: 'macOS-10.14'
     buildConfiguration: Debug
+
+- template: job.yaml
+  parameters:
+    name: macOS_Mojave_Release
+    vmImage: 'macOS-10.14'
+    buildConfiguration: Release
