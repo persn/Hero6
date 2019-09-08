@@ -1,9 +1,6 @@
 # Build steps
 
 steps:
-- bash: mono --version
-  displayName: Check mono version
-
 - bash: mono ./.paket/paket.exe restore
   displayName: Restore packages
   workingDirectory: ./src
