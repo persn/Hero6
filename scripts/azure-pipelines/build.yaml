@@ -1,9 +1,6 @@
 # Build steps
 
 steps:
-- bash: xbuild --version
-  displayName: Check xbuild version
-
 - bash: mono --version
   displayName: Check mono version
 
