@@ -29,7 +29,7 @@ namespace LateStartStudio.Hero6.MonoGamePipeline.WalkAreas
                 new Vector2(1f, 0f),
                 new Vector2(1f, 1f),
                 new Vector2(1f, -1f),
-                new Vector2(0f, -1f)
+                new Vector2(0f, -1f),
             };
 
         /// <inheritdoc />
