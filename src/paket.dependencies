@@ -4,6 +4,7 @@ framework: auto-detect
 
 source https://api.nuget.org/v3/index.json
 
+nuget Autofac
 nuget BenchmarkDotNet
 nuget coverlet.msbuild
 nuget log4net

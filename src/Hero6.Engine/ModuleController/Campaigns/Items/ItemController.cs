@@ -4,9 +4,10 @@
 // 'LICENSE.CODE.md', which is a part of this source code package.
 // </copyright>
 
+using LateStartStudio.Hero6.Services.Assets;
 using LateStartStudio.Hero6.Services.DependencyInjection;
+using LateStartStudio.Hero6.Services.Graphics;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace LateStartStudio.Hero6.ModuleController.Campaigns.Items
@@ -14,10 +15,11 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns.Items
     /// <summary>
     /// API for item controller.
     /// </summary>
+    [Injectable(LifeCycle = LifeCycle.Transient)]
     public class ItemController : GameController<IItemController, IItemModule>, IItemController
     {
-        private readonly ContentManager content;
-        private readonly SpriteBatch spriteBatch;
+        private readonly IAssetsRepository assets;
+        private readonly IRendererService renderer;
 
         private Texture2D sprite;
         private Vector2 position;
@@ -26,10 +28,10 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns.Items
         /// Makes a new instance of the <see cref="ItemController"/> class.
         /// </summary>
         /// <param name="module">The module for this controller.</param>
-        public ItemController(IItemModule module, IServiceLocator services) : base(module, services)
+        public ItemController(IItemModule module, IContainer services, IAssetsRepository assets, IRendererService renderer) : base(module, services)
         {
-            content = services.Get<ContentManager>();
-            spriteBatch = services.Get<SpriteBatch>();
+            this.assets = assets;
+            this.renderer = renderer;
         }
 
         public override int Width => sprite.Width;
@@ -64,7 +66,7 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns.Items
 
         public override void Load()
         {
-            sprite = content.Load<Texture2D>(Module.Sprite);
+            sprite = assets.Load<Texture2D>(Module.Sprite);
         }
 
         public override void Unload()
@@ -81,7 +83,7 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns.Items
         {
             if (Module.IsVisible)
             {
-                spriteBatch.Draw(sprite, position, Color.White);
+                renderer.Draw(sprite, position);
             }
         }
     }

@@ -13,31 +13,34 @@ using Microsoft.Xna.Framework;
 
 namespace LateStartStudio.Hero6.Services.UserInterfaces
 {
+    [Injectable]
     public class MonoGameUserInterfaces : IUserInterfaces, IXnaGameLoop
     {
-        private readonly IServiceLocator services;
-        private readonly List<UserInterfaceController> userInterfaces = new List<UserInterfaceController>();
+        private readonly IContainer container;
+        private readonly List<UserInterfaceController> controllers = new List<UserInterfaceController>();
 
         private UserInterfaceController current;
 
-        public MonoGameUserInterfaces(IServiceLocator services)
+        public MonoGameUserInterfaces(IContainer container)
         {
-            this.services = services;
+            this.container = container;
         }
 
-        public IEnumerable<IUserInterfaceModule> UserInterfaces => userInterfaces.Select(u => u.Module);
+        public IEnumerable<IUserInterfaceModule> UserInterfaces { get; }
 
         public IUserInterfaceModule Current
         {
             get { return current.Module; }
-            set { current = userInterfaces.Find(u => u.Module == value); }
+            set { current = controllers.Find(u => u.Module == value); }
         }
-
-        public void Add<T>() where T : IUserInterfaceModule => userInterfaces.Add(new UserInterfaceController(services.Make<T>(), services));
 
         public void Initialize()
         {
-            current = userInterfaces[0];
+            controllers.AddRange(container
+                .Get<IEnumerable<IUserInterfaceModule>>()
+                .Select(m => container.Get<UserInterfaceController>(("module", m), ("container", container))));
+
+            current = controllers[0];
             current.Initialize();
         }
 

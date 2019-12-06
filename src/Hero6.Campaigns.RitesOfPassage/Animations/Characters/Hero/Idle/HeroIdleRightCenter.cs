@@ -5,9 +5,11 @@
 // </copyright>
 
 using LateStartStudio.Hero6.ModuleController.Campaigns.Animations;
+using LateStartStudio.Hero6.Services.DependencyInjection;
 
 namespace LateStartStudio.Hero6.Campaigns.RitesOfPassage.Animations.Characters.Hero.Idle
 {
+    [Injectable]
     public class HeroIdleRightCenter : AnimationModule
     {
         public override string Name => "Hero Idle Right Center";

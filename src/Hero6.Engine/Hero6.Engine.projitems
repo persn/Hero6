@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <MSBuildAllProjects>$(MSBuildAllProjects);$(MSBuildThisFileFullPath)</MSBuildAllProjects>
@@ -6,10 +6,14 @@
     <SharedGUID>df1a4b43-e0e1-4d31-9d52-03101f99f593</SharedGUID>
   </PropertyGroup>
   <PropertyGroup Label="Configuration">
-    <Import_RootNamespace>Hero6.Engine</Import_RootNamespace>
+    <Import_RootNamespace>LateStartStudio.Hero6</Import_RootNamespace>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="$(MSBuildThisFileDirectory)Attributes\IgnoreAttribute.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Extensions\TypeExtensions.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\Assets\AssetsRepository.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\Assets\IAssetsRepository.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\DependencyInjection\Container.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\DependencyInjection\InjectableAttribute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\CampaignExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\ColorExtensions.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\IEnumerableExtensions.cs" />
@@ -120,18 +124,23 @@
     <Compile Include="$(MSBuildThisFileDirectory)Services\Campaigns\MonoGameCampaigns.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\ControllerRepository\ControllerRepositoryProvider.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\ControllerRepository\IControllerRepository.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Services\DependencyInjection\IServiceLocator.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Services\DependencyInjection\MonoGameServiceLocator.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\DependencyInjection\IContainer.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\DependencyInjection\LifeCycle.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\DotNetWrappers\DirectoryWrapper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\DotNetWrappers\FileWrapper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\DotNetWrappers\IDirectoryWrapper.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\DotNetWrappers\IFileWrapper.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\Graphics\GraphicsDeviceService.cs" />
+    <Compile Include="..\Hero6.Engine\Services\Graphics\IGraphicsDeviceService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\Graphics\IRendererService.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\Graphics\RendererService.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\Logger\ILogger.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\Logger\ILoggerCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\Logger\Logger.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\Logger\LoggerCore.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\PlatformInfo\IPlatformInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\PlatformInfo\Platform.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Services\PlatformInfo\PlatformInfo.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\Settings\GameSettings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\Settings\IGameSettings.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\Settings\IUserSettings.cs" />

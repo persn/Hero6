@@ -12,13 +12,14 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns.InventoryItems
     /// <summary>
     /// API for inventory item controller.
     /// </summary>
+    [Injectable(LifeCycle = LifeCycle.Transient)]
     public class InventoryItemController : GameController<IInventoryItemController, IInventoryItemModule>, IInventoryItemController
     {
         /// <summary>
         /// Makes a new instance of the <see cref="InventoryItemController"/> class.
         /// </summary>
         /// <param name="module">The module for this controller.</param>
-        public InventoryItemController(IInventoryItemModule module, IServiceLocator services) : base(module, services)
+        public InventoryItemController(IInventoryItemModule module, IContainer services) : base(module, services)
         {
         }
 

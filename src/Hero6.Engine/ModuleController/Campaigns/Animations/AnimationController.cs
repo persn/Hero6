@@ -4,7 +4,9 @@
 // 'LICENSE.CODE.md', which is a part of this source code package.
 // </copyright>
 
+using LateStartStudio.Hero6.Services.Assets;
 using LateStartStudio.Hero6.Services.DependencyInjection;
+using LateStartStudio.Hero6.Services.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -14,10 +16,12 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns.Animations
     /// <summary>
     /// API for for animation controllers.
     /// </summary>
+    [Injectable(
+        LifeCycle = LifeCycle.Transient)]
     public class AnimationController : GameController<IAnimationController, IAnimationModule>, IAnimationController
     {
-        private readonly ContentManager content;
-        private readonly SpriteBatch spriteBatch;
+        private readonly IAssetsRepository assets;
+        private readonly IRendererService renderer;
 
         private Point location;
         private int frame;
@@ -30,11 +34,10 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns.Animations
         /// Makes an new instance of the <see cref="AnimationController"/> class.
         /// </summary>
         /// <param name="module">The module corresponding to this controller.</param>
-        public AnimationController(IAnimationModule module, IServiceLocator services) : base(module, services)
+        public AnimationController(IAnimationModule module, IContainer services, IAssetsRepository assets, IRendererService renderer) : base(module, services)
         {
-            content = services.Get<ContentManager>();
-            spriteBatch = services.Get<SpriteBatch>();
-            location = default;
+            this.assets = assets;
+            this.renderer = renderer;
         }
 
         public override int X
@@ -55,10 +58,7 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns.Animations
 
         public override bool Interact(int x, int y, Interaction interaction) => Intersects(x, y);
 
-        public override void Load()
-        {
-            texture = content.Load<Texture2D>(Module.Sprite);
-        }
+        public override void Load() => texture = assets.Load<Texture2D>(Module.Sprite);
 
         public override void Unload()
         {
@@ -81,9 +81,6 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns.Animations
             source = new Rectangle(frameCol, frameRow, Width, Height);
         }
 
-        public override void Draw(GameTime time)
-        {
-            spriteBatch.Draw(texture, destination, source, Color.White);
-        }
+        public override void Draw(GameTime time) => renderer.Draw(texture, source, destination);
     }
 }

@@ -5,11 +5,13 @@
 // </copyright>
 
 using LateStartStudio.Hero6.ModuleController.UserInterfaces.Components;
+using LateStartStudio.Hero6.Services.DependencyInjection;
 using LateStartStudio.Hero6.Services.UserInterfaces;
 using LateStartStudio.Hero6.Services.UserInterfaces.Input.Mouse;
 
 namespace LateStartStudio.Hero6.UserInterfaces.SierraVga.Windows
 {
+    [Injectable]
     public class Rest : WindowModule
     {
         private readonly IUserInterfaces userInterfaces;

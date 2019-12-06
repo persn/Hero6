@@ -5,9 +5,7 @@
 // </copyright>
 
 using System;
-using LateStartStudio.Hero6.Campaigns.RitesOfPassage;
 using LateStartStudio.Hero6.MonoGame;
-using LateStartStudio.Hero6.UserInterfaces.SierraVga;
 
 namespace LateStartStudio.Hero6
 {
@@ -22,16 +20,7 @@ namespace LateStartStudio.Hero6
         [STAThread]
         public static void Main()
         {
-            Game.Start(g =>
-            {
-                g.GraphicsDeviceCreated += (s, a) =>
-                {
-                    g.Campaigns.Add<RitesOfPassageModule>();
-                    g.UserInterfaces.Add<SierraVgaModule>();
-                };
-
-                g.Run();
-            });
+            Game.Start(g => g.Run());
         }
     }
 }

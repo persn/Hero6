@@ -5,9 +5,11 @@
 // </copyright>
 
 using LateStartStudio.Hero6.ModuleController.Campaigns.Animations;
+using LateStartStudio.Hero6.Services.DependencyInjection;
 
 namespace LateStartStudio.Hero6.Campaigns.RitesOfPassage.Animations.Characters.Llewella.Idle
 {
+    [Injectable]
     public class LllewellaIdleCenterDown : AnimationModule
     {
         public override string Name => "Llewella Idle Center Down";

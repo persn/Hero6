@@ -9,10 +9,12 @@ using LateStartStudio.Hero6.Campaigns.RitesOfPassage.InventoryItems;
 using LateStartStudio.Hero6.Localization;
 using LateStartStudio.Hero6.ModuleController.Campaigns.Characters;
 using LateStartStudio.Hero6.Services.Campaigns;
+using LateStartStudio.Hero6.Services.DependencyInjection;
 using LateStartStudio.Hero6.Services.UserInterfaces;
 
 namespace LateStartStudio.Hero6.Campaigns.RitesOfPassage.Characters
 {
+    [Injectable]
     public class Llewella : CharacterModule
     {
         private readonly IUserInterfaces userInterfaces;

@@ -6,9 +6,12 @@
 
 using LateStartStudio.Hero6.ModuleController.Campaigns;
 using LateStartStudio.Hero6.ModuleController.UserInterfaces;
+using LateStartStudio.Hero6.Services.Assets;
 using LateStartStudio.Hero6.Services.Campaigns;
+using LateStartStudio.Hero6.Services.ControllerRepository;
 using LateStartStudio.Hero6.Services.DependencyInjection;
 using LateStartStudio.Hero6.Services.DotNetWrappers;
+using LateStartStudio.Hero6.Services.Graphics;
 using LateStartStudio.Hero6.Services.Logger;
 using LateStartStudio.Hero6.Services.PlatformInfo;
 using LateStartStudio.Hero6.Services.Settings;
@@ -22,7 +25,7 @@ namespace LateStartStudio.Hero6.Services
     {
         private FileWrapperStub file;
         private IDirectoryWrapper directory;
-        private IServiceLocator services;
+        private IContainer services;
         private IMouse mouse;
         private IMouseCore mouseCore;
         private ILogger logger;
@@ -32,12 +35,16 @@ namespace LateStartStudio.Hero6.Services
         private IPlatformInfo platformInfo;
         private ICampaigns campaigns;
         private IUserInterfaces userInterfaces;
+        private IAssetsRepository assets;
+        private IRendererService renderer;
+        private IControllerRepository controllerRepository;
+        private IGraphicsDeviceService graphicsDevice;
 
         public FileWrapperStub File => file ?? (file = new FileWrapperStub());
 
         public IDirectoryWrapper Directory => directory ?? (directory = Substitute.For<IDirectoryWrapper>());
 
-        public IServiceLocator Services => services ?? (services = Substitute.For<IServiceLocator>());
+        public IContainer Container => services ?? (services = Substitute.For<IContainer>());
 
         public IMouse Mouse => mouse ?? (mouse = Substitute.For<IMouse>());
 
@@ -82,5 +89,13 @@ namespace LateStartStudio.Hero6.Services
                 return userInterfaces;
             }
         }
+
+        public IAssetsRepository Assets => assets ?? (assets = Substitute.For<IAssetsRepository>());
+
+        public IRendererService Renderer => renderer ?? (renderer = Substitute.For<IRendererService>());
+
+        public IControllerRepository ControllerRepository => controllerRepository ?? (controllerRepository = Substitute.For<IControllerRepository>());
+
+        public IGraphicsDeviceService GraphicsDevice => graphicsDevice ?? (graphicsDevice = Substitute.For<IGraphicsDeviceService>());
     }
 }

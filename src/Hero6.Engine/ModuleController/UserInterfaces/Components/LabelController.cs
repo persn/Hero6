@@ -5,27 +5,29 @@
 // </copyright>
 
 using LateStartStudio.Hero6.Extensions;
+using LateStartStudio.Hero6.Services.Assets;
 using LateStartStudio.Hero6.Services.DependencyInjection;
+using LateStartStudio.Hero6.Services.Graphics;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace LateStartStudio.Hero6.ModuleController.UserInterfaces.Components
 {
+    [Injectable(LifeCycle = LifeCycle.Transient)]
     public class LabelController : ComponentController<ILabelController, ILabelModule>, ILabelController
     {
-        private readonly ContentManager content;
-        private readonly SpriteBatch spriteBatch;
+        private readonly IAssetsRepository assets;
+        private readonly IRendererService renderer;
 
         private SpriteFont font;
         private Vector2 position;
         private Vector2 size;
         private string text;
 
-        public LabelController(ILabelModule module, IServiceLocator services) : base(module, services)
+        public LabelController(ILabelModule module, IContainer services, IAssetsRepository assets, IRendererService renderer) : base(module, services)
         {
-            content = services.Get<ContentManager>();
-            spriteBatch = services.Get<SpriteBatch>();
+            this.assets = assets;
+            this.renderer = renderer;
         }
 
         public override int X
@@ -60,7 +62,7 @@ namespace LateStartStudio.Hero6.ModuleController.UserInterfaces.Components
 
         public override void Load()
         {
-            font = content.Load<SpriteFont>("Gui/Sierra Vga/Fonts/DAYROM_11.25_Regular");
+            font = assets.Load<SpriteFont>("Gui/Sierra Vga/Fonts/DAYROM_11.25_Regular");
             size = font.MeasureString(Module.Text);
         }
 
@@ -76,7 +78,7 @@ namespace LateStartStudio.Hero6.ModuleController.UserInterfaces.Components
         {
             if (IsVisible)
             {
-                spriteBatch.DrawString(font, Module.Text, position, Module.Foreground.ToMonoGame());
+                renderer.Draw(font, Module.Text, position, Module.Foreground.ToMonoGame());
             }
         }
     }

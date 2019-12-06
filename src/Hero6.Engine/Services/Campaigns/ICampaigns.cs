@@ -24,8 +24,6 @@ namespace LateStartStudio.Hero6.Services.Campaigns
         /// </summary>
         ICampaignModule Current { get; set; }
 
-        void Add<T>() where T : ICampaignModule;
-
         /// <summary>
         /// Interact event, looks for modules that the user have tried interacting with.
         /// </summary>

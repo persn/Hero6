@@ -4,10 +4,11 @@
 // 'LICENSE.CODE.md', which is a part of this source code package.
 // </copyright>
 
-using System;
+using LateStartStudio.Hero6.Services.DependencyInjection;
 
 namespace LateStartStudio.Hero6.Services.PlatformInfo
 {
+    [Injectable]
     public class PlatformInfo : IPlatformInfo
     {
         public Platform Platform
@@ -19,7 +20,7 @@ namespace LateStartStudio.Hero6.Services.PlatformInfo
 #elif ANDROID
                 return Platform.Android
 #else
-                throw new NotSupportedException("Reached unsopported case, does your project config has a preprocessor directive?");
+                throw new System.NotSupportedException("Reached unsopported case, does your project config has a preprocessor directive?");
 #endif
             }
         }

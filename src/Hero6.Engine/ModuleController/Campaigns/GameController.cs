@@ -21,7 +21,7 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns
         /// Makes a new instance of the <see cref="GameController{TController,TModule}"/> class.
         /// </summary>
         /// <param name="module">The module corresponding to this controller.</param>
-        protected GameController(TModule module, IServiceLocator services)
+        protected GameController(TModule module, IContainer services)
             : base(module, services)
         {
         }

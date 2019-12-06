@@ -12,7 +12,7 @@ namespace LateStartStudio.Hero6.ModuleController.UserInterfaces.Components
         where TController : IController
         where TModule : IComponentModule
     {
-        protected ComponentController(TModule module, IServiceLocator services)
+        protected ComponentController(TModule module, IContainer services)
             : base(module, services)
         {
         }

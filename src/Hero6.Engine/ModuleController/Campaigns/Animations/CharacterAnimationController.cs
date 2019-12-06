@@ -16,6 +16,7 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns.Animations
     /// <summary>
     /// The API for the character animation controller.
     /// </summary>
+    [Injectable(LifeCycle = LifeCycle.Transient)]
     public class CharacterAnimationController : GameController<ICharacterAnimationController, ICharacterAnimationModule>, ICharacterAnimationController
     {
         private readonly ICampaigns campaigns;
@@ -35,10 +36,10 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns.Animations
         /// Creates a new instance of the <see cref="CharacterAnimationController"/> class.
         /// </summary>
         /// <param name="module">The module corresponding to this controller.</param>
-        public CharacterAnimationController(ICharacterAnimationModule module, IServiceLocator services)
+        public CharacterAnimationController(ICharacterAnimationModule module, IContainer services, ICampaigns campaigns)
             : base(module, services)
         {
-            campaigns = services.Get<ICampaigns>();
+            this.campaigns = campaigns;
         }
 
         public override int Width => current.Width;

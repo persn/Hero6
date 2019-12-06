@@ -14,6 +14,7 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns.Characters.Stats
     /// <summary>
     /// Stat that has to be learned and trained.
     /// </summary>
+    [Injectable(LifeCycle = LifeCycle.Transient)]
     public class LearningStatController : GameController<ILearningStatController, ILearningStatModule>, ILearningStatController
     {
         private readonly ICampaigns campaigns;
@@ -23,7 +24,7 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns.Characters.Stats
         /// <summary>
         /// Makes a new instance of the <see cref="LearningStatController"/> class.
         /// </summary>
-        public LearningStatController(IServiceLocator services)
+        public LearningStatController(IContainer services)
             : base(new LearningStatModule(), services)
         {
             campaigns = services.Get<ICampaigns>();

@@ -9,10 +9,12 @@ using LateStartStudio.Hero6.Campaigns.RitesOfPassage.Animations.Characters.Hero.
 using LateStartStudio.Hero6.Localization;
 using LateStartStudio.Hero6.ModuleController.Campaigns.Characters;
 using LateStartStudio.Hero6.Services.Campaigns;
+using LateStartStudio.Hero6.Services.DependencyInjection;
 using LateStartStudio.Hero6.Services.UserInterfaces;
 
 namespace LateStartStudio.Hero6.Campaigns.RitesOfPassage.Characters
 {
+    [Injectable]
     public sealed class Hero : CharacterModule
     {
         private readonly IUserInterfaces userInterfaces;
@@ -31,6 +33,7 @@ namespace LateStartStudio.Hero6.Campaigns.RitesOfPassage.Characters
             base.Initialize();
             IdleAnimation = campaigns.Current.GetCharacterAnimation<HeroIdle>();
             MoveAnimation = campaigns.Current.GetCharacterAnimation<HeroWalk>();
+            SetAsPlayer();
             Look = OnLook;
             Grab = OnGrab;
             Talk = OnTalk;

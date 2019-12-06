@@ -5,12 +5,14 @@
 // </copyright>
 
 using System;
+using LateStartStudio.Hero6.Services.DependencyInjection;
 
 namespace LateStartStudio.Hero6.ModuleController.Campaigns.Characters.Stats
 {
     /// <summary>
     /// Stat that has to be learned and trained.
     /// </summary>
+    [Injectable(LifeCycle = LifeCycle.Transient)]
     public class LearningStatModule : GameModule<ILearningStatController, ILearningStatModule>, ILearningStatModule
     {
         /// <summary>

@@ -5,9 +5,11 @@
 // </copyright>
 
 using LateStartStudio.Hero6.ModuleController.Campaigns.InventoryItems;
+using LateStartStudio.Hero6.Services.DependencyInjection;
 
 namespace LateStartStudio.Hero6.Campaigns.RitesOfPassage.InventoryItems
 {
+    [Injectable]
     public sealed class BentSword : InventoryItemModule
     {
         public override string Name => "Bent Sword";

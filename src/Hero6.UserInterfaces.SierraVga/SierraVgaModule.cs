@@ -7,12 +7,14 @@
 using LateStartStudio.Hero6.ModuleController.Campaigns;
 using LateStartStudio.Hero6.ModuleController.UserInterfaces;
 using LateStartStudio.Hero6.Services.Campaigns;
+using LateStartStudio.Hero6.Services.DependencyInjection;
 using LateStartStudio.Hero6.Services.UserInterfaces.Input.Mouse;
 using LateStartStudio.Hero6.UserInterfaces.SierraVga.Input.Mouse;
 using LateStartStudio.Hero6.UserInterfaces.SierraVga.Windows;
 
 namespace LateStartStudio.Hero6.UserInterfaces.SierraVga
 {
+    [Injectable]
     public class SierraVgaModule : UserInterfaceModule
     {
         private readonly IMouse mouse;

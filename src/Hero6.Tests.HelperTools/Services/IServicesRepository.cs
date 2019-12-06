@@ -4,9 +4,12 @@
 // 'LICENSE.CODE.md', which is a part of this source code package.
 // </copyright>
 
+using LateStartStudio.Hero6.Services.Assets;
 using LateStartStudio.Hero6.Services.Campaigns;
+using LateStartStudio.Hero6.Services.ControllerRepository;
 using LateStartStudio.Hero6.Services.DependencyInjection;
 using LateStartStudio.Hero6.Services.DotNetWrappers;
+using LateStartStudio.Hero6.Services.Graphics;
 using LateStartStudio.Hero6.Services.Logger;
 using LateStartStudio.Hero6.Services.PlatformInfo;
 using LateStartStudio.Hero6.Services.Settings;
@@ -21,7 +24,7 @@ namespace LateStartStudio.Hero6.Services
 
         IDirectoryWrapper Directory { get; }
 
-        IServiceLocator Services { get; }
+        IContainer Container { get; }
 
         IMouse Mouse { get; }
 
@@ -40,5 +43,13 @@ namespace LateStartStudio.Hero6.Services
         ICampaigns Campaigns { get; }
 
         IUserInterfaces UserInterfaces { get; }
+
+        IAssetsRepository Assets { get; }
+
+        IRendererService Renderer { get; }
+
+        IControllerRepository ControllerRepository { get; }
+
+        IGraphicsDeviceService GraphicsDevice { get; }
     }
 }

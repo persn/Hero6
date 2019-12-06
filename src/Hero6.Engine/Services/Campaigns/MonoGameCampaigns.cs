@@ -13,14 +13,15 @@ using Microsoft.Xna.Framework;
 
 namespace LateStartStudio.Hero6.Services.Campaigns
 {
+    [Injectable]
     public class MonoGameCampaigns : ICampaigns, IXnaGameLoop
     {
-        private readonly IServiceLocator services;
-        private readonly IList<CampaignController> campaigns = new List<CampaignController>();
+        private readonly IContainer container;
+        private readonly List<CampaignController> campaigns = new List<CampaignController>();
 
-        public MonoGameCampaigns(IServiceLocator services)
+        public MonoGameCampaigns(IContainer container)
         {
-            this.services = services;
+            this.container = container;
         }
 
         public IEnumerable<ICampaignModule> Campaigns => campaigns.Select(c => c.Module);
@@ -33,12 +34,14 @@ namespace LateStartStudio.Hero6.Services.Campaigns
 
         public CampaignController CurrentController { get; set; }
 
-        public void Add<T>() where T : ICampaignModule => campaigns.Add(new CampaignController(services.Make<T>(), services));
-
         public bool Interact(int x, int y, Interaction interaction) => CurrentController.Interact(x, y, interaction);
 
         public void Initialize()
         {
+            campaigns.AddRange(container
+                .Get<IEnumerable<ICampaignModule>>()
+                .Select(m => container.Get<CampaignController>(("module", m), ("container", container))));
+
             CurrentController = campaigns[0];
             CurrentController.Initialize();
         }

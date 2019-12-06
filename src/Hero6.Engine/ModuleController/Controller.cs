@@ -7,7 +7,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using LateStartStudio.Hero6.Attributes;
 using LateStartStudio.Hero6.MonoGame.GameLoop;
 using LateStartStudio.Hero6.Services.DependencyInjection;
 using LateStartStudio.Hero6.Services.UserInterfaces.Input.Mouse;
@@ -32,7 +31,7 @@ namespace LateStartStudio.Hero6.ModuleController
         /// Makes a new <see cref="Controller{TController,TModule}"/> instance.
         /// </summary>
         /// <param name="module">The module to this controller.</param>
-        protected Controller(TModule module, IServiceLocator services)
+        protected Controller(TModule module, IContainer services)
         {
             Module = module;
             var mouse = services.Get<IMouse>();
@@ -119,9 +118,11 @@ namespace LateStartStudio.Hero6.ModuleController
 
         public override string ToString() => $"Controller: {Module.Name}";
 
-        protected IEnumerable<Type> FindModules<T>() where T : IModule => Module.GetType().Assembly.GetTypes()
-            .Where(t => t.BaseType == typeof(T))
-            .Where(t => t.GetCustomAttributes(typeof(IgnoreAttribute), true).Length == 0);
+        protected IEnumerable<Type> FindModules<T>() where T : IModule
+        {
+            return Module.GetType().Assembly.GetTypes()
+                .Where(m => m.BaseType == typeof(T));
+        }
 
         private void MouseMove(object sender, MouseMove e)
         {

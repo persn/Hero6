@@ -10,10 +10,11 @@ using LateStartStudio.Hero6.Extensions;
 using LateStartStudio.Hero6.ModuleController.Campaigns.Characters;
 using LateStartStudio.Hero6.ModuleController.Campaigns.Items;
 using LateStartStudio.Hero6.ModuleController.Campaigns.Rooms.Regions;
+using LateStartStudio.Hero6.Services.Assets;
 using LateStartStudio.Hero6.Services.Campaigns;
 using LateStartStudio.Hero6.Services.DependencyInjection;
+using LateStartStudio.Hero6.Services.Graphics;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace LateStartStudio.Hero6.ModuleController.Campaigns.Rooms
@@ -21,11 +22,12 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns.Rooms
     /// <summary>
     /// API for room controller.
     /// </summary>
+    [Injectable(LifeCycle = LifeCycle.Transient)]
     public class RoomController : GameController<IRoomController, IRoomModule>, IRoomController
     {
         private readonly ICampaigns campaigns;
-        private readonly ContentManager content;
-        private readonly SpriteBatch spriteBatch;
+        private readonly IAssetsRepository assets;
+        private readonly IRendererService renderer;
         private readonly List<CharacterController> characters = new List<CharacterController>();
         private readonly List<ItemController> items = new List<ItemController>();
         private readonly HotspotsController hotspots;
@@ -38,14 +40,14 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns.Rooms
         /// Makes a new <see cref="RoomController"/> instance.
         /// </summary>
         /// <param name="module">The module for this controller.</param>
-        public RoomController(IRoomModule module, IServiceLocator services)
-            : base(module, services)
+        public RoomController(IRoomModule module, IContainer container, ICampaigns campaigns, IAssetsRepository assets, IRendererService renderer)
+            : base(module, container)
         {
-            campaigns = services.Get<ICampaigns>();
-            content = services.Get<ContentManager>();
-            spriteBatch = services.Get<SpriteBatch>();
-            walkAreas = new WalkAreasController(Module.WalkAreasMask, services);
-            hotspots = new HotspotsController(Module.HotspotsMask, services);
+            this.campaigns = campaigns;
+            this.assets = assets;
+            this.renderer = renderer;
+            walkAreas = container.Get<WalkAreasController>(("source", Module.WalkAreasMask));
+            hotspots = container.Get<HotspotsController>(("source", Module.HotspotsMask));
         }
 
         public override int Width => background.Width;
@@ -118,7 +120,7 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns.Rooms
 
         public override void Load()
         {
-            background = content.Load<Texture2D>(Module.Background);
+            background = assets.Load<Texture2D>(Module.Background);
             walkAreas.Load();
             hotspots.Load();
             base.Initialize(); // Run base initialize here so it doesn't crash referencing room regions
@@ -151,7 +153,7 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns.Rooms
         {
             if (Module.IsVisible)
             {
-                spriteBatch.Draw(background, position, Color.White);
+                renderer.Draw(background, position);
             }
 
             characters.ForEach(c => c.Draw(time));

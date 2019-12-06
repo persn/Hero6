@@ -5,12 +5,14 @@
 // </copyright>
 
 using System.Drawing;
+using LateStartStudio.Hero6.Services.DependencyInjection;
 
 namespace LateStartStudio.Hero6.ModuleController.Campaigns.Rooms.Regions
 {
     /// <summary>
     /// API for the hotspots module.
     /// </summary>
+    [Injectable(LifeCycle = LifeCycle.Transient)]
     public class HotspotsModule : GameModule<IHotspotsController, IHotspotsModule>, IHotspotsModule
     {
         /// <summary>

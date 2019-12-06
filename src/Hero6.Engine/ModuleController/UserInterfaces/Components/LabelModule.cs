@@ -5,9 +5,11 @@
 // </copyright>
 
 using System.Drawing;
+using LateStartStudio.Hero6.Services.DependencyInjection;
 
 namespace LateStartStudio.Hero6.ModuleController.UserInterfaces.Components
 {
+    [Injectable(LifeCycle = LifeCycle.Transient)]
     public class LabelModule : ComponentModule<ILabelController, ILabelModule>, ILabelModule
     {
         public override string Name => "Label Module";

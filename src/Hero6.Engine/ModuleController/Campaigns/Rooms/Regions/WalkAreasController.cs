@@ -7,29 +7,31 @@
 using System.Collections.Generic;
 using System.Linq;
 using LateStartStudio.Hero6.Extensions;
+using LateStartStudio.Hero6.Services.Assets;
 using LateStartStudio.Hero6.Services.DependencyInjection;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 
 namespace LateStartStudio.Hero6.ModuleController.Campaigns.Rooms.Regions
 {
     /// <summary>
     /// API for walk areas controller.
     /// </summary>
+    [Injectable(
+        LifeCycle = LifeCycle.Transient)]
     public class WalkAreasController : GameController<IWalkAreasController, IWalkAreasModule>, IWalkAreasController
     {
+        private readonly IAssetsRepository assets;
         private readonly string source;
-        private readonly ContentManager content;
         private readonly List<WalkArea> walkAreas = new List<WalkArea>();
 
         /// <summary>
         /// Makes a new instance of the walk areas controller.
         /// </summary>
-        public WalkAreasController(string source, IServiceLocator services)
-            : base(new WalkAreasModule(), services)
+        public WalkAreasController(string source, IContainer container, IAssetsRepository assets)
+            : base(new WalkAreasModule(), container)
         {
+            this.assets = assets;
             this.source = source;
-            this.content = services.Get<ContentManager>();
         }
 
         public override int Width { get; }
@@ -43,7 +45,7 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns.Rooms.Regions
 
         public override void Load()
         {
-            walkAreas.AddRange(content.Load<List<WalkArea>>(source));
+            walkAreas.AddRange(assets.Load<List<WalkArea>>(source));
         }
 
         public override void Unload()

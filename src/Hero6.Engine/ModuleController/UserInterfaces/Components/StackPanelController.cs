@@ -13,6 +13,7 @@ using Microsoft.Xna.Framework;
 
 namespace LateStartStudio.Hero6.ModuleController.UserInterfaces.Components
 {
+    [Injectable(LifeCycle = LifeCycle.Transient)]
     public class StackPanelController : ComponentController<IStackPanelController, IStackPanelModule>, IStackPanelController
     {
         private readonly IControllerRepository controllerRepository;
@@ -23,9 +24,9 @@ namespace LateStartStudio.Hero6.ModuleController.UserInterfaces.Components
         /// </summary>
         private bool childrenLoadedHack = false;
 
-        public StackPanelController(IStackPanelModule module, IServiceLocator services) : base(module, services)
+        public StackPanelController(IStackPanelModule module, IContainer container, IControllerRepository controllerRepository) : base(module, container)
         {
-            controllerRepository = services.Get<IControllerRepository>();
+            this.controllerRepository = controllerRepository;
         }
 
         public override int Width

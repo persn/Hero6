@@ -7,11 +7,13 @@
 using System;
 using System.IO;
 using System.Reflection;
+using LateStartStudio.Hero6.Services.DependencyInjection;
 using log4net;
 using log4net.Config;
 
 namespace LateStartStudio.Hero6.Services.Logger
 {
+    [Injectable]
     public class LoggerCore : ILoggerCore
     {
         private readonly ILog logger;

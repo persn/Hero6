@@ -7,12 +7,14 @@
 using System;
 using LateStartStudio.Hero6.ModuleController.UserInterfaces.Components;
 using LateStartStudio.Hero6.ModuleController.UserInterfaces.Input.Mouse;
+using LateStartStudio.Hero6.Services.DependencyInjection;
 using LateStartStudio.Hero6.Services.UserInterfaces;
 using LateStartStudio.Hero6.Services.UserInterfaces.Input.Mouse;
 using LateStartStudio.Hero6.UserInterfaces.SierraVga.Input.Mouse;
 
 namespace LateStartStudio.Hero6.UserInterfaces.SierraVga.Windows
 {
+    [Injectable]
     public class VerbBar : WindowModule
     {
         private readonly IUserInterfaces userInterfaces;

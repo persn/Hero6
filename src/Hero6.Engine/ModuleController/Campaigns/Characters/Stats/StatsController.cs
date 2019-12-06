@@ -13,12 +13,13 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns.Characters.Stats
     /// <summary>
     /// API for Stats Controller.
     /// </summary>
+    [Injectable(LifeCycle = LifeCycle.Transient)]
     public class StatsController : GameController<IStatsController, IStatsModule>, IStatsController
     {
         /// <summary>
         /// Makes a new instance of the <see cref="StatController"/> class.
         /// </summary>
-        public StatsController(IServiceLocator services)
+        public StatsController(IContainer services)
             : base(new StatsModule(), services)
         {
             var campaigns = services.Get<ICampaigns>();

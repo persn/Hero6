@@ -14,6 +14,7 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns.Characters.Stats
     /// <summary>
     /// API for get-set stat controller.
     /// </summary>
+    [Injectable(LifeCycle = LifeCycle.Transient)]
     public class StatController : GameController<IStatController, IStatModule>, IStatController
     {
         private readonly ICampaigns campaigns;
@@ -24,7 +25,7 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns.Characters.Stats
         /// <summary>
         /// Makes a new instance of the <see cref="StatController"/>.
         /// </summary>
-        public StatController(IServiceLocator services, Func<int> max)
+        public StatController(IContainer services, Func<int> max)
             : base(new StatModule(), services)
         {
             campaigns = services.Get<ICampaigns>();

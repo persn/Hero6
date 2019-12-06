@@ -13,7 +13,7 @@ namespace LateStartStudio.Hero6.Tests.Categories
     /// Test category for tests where all dependencies are mocked.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
-    public class UnitCategoryAttribute : CategoryAttribute
+    public sealed class UnitCategoryAttribute : CategoryAttribute
     {
     }
 }

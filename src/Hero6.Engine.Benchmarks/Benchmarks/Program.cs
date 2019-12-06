@@ -17,7 +17,6 @@ namespace LateStartStudio.Hero6.Benchmarks
 #if DEBUG
             BenchmarkSwitcher.FromAssembly(typeof(Program).Assembly).Run(args, new DebugInProcessConfig());
 #endif
-            var gameSummary = BenchmarkRunner.Run<ServiceLocatorBenchmarks>();
         }
     }
 }

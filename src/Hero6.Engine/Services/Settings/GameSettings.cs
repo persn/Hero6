@@ -7,10 +7,12 @@
 using System;
 using System.Drawing;
 using System.Linq;
+using LateStartStudio.Hero6.Services.DependencyInjection;
 using LateStartStudio.Hero6.Services.UserInterfaces;
 
 namespace LateStartStudio.Hero6.Services.Settings
 {
+    [Injectable]
     public class GameSettings : IGameSettings
     {
         private readonly IUserInterfaces userInterfaces;

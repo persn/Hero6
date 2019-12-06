@@ -5,8 +5,7 @@
 // </copyright>
 
 using BenchmarkDotNet.Attributes;
-using LateStartStudio.Hero6.Campaigns.RitesOfPassage;
-using LateStartStudio.Hero6.UserInterfaces.SierraVga;
+using LateStartStudio.Hero6.Services.Logger;
 
 namespace LateStartStudio.Hero6.MonoGame
 {
@@ -19,9 +18,7 @@ namespace LateStartStudio.Hero6.MonoGame
             {
                 g.GraphicsDeviceCreated += (s, a) =>
                 {
-                    g.Campaigns.Add<RitesOfPassageModule>();
-                    g.UserInterfaces.Add<SierraVgaModule>();
-                    g.Logger.WillDeleteLogOnDispose = false; // Process locks log file so benchmark crashes
+                    g.Container.Get<ILogger>().WillDeleteLogOnDispose = false; // Process locks log file so benchmark crashes
                 };
 
                 g.RunOneFrame();

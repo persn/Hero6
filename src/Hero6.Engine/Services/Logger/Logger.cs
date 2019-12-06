@@ -8,12 +8,14 @@ using System;
 using System.IO;
 using System.Reflection;
 using LateStartStudio.Hero6.MonoGame.GameLoop;
+using LateStartStudio.Hero6.Services.DependencyInjection;
 using LateStartStudio.Hero6.Services.PlatformInfo;
 using LateStartStudio.Hero6.Services.Settings;
 using Microsoft.Xna.Framework;
 
 namespace LateStartStudio.Hero6.Services.Logger
 {
+    [Injectable]
     public class Logger : ILogger, IXnaGameLoop, IDisposable
     {
         private readonly IUserSettings userSettings;

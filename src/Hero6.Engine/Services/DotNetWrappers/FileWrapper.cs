@@ -5,9 +5,11 @@
 // </copyright>
 
 using System.IO;
+using LateStartStudio.Hero6.Services.DependencyInjection;
 
 namespace LateStartStudio.Hero6.Services.DotNetWrappers
 {
+    [Injectable]
     public class FileWrapper : IFileWrapper
     {
         public bool Exists(string path) => File.Exists(path);

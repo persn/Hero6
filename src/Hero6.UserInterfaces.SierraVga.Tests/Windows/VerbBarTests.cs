@@ -9,13 +9,11 @@ using LateStartStudio.Hero6.ModuleController.UserInterfaces.Components;
 using LateStartStudio.Hero6.ModuleController.UserInterfaces.Input.Mouse;
 using LateStartStudio.Hero6.Services.UserInterfaces.Input.Mouse;
 using LateStartStudio.Hero6.Tests.Categories;
-using LateStartStudio.Hero6.UserInterfaces.SierraVga.Input;
 using LateStartStudio.Hero6.UserInterfaces.SierraVga.Input.Mouse;
-using LateStartStudio.Hero6.UserInterfaces.SierraVga.Windows;
 using NSubstitute;
 using NUnit.Framework;
 
-namespace LateStartStudio.Hero6.Engine.UserInterfaces.SierraVga.Windows
+namespace LateStartStudio.Hero6.UserInterfaces.SierraVga.Windows
 {
     [TestFixture]
     [UnitCategory]

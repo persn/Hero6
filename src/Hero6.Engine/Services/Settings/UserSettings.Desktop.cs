@@ -4,11 +4,13 @@
 // 'LICENSE.CODE.md', which is a part of this source code package.
 // </copyright>
 
+using LateStartStudio.Hero6.Services.DependencyInjection;
 using LateStartStudio.Hero6.Services.DotNetWrappers;
 using Newtonsoft.Json;
 
 namespace LateStartStudio.Hero6.Services.Settings
 {
+    [Injectable]
     public class UserSettings : IUserSettings
     {
         private readonly IFileWrapper file;

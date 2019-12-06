@@ -4,11 +4,14 @@
 // 'LICENSE.CODE.md', which is a part of this source code package.
 // </copyright>
 
+using LateStartStudio.Hero6.Services.DependencyInjection;
+
 namespace LateStartStudio.Hero6.ModuleController.Campaigns.Rooms.Regions
 {
     /// <summary>
     /// API for walk areas module.
     /// </summary>
+    [Injectable(LifeCycle = LifeCycle.Transient)]
     public class WalkAreasModule : GameModule<IWalkAreasController, IWalkAreasModule>, IWalkAreasModule
     {
         /// <summary>

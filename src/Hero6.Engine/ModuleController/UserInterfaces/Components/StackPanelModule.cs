@@ -6,9 +6,11 @@
 
 using System.Collections.Generic;
 using LateStartStudio.Hero6.Extensions;
+using LateStartStudio.Hero6.Services.DependencyInjection;
 
 namespace LateStartStudio.Hero6.ModuleController.UserInterfaces.Components
 {
+    [Injectable(LifeCycle = LifeCycle.Transient)]
     public class StackPanelModule : ComponentModule<IStackPanelController, IStackPanelModule>, IStackPanelModule
     {
         public override string Name => "Stack Panel";

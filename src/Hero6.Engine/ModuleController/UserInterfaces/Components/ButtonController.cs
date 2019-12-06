@@ -10,13 +10,14 @@ using Microsoft.Xna.Framework;
 
 namespace LateStartStudio.Hero6.ModuleController.UserInterfaces.Components
 {
+    [Injectable(LifeCycle = LifeCycle.Transient)]
     public class ButtonController : ComponentController<IButtonController, IButtonModule>, IButtonController
     {
         private readonly IControllerRepository controllerRepository;
 
-        public ButtonController(IButtonModule module, IServiceLocator services) : base(module, services)
+        public ButtonController(IButtonModule module, IContainer services, IControllerRepository controllerRepository) : base(module, services)
         {
-            controllerRepository = services.Get<IControllerRepository>();
+            this.controllerRepository = controllerRepository;
         }
 
         public override int Width => Module.Child.Width;

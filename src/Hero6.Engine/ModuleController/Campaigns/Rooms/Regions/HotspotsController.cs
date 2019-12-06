@@ -7,9 +7,9 @@
 using System.Collections.Generic;
 using LateStartStudio.Hero6.Extensions;
 using LateStartStudio.Hero6.ModuleController.Campaigns.Characters;
+using LateStartStudio.Hero6.Services.Assets;
 using LateStartStudio.Hero6.Services.DependencyInjection;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Color = System.Drawing.Color;
 using XnaColor = Microsoft.Xna.Framework.Color;
@@ -19,10 +19,11 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns.Rooms.Regions
     /// <summary>
     /// API for the hotspots controller.
     /// </summary>
+    [Injectable(LifeCycle = LifeCycle.Transient)]
     public class HotspotsController : GameController<IHotspotsController, IHotspotsModule>, IHotspotsController
     {
+        private readonly IAssetsRepository assets;
         private readonly string source;
-        private readonly ContentManager content;
         private readonly Dictionary<Color, MonoGameHotspot> hotspots = new Dictionary<Color, MonoGameHotspot>();
 
         private Texture2D texture;
@@ -31,10 +32,10 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns.Rooms.Regions
         /// <summary>
         /// Makes a new <see cref="HotspotsController"/> instance.
         /// </summary>
-        public HotspotsController(string source, IServiceLocator services) : base(new HotspotsModule(), services)
+        public HotspotsController(string source, IContainer container, IAssetsRepository assets) : base(new HotspotsModule(), container)
         {
             this.source = source;
-            content = services.Get<ContentManager>();
+            this.assets = assets;
         }
 
         public override int Width { get; }
@@ -51,7 +52,7 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns.Rooms.Regions
 
         public override void Load()
         {
-            texture = content.Load<Texture2D>(source);
+            texture = assets.Load<Texture2D>(source);
             buffer = FindHotspots(texture);
         }
 

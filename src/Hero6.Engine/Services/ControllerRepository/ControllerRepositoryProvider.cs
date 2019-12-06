@@ -6,9 +6,11 @@
 
 using System.Collections.Generic;
 using LateStartStudio.Hero6.ModuleController;
+using LateStartStudio.Hero6.Services.DependencyInjection;
 
 namespace LateStartStudio.Hero6.Services.ControllerRepository
 {
+    [Injectable]
     public class ControllerRepositoryProvider : IControllerRepository
     {
         private readonly Dictionary<IModule, IController> labels = new Dictionary<IModule, IController>();

@@ -6,9 +6,11 @@
 
 using LateStartStudio.Hero6.ModuleController.Campaigns.Animations;
 using LateStartStudio.Hero6.Services.Campaigns;
+using LateStartStudio.Hero6.Services.DependencyInjection;
 
 namespace LateStartStudio.Hero6.Campaigns.RitesOfPassage.Animations.Characters.Llewella.Idle
 {
+    [Injectable]
     public class LlewellaIdle : CharacterAnimationModule
     {
         private readonly ICampaigns campaigns;

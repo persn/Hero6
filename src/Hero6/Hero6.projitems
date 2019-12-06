@@ -14,6 +14,5 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)MonoGame\Game.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)MonoGame\Pipeline\WalkAreas\MonoGameWalkAreaReader.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Services\PlatformInfo\PlatformInfo.cs" />
   </ItemGroup>
 </Project>

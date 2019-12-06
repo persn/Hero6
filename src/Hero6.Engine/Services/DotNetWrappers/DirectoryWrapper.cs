@@ -5,9 +5,11 @@
 // </copyright>
 
 using System.IO;
+using LateStartStudio.Hero6.Services.DependencyInjection;
 
 namespace LateStartStudio.Hero6.Services.DotNetWrappers
 {
+    [Injectable]
     public class DirectoryWrapper : IDirectoryWrapper
     {
         public void CreateDirectory(string path) => Directory.CreateDirectory(path);

@@ -4,11 +4,14 @@
 // 'LICENSE.CODE.md', which is a part of this source code package.
 // </copyright>
 
+using LateStartStudio.Hero6.Services.DependencyInjection;
+
 namespace LateStartStudio.Hero6.ModuleController.Campaigns.Characters.Stats
 {
     /// <summary>
     /// API for Stats Module.
     /// </summary>
+    [Injectable(LifeCycle = LifeCycle.Transient)]
     public class StatsModule : GameModule<IStatsController, IStatsModule>, IStatsModule
     {
         /// <summary>

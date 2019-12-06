@@ -21,6 +21,7 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns.Characters
     /// <summary>
     /// API for the character controller.
     /// </summary>
+    [Injectable(LifeCycle = LifeCycle.Transient)]
     public class CharacterController : GameController<ICharacterController, ICharacterModule>, ICharacterController
     {
         private readonly ICampaigns campaigns;
@@ -37,11 +38,11 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns.Characters
         /// Makes a new instance of the <see cref="CharacterController"/> class.
         /// </summary>
         /// <param name="module">The module corresponding to this character.</param>
-        public CharacterController(ICharacterModule module, IServiceLocator services)
+        public CharacterController(ICharacterModule module, IContainer services, ICampaigns campaigns, StatsController stats)
             : base(module, services)
         {
-            campaigns = services.Get<ICampaigns>();
-            stats = new StatsController(services);
+            this.campaigns = campaigns;
+            this.stats = stats;
         }
 
         public override int Width => currentAnimation?.Width ?? 0;

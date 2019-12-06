@@ -10,6 +10,5 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)Benchmarks\Program.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)Services\DependencyInjection\ServiceLocatorBenchmarks.cs" />
   </ItemGroup>
 </Project>

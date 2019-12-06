@@ -13,7 +13,7 @@ namespace LateStartStudio.Hero6.Tests.Categories
     /// Test category for tests that has external dependencies (Databases, cloud services).
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
-    public class IntegrationCategoryAttribute : CategoryAttribute
+    public sealed class IntegrationCategoryAttribute : CategoryAttribute
     {
     }
 }

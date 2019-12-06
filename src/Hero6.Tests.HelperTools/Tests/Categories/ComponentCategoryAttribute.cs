@@ -13,7 +13,7 @@ namespace LateStartStudio.Hero6.Tests.Categories
     /// Test category for tests where dependencies uses real class instances instead of mocks.
     /// </summary>
     [AttributeUsage(AttributeTargets.Class, AllowMultiple = false)]
-    public class ComponentCategoryAttribute : CategoryAttribute
+    public sealed class ComponentCategoryAttribute : CategoryAttribute
     {
     }
 }

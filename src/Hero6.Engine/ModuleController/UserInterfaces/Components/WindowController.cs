@@ -7,30 +7,40 @@
 using LateStartStudio.Hero6.Extensions;
 using LateStartStudio.Hero6.Services.ControllerRepository;
 using LateStartStudio.Hero6.Services.DependencyInjection;
+using LateStartStudio.Hero6.Services.Graphics;
 using LateStartStudio.Hero6.Services.Settings;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using IGraphicsDeviceService = LateStartStudio.Hero6.Services.Graphics.IGraphicsDeviceService;
 
 namespace LateStartStudio.Hero6.ModuleController.UserInterfaces.Components
 {
+    [Injectable(LifeCycle = LifeCycle.Transient)]
     public class WindowController : ComponentController<IWindowController, IWindowModule>, IWindowController
     {
-        private readonly IServiceLocator services;
+        private readonly IContainer container;
         private readonly IGameSettings gameSettings;
         private readonly IControllerRepository controllerRepository;
-        private readonly SpriteBatch spriteBatch;
-        private readonly GraphicsDeviceManager graphicsDeviceManager;
+        private readonly IRendererService renderer;
+        private readonly IGraphicsDeviceService graphicsDevice;
 
         private Texture2D background;
         private Rectangle destination;
 
-        public WindowController(IWindowModule module, IServiceLocator services) : base(module, services)
+        public WindowController(
+            IWindowModule module,
+            IContainer container,
+            IGameSettings gameSettings,
+            IControllerRepository controllerRepository,
+            IRendererService renderer,
+            IGraphicsDeviceService graphicsDevice)
+            : base(module, container)
         {
-            this.services = services;
-            gameSettings = services.Get<IGameSettings>();
-            controllerRepository = services.Get<IControllerRepository>();
-            spriteBatch = services.Get<SpriteBatch>();
-            graphicsDeviceManager = services.Get<GraphicsDeviceManager>();
+            this.container = container;
+            this.gameSettings = gameSettings;
+            this.controllerRepository = controllerRepository;
+            this.renderer = renderer;
+            this.graphicsDevice = graphicsDevice;
         }
 
         public override int X
@@ -98,7 +108,8 @@ namespace LateStartStudio.Hero6.ModuleController.UserInterfaces.Components
 
         public IImageController MakeImage(IComponent parent, string source)
         {
-            var image = new ImageController(new ImageModule(), source, services);
+            var module = container.Get<ImageModule>();
+            var image = container.Get<ImageController>(("module", module), ("source", source));
             image.PreInitialize();
             image.Module.Parent = parent;
             controllerRepository[image.Module] = image;
@@ -107,7 +118,8 @@ namespace LateStartStudio.Hero6.ModuleController.UserInterfaces.Components
 
         public IStackPanelController MakeStackPanel(IComponent parent)
         {
-            var stackPanel = new StackPanelController(new StackPanelModule(), services);
+            var module = container.Get<StackPanelModule>();
+            var stackPanel = container.Get<StackPanelController>(("module", module));
             stackPanel.PreInitialize();
             stackPanel.Module.Parent = parent;
             controllerRepository[stackPanel.Module] = stackPanel;
@@ -116,7 +128,8 @@ namespace LateStartStudio.Hero6.ModuleController.UserInterfaces.Components
 
         public IButtonController MakeButton(IComponent parent)
         {
-            var button = new ButtonController(new ButtonModule(), services);
+            var module = container.Get<ButtonModule>();
+            var button = container.Get<ButtonController>(("module", module));
             button.PreInitialize();
             button.Module.Parent = parent;
             controllerRepository[button.Module] = button;
@@ -125,7 +138,8 @@ namespace LateStartStudio.Hero6.ModuleController.UserInterfaces.Components
 
         public ILabelController MakeLabel(IComponent parent, string text)
         {
-            var label = new LabelController(new LabelModule(), services);
+            var module = container.Get<LabelModule>();
+            var label = container.Get<LabelController>(("module", module));
             label.PreInitialize();
             label.Module.Text = text;
             label.Module.Parent = parent;
@@ -135,8 +149,7 @@ namespace LateStartStudio.Hero6.ModuleController.UserInterfaces.Components
 
         public override void Load()
         {
-            background = new Texture2D(graphicsDeviceManager.GraphicsDevice, 1, 1);
-            background.SetData(new[] { Module.Background.ToMonoGame() });
+            background = graphicsDevice.MakeTexture(Module.Background.ToMonoGame());
         }
 
         public override void Unload()
@@ -153,7 +166,7 @@ namespace LateStartStudio.Hero6.ModuleController.UserInterfaces.Components
         {
             if (IsVisible)
             {
-                spriteBatch.Draw(background, destination, Module.Background.ToMonoGame());
+                renderer.Draw(background, destination, Module.Background.ToMonoGame());
                 ChildToController.ToXnaGameLoop().Draw(time);
             }
         }
