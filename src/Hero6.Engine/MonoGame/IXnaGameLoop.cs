@@ -5,10 +5,10 @@
 // </copyright>
 
 using LateStartStudio.Hero6.ModuleController;
-using LateStartStudio.Hero6.MonoGame.GameLoop;
+using LateStartStudio.Hero6.MonoGame;
 using Microsoft.Xna.Framework;
 
-namespace LateStartStudio.Hero6.MonoGame.GameLoop
+namespace LateStartStudio.Hero6.MonoGame
 {
     public interface IXnaGameLoop
     {

@@ -5,7 +5,7 @@
 // </copyright>
 
 using LateStartStudio.Hero6.ModuleController.UserInterfaces.Input.Mouse;
-using LateStartStudio.Hero6.MonoGame.GameLoop;
+using LateStartStudio.Hero6.MonoGame;
 
 namespace LateStartStudio.Hero6.Extensions
 {
