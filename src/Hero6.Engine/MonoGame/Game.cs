@@ -4,6 +4,7 @@
 // 'LICENSE.CODE.md', which is a part of this source code package.
 // </copyright>
 
+using System.Threading;
 using LateStartStudio.Hero6.Extensions;
 using LateStartStudio.Hero6.Services.Campaigns;
 using LateStartStudio.Hero6.Services.Settings;
@@ -33,6 +34,8 @@ namespace LateStartStudio.Hero6.MonoGame
             MonoGameUserInterfaces ui,
             MonoGameCampaigns campaigns)
         {
+            Thread.CurrentThread.Name = "Hero6 Engine Main Thread";
+
             this.logger = logger;
             this.gameSettings = gameSettings;
             this.ui = ui;
