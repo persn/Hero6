@@ -31,22 +31,22 @@ namespace LateStartStudio.Hero6.Campaigns.RitesOfPassage.Characters
             base.Initialize();
 
             IdleAnimation = campaigns.Current.GetCharacterAnimation<LlewellaIdle>();
-            Look = OnLook;
-            Grab = OnGrab;
-            Talk = OnTalk;
         }
 
-        private void OnLook()
+        [CharacterEvent(CharacterEvent.Look)]
+        public void OnLook()
         {
             userInterfaces.Current.ShowTextBox(Strings.LlewellaLook);
         }
 
-        private void OnGrab()
+        [CharacterEvent(CharacterEvent.Grab)]
+        public void OnGrab()
         {
             userInterfaces.Current.ShowTextBox(Strings.LlewellaGrab);
         }
 
-        private void OnTalk()
+        [CharacterEvent(CharacterEvent.Talk)]
+        public void OnTalk()
         {
             if (HasInventoryItem<BentSword>())
             {

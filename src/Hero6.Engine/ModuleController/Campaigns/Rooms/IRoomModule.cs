@@ -7,7 +7,6 @@
 using System.Collections.Generic;
 using LateStartStudio.Hero6.ModuleController.Campaigns.Characters;
 using LateStartStudio.Hero6.ModuleController.Campaigns.Items;
-using LateStartStudio.Hero6.ModuleController.Campaigns.Rooms.Regions;
 
 namespace LateStartStudio.Hero6.ModuleController.Campaigns.Rooms
 {
@@ -20,8 +19,6 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns.Rooms
         string HotspotsMask { get; }
 
         IEnumerable<ICharacterModule> Characters { get; }
-
-        IHotspotsModule Hotspots { get; }
 
         void AddCharacter<T>() where T : ICharacterModule;
 

@@ -19,7 +19,7 @@ namespace LateStartStudio.Hero6.Campaigns.RitesOfPassage.Items
         [Test]
         public void OnLookShowsText()
         {
-            Module.Look();
+            Module.OnLook();
             Services.UserInterfaces.Current.Received().ShowTextBox(Strings.BentSwordLook);
         }
 
@@ -27,28 +27,28 @@ namespace LateStartStudio.Hero6.Campaigns.RitesOfPassage.Items
         public void OnGrabHide()
         {
             Module.IsVisible = true;
-            Module.Grab();
+            Module.OnGrab();
             Assert.That(Module.IsVisible, Is.False);
         }
 
         [Test]
         public void OnGrabShowsText()
         {
-            Module.Grab();
+            Module.OnGrab();
             Services.UserInterfaces.Current.Received().ShowTextBox(Strings.BentSwordGrab);
         }
 
         [Test]
         public void OnGrabAddToPlayerInventory()
         {
-            Module.Grab();
+            Module.OnGrab();
             Services.Campaigns.Current.Player.Received().AddInventoryItem<InventoryItems.BentSword>();
         }
 
         [Test]
         public void OnTalkShowsText()
         {
-            Module.Talk();
+            Module.OnTalk();
             Services.UserInterfaces.Current.Received().ShowTextBox(Strings.BentSwordTalk);
         }
 

@@ -29,28 +29,28 @@ namespace LateStartStudio.Hero6.Campaigns.RitesOfPassage.Rooms.Albion
         public void WhenStandingInSouthExitMoveCharacterToHillOverAlbion()
         {
             var hero = Services.Campaigns.Current.GetCharacter<Hero>();
-            Module.Hotspots[Fountain.HotspotSouthExit].StandingOn.Invoke(new StandingOn(hero));
+            Module.OnWhileStandingOnSouthExit(new StandingOn(hero));
             hero.Received().ChangeRoom<HillOverAlbion>(Arg.Any<int>(), Arg.Any<int>(), CharacterDirection.CenterDown);
         }
 
         [Test]
         public void OnLookFountainShowText()
         {
-            Module.Hotspots[Fountain.HotspotFountainSpot].Look.Invoke();
+            Module.OnLookFountain();
             Services.UserInterfaces.Current.Received().ShowTextBox(Strings.FountainLook);
         }
 
         [Test]
         public void OnGrabFountainShowText()
         {
-            Module.Hotspots[Fountain.HotspotFountainSpot].Grab.Invoke();
+            Module.OnGrabFountain();
             Services.UserInterfaces.Current.Received().ShowTextBox(Strings.FountainGrab);
         }
 
         [Test]
         public void OnTalkFountainShowText()
         {
-            Module.Hotspots[Fountain.HotspotFountainSpot].Talk.Invoke();
+            Module.OnTalkFountain();
             Services.UserInterfaces.Current.Received().ShowTextBox(Strings.FountainTalk);
         }
 
@@ -60,8 +60,6 @@ namespace LateStartStudio.Hero6.Campaigns.RitesOfPassage.Rooms.Albion
         {
             base.PreInitialize();
             Services.Campaigns.Current.GetCharacter<Llewella>().Returns(Substitute.For<ICharacterModule>());
-            Module.Hotspots[Fountain.HotspotFountainSpot].Returns(Substitute.For<Hotspot>());
-            Module.Hotspots[Fountain.HotspotSouthExit].Returns(Substitute.For<Hotspot>());
         }
     }
 }

@@ -6,6 +6,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using LateStartStudio.Hero6.Extensions;
 using LateStartStudio.Hero6.ModuleController.Campaigns.Characters;
 using Microsoft.Xna.Framework;
@@ -42,6 +43,8 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns.Rooms.Regions
         public override int Height { get; }
 
         public Hotspot this[Color color] => hotspots[color];
+
+        public Hotspot this[string color] => this[Color.FromArgb(int.Parse(color.Replace("#", string.Empty), NumberStyles.HexNumber))];
 
         public override bool Interact(int x, int y, Interaction interaction)
         {

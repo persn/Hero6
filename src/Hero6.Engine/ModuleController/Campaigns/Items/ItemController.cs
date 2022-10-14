@@ -5,6 +5,8 @@
 // </copyright>
 
 using System;
+using LateStartStudio.Hero6.ModuleController.Campaigns.Characters;
+using Microsoft.Extensions.Logging;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -16,6 +18,7 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns.Items
     /// </summary>
     public class ItemController : GameController<IItemController, IItemModule>, IItemController
     {
+        private readonly ILogger<ItemController> logger;
         private readonly ContentManager content;
         private readonly SpriteBatch spriteBatch;
 
@@ -26,8 +29,10 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns.Items
         /// Makes a new instance of the <see cref="ItemController"/> class.
         /// </summary>
         /// <param name="module">The module for this controller.</param>
-        public ItemController(IItemModule module, IServiceProvider services, ContentManager content, SpriteBatch spriteBatch) : base(module, services)
+        public ItemController(IItemModule module, IServiceProvider services, ILogger<ItemController> logger, ContentManager content, SpriteBatch spriteBatch)
+            : base(module, services)
         {
+            this.logger = logger;
             this.content = content;
             this.spriteBatch = spriteBatch;
         }
@@ -43,13 +48,13 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns.Items
                 switch (interaction)
                 {
                     case Interaction.Eye:
-                        Module.Look?.Invoke();
+                        Look?.Invoke();
                         break;
                     case Interaction.Mouth:
-                        Module.Talk?.Invoke();
+                        Talk?.Invoke();
                         break;
                     case Interaction.Hand:
-                        Module.Grab?.Invoke();
+                        Grab?.Invoke();
                         break;
                     case Interaction.Move:
                     default:
@@ -60,6 +65,13 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns.Items
             }
 
             return false;
+        }
+
+        public override void Initialize()
+        {
+            base.Initialize();
+
+            InitializeGameEvents();
         }
 
         public override void Load()
@@ -84,5 +96,27 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns.Items
                 spriteBatch.Draw(sprite, position, Color.White);
             }
         }
+
+        private void InitializeGameEvents() => InitializeGameEvents(logger, (method, attribute) =>
+        {
+            if (attribute is ItemEventAttribute itemAttribute)
+            {
+                if (itemAttribute.Event == ItemEvent.Grab)
+                    Grab = () => InvokeGameEvent(method, new object[0]);
+                else if (itemAttribute.Event == ItemEvent.Talk)
+                    Talk = () => InvokeGameEvent(method, new object[0]);
+                else if (itemAttribute.Event == ItemEvent.Look)
+                    Look = () => InvokeGameEvent(method, new object[0]);
+                else
+                {
+                    var message = $@"Unrecognized item event ""{itemAttribute.Event}"".";
+                    var exception = new GameEventException(message, method);
+                    logger.LogWarning(exception, message);
+#if DEBUG
+                    throw exception;
+#endif
+                }
+            }
+        });
     }
 }

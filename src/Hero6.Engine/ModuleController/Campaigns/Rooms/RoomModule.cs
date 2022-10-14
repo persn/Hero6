@@ -38,11 +38,6 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns.Rooms
         public IEnumerable<ICharacterModule> Characters => Controller.Characters.Select(c => c.Module);
 
         /// <summary>
-        /// Gets the hotspot for this room.
-        /// </summary>
-        public IHotspotsModule Hotspots => Controller.Hotspots.Module;
-
-        /// <summary>
         /// Adds character to this room.
         /// </summary>
         /// <typeparam name="T">Character by type.</typeparam>

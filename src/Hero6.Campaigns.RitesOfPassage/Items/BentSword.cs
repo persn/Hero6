@@ -26,27 +26,22 @@ namespace LateStartStudio.Hero6.Campaigns.RitesOfPassage.Items
 
         public override string Sprite => "Campaigns/Rites of Albion/Sprites/Items/Bent Sword";
 
-        public override void Initialize()
-        {
-            base.Initialize();
-            Look = OnLook;
-            Grab = OnGrab;
-            Talk = OnTalk;
-        }
-
-        private void OnLook()
+        [ItemEvent(ItemEvent.Look)]
+        public void OnLook()
         {
             userInterfaces.Current.ShowTextBox(Strings.BentSwordLook);
         }
 
-        private void OnGrab()
+        [ItemEvent(ItemEvent.Grab)]
+        public void OnGrab()
         {
             IsVisible = false;
             userInterfaces.Current.ShowTextBox(Strings.BentSwordGrab);
             campaigns.Current.Player.AddInventoryItem<InventoryItems.BentSword>();
         }
 
-        private void OnTalk()
+        [ItemEvent(ItemEvent.Talk)]
+        public void OnTalk()
         {
             userInterfaces.Current.ShowTextBox(Strings.BentSwordTalk);
         }

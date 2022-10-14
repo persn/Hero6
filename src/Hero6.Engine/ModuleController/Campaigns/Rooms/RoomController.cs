@@ -13,6 +13,7 @@ using LateStartStudio.Hero6.ModuleController.Campaigns.Items;
 using LateStartStudio.Hero6.ModuleController.Campaigns.Rooms.Regions;
 using LateStartStudio.Hero6.Services.Campaigns;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -25,6 +26,7 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns.Rooms
     public class RoomController : GameController<IRoomController, IRoomModule>, IRoomController
     {
         private readonly ICampaigns campaigns;
+        private readonly ILogger<RoomController> logger;
         private readonly ContentManager content;
         private readonly SpriteBatch spriteBatch;
         private readonly List<CharacterController> characters = new List<CharacterController>();
@@ -39,10 +41,11 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns.Rooms
         /// Makes a new <see cref="RoomController"/> instance.
         /// </summary>
         /// <param name="module">The module for this controller.</param>
-        public RoomController(IRoomModule module, IServiceProvider services, ICampaigns campaigns, ContentManager content, SpriteBatch spriteBatch)
+        public RoomController(IRoomModule module, IServiceProvider services, ICampaigns campaigns, ILogger<RoomController> logger, ContentManager content, SpriteBatch spriteBatch)
             : base(module, services)
         {
             this.campaigns = campaigns;
+            this.logger = logger;
             this.content = content;
             this.spriteBatch = spriteBatch;
             walkAreas = ActivatorUtilities.CreateInstance<WalkAreasController>(services, Module.WalkAreasMask);
@@ -122,6 +125,7 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns.Rooms
             background = content.Load<Texture2D>(Module.Background);
             walkAreas.Load();
             hotspots.Load();
+            InitializeGameEvents();
             base.Initialize(); // Run base initialize here so it doesn't crash referencing room regions
         }
 
@@ -160,5 +164,31 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns.Rooms
             walkAreas.Draw(time);
             hotspots.Draw(time);
         }
+
+        private void InitializeGameEvents() => InitializeGameEvents(logger, (method, attribute) =>
+        {
+            if (attribute is HotspotEventAttribute hotspotAttribute)
+            {
+                var hotspot = Hotspots[hotspotAttribute.ID];
+
+                if (hotspotAttribute.Event == HotspotEvent.StandingOn)
+                    hotspot.StandingOn = s => InvokeGameEvent(method, new object[] { s });
+                else if (hotspotAttribute.Event == HotspotEvent.Grab)
+                    hotspot.Grab = () => InvokeGameEvent(method, new object[0]);
+                else if (hotspotAttribute.Event == HotspotEvent.Talk)
+                    hotspot.Talk = () => InvokeGameEvent(method, new object[0]);
+                else if (hotspotAttribute.Event == HotspotEvent.Look)
+                    hotspot.Look = () => InvokeGameEvent(method, new object[0]);
+                else
+                {
+                    var message = $@"Unrecognized hotspot event ""{hotspotAttribute.Event}"".";
+                    var exception = new GameEventException(message, method);
+                    logger.LogWarning(exception, message);
+#if DEBUG
+                    throw exception;
+#endif
+                }
+            }
+        });
     }
 }

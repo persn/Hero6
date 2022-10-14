@@ -18,5 +18,12 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns.Rooms.Regions
         /// <param name="color">The color key in the hotspot mask.</param>
         /// <returns>The hotspot from the mask with the color value.</returns>
         Hotspot this[Color color] { get; }
+
+        /// <summary>
+        /// Gets the hotspot using the hex color value from the hotspots mask as a key.
+        /// </summary>
+        /// <param name="color">The hex color key in the hotspot mask.</param>
+        /// <returns>The hotspot from the mask with the color value.</returns>
+        Hotspot this[string color] { get; }
     }
 }

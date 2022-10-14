@@ -4,7 +4,6 @@
 // 'LICENSE.CODE.md', which is a part of this source code package.
 // </copyright>
 
-using System.Drawing;
 using LateStartStudio.Hero6.Campaigns.RitesOfPassage.Characters;
 using LateStartStudio.Hero6.Campaigns.RitesOfPassage.Items;
 using LateStartStudio.Hero6.Localization;
@@ -26,10 +25,6 @@ namespace LateStartStudio.Hero6.Campaigns.RitesOfPassage.Rooms.Albion
             this.campaigns = campaigns;
             this.userInterfaces = userInterfaces;
         }
-
-        public static Color HotspotNorthExit { get; } = Color.FromArgb(255, 255, 255, 255);
-
-        public static Color HotspotAlbionSign { get; } = Color.FromArgb(255, 255, 0, 0);
 
         public override string Name => "Hill Over Albion";
 
@@ -53,31 +48,36 @@ namespace LateStartStudio.Hero6.Campaigns.RitesOfPassage.Rooms.Albion
             bentSword.X = 150;
             bentSword.Y = 170;
             AddItem<BentSword>();
-
-            Hotspots[HotspotNorthExit].StandingOn = OnWhileStandingInNorthExit;
-            Hotspots[HotspotAlbionSign].Look = OnLookAlbionSign;
-            Hotspots[HotspotAlbionSign].Grab = OnGrabAlbionSign;
-            Hotspots[HotspotAlbionSign].Talk = OnTalkAlbionSign;
         }
 
-        private void OnWhileStandingInNorthExit(StandingOn e)
+        [HotspotEvent(Hotspots.NorthExit, HotspotEvent.StandingOn)]
+        public void OnWhileStandingInNorthExit(StandingOn e)
         {
             e.Character.ChangeRoom<Fountain>(100, 200, CharacterDirection.CenterUp);
         }
 
-        private void OnLookAlbionSign()
+        [HotspotEvent(Hotspots.AlbionSign, HotspotEvent.Look)]
+        public void OnLookAlbionSign()
         {
             userInterfaces.Current.ShowTextBox(Strings.AlbionSignLook);
         }
 
-        private void OnGrabAlbionSign()
+        [HotspotEvent(Hotspots.AlbionSign, HotspotEvent.Grab)]
+        public void OnGrabAlbionSign()
         {
             userInterfaces.Current.ShowTextBox(Strings.AlbionSignGrab);
         }
 
-        private void OnTalkAlbionSign()
+        [HotspotEvent(Hotspots.AlbionSign, HotspotEvent.Talk)]
+        public void OnTalkAlbionSign()
         {
             userInterfaces.Current.ShowTextBox(Strings.AlbionSignTalk);
+        }
+
+        internal class Hotspots
+        {
+            public const string NorthExit = "#FFFFFFFF";
+            public const string AlbionSign = "#FFFF0000";
         }
     }
 }

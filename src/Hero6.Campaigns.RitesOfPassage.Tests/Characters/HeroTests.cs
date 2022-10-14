@@ -22,21 +22,21 @@ namespace LateStartStudio.Hero6.Campaigns.RitesOfPassage.Characters
         [Test]
         public void OnLookShowsText()
         {
-            Module.Look();
+            Module.OnLook();
             Services.UserInterfaces.Current.Received().ShowTextBox(Strings.HeroLook);
         }
 
         [Test]
         public void OnGrabShowsText()
         {
-            Module.Grab();
+            Module.OnGrab();
             Services.UserInterfaces.Current.Received().ShowTextBox(Strings.HeroGrab);
         }
 
         [Test]
         public void OnTalkShowsText()
         {
-            Module.Talk();
+            Module.OnTalk();
             Services.UserInterfaces.Current.Received().ShowTextBox(Strings.HeroTalk);
         }
 

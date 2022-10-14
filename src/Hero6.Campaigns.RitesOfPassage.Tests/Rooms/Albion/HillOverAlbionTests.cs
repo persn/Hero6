@@ -36,38 +36,31 @@ namespace LateStartStudio.Hero6.Campaigns.RitesOfPassage.Rooms.Albion
         public void WhenStandingInNorthExitMoveCharacterToFountain()
         {
             var hero = Services.Campaigns.Current.GetCharacter<Hero>();
-            Module.Hotspots[HillOverAlbion.HotspotNorthExit].StandingOn.Invoke(new StandingOn(hero));
+            Module.OnWhileStandingInNorthExit(new StandingOn(hero));
             hero.Received().ChangeRoom<Fountain>(Arg.Any<int>(), Arg.Any<int>(), CharacterDirection.CenterUp);
         }
 
         [Test]
         public void OnLookAlbionSignShowText()
         {
-            Module.Hotspots[HillOverAlbion.HotspotAlbionSign].Look.Invoke();
+            Module.OnLookAlbionSign();
             Services.UserInterfaces.Current.Received().ShowTextBox(Strings.AlbionSignLook);
         }
 
         [Test]
         public void OnGrabAlbionSignShowText()
         {
-            Module.Hotspots[HillOverAlbion.HotspotAlbionSign].Grab.Invoke();
+            Module.OnGrabAlbionSign();
             Services.UserInterfaces.Current.Received().ShowTextBox(Strings.AlbionSignGrab);
         }
 
         [Test]
         public void OnTalkAlbionSignShowText()
         {
-            Module.Hotspots[HillOverAlbion.HotspotAlbionSign].Talk.Invoke();
+            Module.OnTalkAlbionSign();
             Services.UserInterfaces.Current.Received().ShowTextBox(Strings.AlbionSignTalk);
         }
 
         protected override HillOverAlbion MakeModule() => new HillOverAlbion(Services.Campaigns, Services.UserInterfaces);
-
-        protected override void PreInitialize()
-        {
-            base.PreInitialize();
-            Module.Hotspots[HillOverAlbion.HotspotAlbionSign].Returns(Substitute.For<Hotspot>());
-            Module.Hotspots[HillOverAlbion.HotspotNorthExit].Returns(Substitute.For<Hotspot>());
-        }
     }
 }

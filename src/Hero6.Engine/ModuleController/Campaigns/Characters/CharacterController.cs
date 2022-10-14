@@ -175,13 +175,13 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns.Characters
                 switch (interaction)
                 {
                     case Interaction.Eye:
-                        Module.Look?.Invoke();
+                        Look?.Invoke();
                         break;
                     case Interaction.Mouth:
-                        Module.Talk?.Invoke();
+                        Talk?.Invoke();
                         break;
                     case Interaction.Hand:
-                        Module.Grab?.Invoke();
+                        Grab?.Invoke();
                         break;
                     case Interaction.Move:
                     default:
@@ -192,6 +192,13 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns.Characters
             }
 
             return false;
+        }
+
+        public override void Initialize()
+        {
+            base.Initialize();
+
+            InitializeGameEvents();
         }
 
         public override void Load()
@@ -241,5 +248,27 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns.Characters
                 }
             }
         }
+
+        private void InitializeGameEvents() => InitializeGameEvents(logger, (method, attribute) =>
+        {
+            if (attribute is CharacterEventAttribute characterAttribute)
+            {
+                if (characterAttribute.Event == CharacterEvent.Grab)
+                    Grab = () => InvokeGameEvent(method, new object[0]);
+                else if (characterAttribute.Event == CharacterEvent.Talk)
+                    Talk = () => InvokeGameEvent(method, new object[0]);
+                else if (characterAttribute.Event == CharacterEvent.Look)
+                    Look = () => InvokeGameEvent(method, new object[0]);
+                else
+                {
+                    var message = $@"Unrecognized character event ""{characterAttribute.Event}"".";
+                    var exception = new GameEventException(message, method);
+                    logger.LogWarning(exception, message);
+#if DEBUG
+                    throw exception;
+#endif
+                }
+            }
+        });
     }
 }

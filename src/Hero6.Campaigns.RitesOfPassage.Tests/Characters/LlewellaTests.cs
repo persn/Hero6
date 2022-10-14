@@ -22,21 +22,21 @@ namespace LateStartStudio.Hero6.Campaigns.RitesOfPassage.Characters
         [Test]
         public void OnLookShowText()
         {
-            Module.Look();
+            Module.OnLook();
             Services.UserInterfaces.Current.Received().ShowTextBox(Strings.LlewellaLook);
         }
 
         [Test]
         public void OnGrabShowText()
         {
-            Module.Grab();
+            Module.OnGrab();
             Services.UserInterfaces.Current.Received().ShowTextBox(Strings.LlewellaGrab);
         }
 
         [Test]
         public void OnTalkShowTextWhenNoOneHasBentSword()
         {
-            Module.Talk();
+            Module.OnTalk();
             Services.UserInterfaces.Current.Received().ShowTextBox(Strings.LlewellaTalk2);
         }
 
@@ -44,7 +44,7 @@ namespace LateStartStudio.Hero6.Campaigns.RitesOfPassage.Characters
         public void OnTalkShowTextWhenHeroHasBentSword()
         {
             Services.Campaigns.Current.Player.HasInventoryItem<BentSword>().Returns(true);
-            Module.Talk();
+            Module.OnTalk();
             Services.UserInterfaces.Current.Received().ShowTextBox(Strings.LlewellaTalk1);
         }
 
@@ -52,7 +52,7 @@ namespace LateStartStudio.Hero6.Campaigns.RitesOfPassage.Characters
         public void OnTalkPlayerLoseBentSwordWhenInPlayerInventory()
         {
             Services.Campaigns.Current.Player.HasInventoryItem<BentSword>().Returns(true);
-            Module.Talk();
+            Module.OnTalk();
             Services.Campaigns.Current.Player.Received().RemoveInventoryItem<BentSword>();
         }
 
@@ -60,7 +60,7 @@ namespace LateStartStudio.Hero6.Campaigns.RitesOfPassage.Characters
         public void OnTalkShowTextWhenBentSwordInLlewellaInventory()
         {
             Controller.HasInventoryItem<BentSword>().Returns(true);
-            Module.Talk();
+            Module.OnTalk();
             Services.UserInterfaces.Current.Received().ShowTextBox(Strings.LlewellaTalk3);
         }
 
