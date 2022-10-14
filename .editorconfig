@@ -52,3 +52,8 @@ indent_size = 2
 [*.yaml]
 indent_style = space
 indent_size = 2
+
+# xml
+[*.{xml,config,props,targets,*proj}]
+indent_style = space
+indent_size = 2
