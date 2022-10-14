@@ -27,11 +27,16 @@
     <MonoGameContentReference Update="..\Hero6.Content\Hero6.Content.mgcb" Link="Hero6.Content.mgcb" />
   </ItemGroup>
   <ItemGroup>
+    <PackageReference Include="MonoGame.Content.Builder.Task" />
+    <PackageReference Include="MonoGame.Framework.DesktopGL" />
+    <PackageReference Include="OptimizedPriorityQueue" />
+    <PackageReference Include="Microsoft.Extensions.Hosting" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Hero6.Campaigns.RitesOfPassage\Hero6.Campaigns.RitesOfPassage.csproj" />
     <ProjectReference Include="..\Hero6.Engine.Desktop\Hero6.Engine.Desktop.csproj" />
     <ProjectReference Include="..\Hero6.UserInterfaces.SierraVga\Hero6.UserInterfaces.SierraVga.csproj" />
     <ProjectReference Include="..\Search\Search.csproj" />
   </ItemGroup>
   <Import Project="..\Hero6\Hero6.projitems" Label="Shared" />
-  <Import Project="..\.paket\Paket.Restore.targets" />
 </Project>

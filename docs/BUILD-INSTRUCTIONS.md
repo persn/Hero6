@@ -49,7 +49,7 @@ Make sure your IDE/text editor is compatible with [.editorconfig](https://editor
 
 ### Editing nuget packages
 
-We use [Paket](https://fsprojects.github.io/Paket/) for nuget packages.
+We use [Nuget CPM](https://learn.microsoft.com/en-us/nuget/consume-packages/central-package-management) for nuget packages.
 
 ### Editing MonoGame Content project
 
