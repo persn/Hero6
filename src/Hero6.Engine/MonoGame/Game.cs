@@ -4,6 +4,7 @@
 // 'LICENSE.CODE.md', which is a part of this source code package.
 // </copyright>
 
+using System.Diagnostics;
 using System.Threading;
 using LateStartStudio.Hero6.Extensions;
 using LateStartStudio.Hero6.Services.Campaigns;
@@ -76,7 +77,8 @@ namespace LateStartStudio.Hero6.MonoGame
         /// </summary>
         protected override void Initialize()
         {
-            logger.LogInformation("Initializing Hero6 game instance.");
+            logger.LogInformation("Initializing game.");
+            var sw = Stopwatch.StartNew();
 
             UpdateScale();
             ui.Initialize();
@@ -84,7 +86,8 @@ namespace LateStartStudio.Hero6.MonoGame
 
             base.Initialize();
 
-            logger.LogInformation("Hero6 game instance initialized.");
+            sw.Stop();
+            logger.LogInformation($"Game initialized after {sw.Elapsed}.");
         }
 
         /// <summary>
@@ -93,13 +96,15 @@ namespace LateStartStudio.Hero6.MonoGame
         /// </summary>
         protected override void LoadContent()
         {
-            logger.LogInformation("Loading Hero6 game instance.");
+            logger.LogInformation("Loading game content.");
+            var sw = Stopwatch.StartNew();
 
             ui.Load();
             campaigns.Load();
             base.LoadContent();
 
-            logger.LogInformation("Hero6 game instance loaded.");
+            sw.Stop();
+            logger.LogInformation($"Game content loaded after {sw.Elapsed}.");
         }
 
         /// <summary>
@@ -108,14 +113,16 @@ namespace LateStartStudio.Hero6.MonoGame
         /// </summary>
         protected override void UnloadContent()
         {
-            logger.LogInformation("Unloading Hero6 game instance.");
+            logger.LogInformation("Unloading game content.");
+            var sw = Stopwatch.StartNew();
 
             Content.Unload();
             ui.Unload();
             campaigns.Unload();
             base.UnloadContent();
 
-            logger.LogInformation("Hero6 game instance unloaded.");
+            sw.Stop();
+            logger.LogInformation($"Game content unloaded after {sw.Elapsed}.");
         }
 
         /// <summary>
