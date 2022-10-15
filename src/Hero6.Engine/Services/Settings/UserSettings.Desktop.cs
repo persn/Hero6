@@ -4,8 +4,8 @@
 // 'LICENSE.CODE.md', which is a part of this source code package.
 // </copyright>
 
+using System.Text.Json;
 using LateStartStudio.Hero6.Services.DotNetWrappers;
-using Newtonsoft.Json;
 
 namespace LateStartStudio.Hero6.Services.Settings
 {
@@ -24,7 +24,7 @@ namespace LateStartStudio.Hero6.Services.Settings
             this.gameSettings = gameSettings;
 
             data = file.Exists(Filename)
-                ? JsonConvert.DeserializeObject<UserSettingsData>(file.ReadAllText(Filename))
+                ? JsonSerializer.Deserialize<UserSettingsData>(file.ReadAllText(Filename))
                 : new UserSettingsData();
 
             GameStartedCount++;
@@ -63,7 +63,7 @@ namespace LateStartStudio.Hero6.Services.Settings
             // CreateDirectory does nothing if the directory already exists
             directory.CreateDirectory(gameSettings.UserFilesDir);
 
-            file.WriteAllText(Filename, JsonConvert.SerializeObject(data));
+            file.WriteAllText(Filename, JsonSerializer.Serialize(data));
         }
 
         public void Reset()

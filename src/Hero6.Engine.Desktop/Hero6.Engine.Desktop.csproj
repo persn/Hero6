@@ -16,7 +16,6 @@
   <ItemGroup>
     <PackageReference Include="MonoGame.Framework.Content.Pipeline" />
     <PackageReference Include="MonoGame.Framework.DesktopGL" />
-    <PackageReference Include="Newtonsoft.Json" />
     <PackageReference Include="OptimizedPriorityQueue" />
     <PackageReference Include="SixLabors.ImageSharp" />
     <PackageReference Include="Microsoft.Extensions.Hosting" />
