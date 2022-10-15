@@ -27,7 +27,7 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns.Characters
         private readonly List<InventoryItemController> inventory = new List<InventoryItemController>();
         private readonly Queue<Point> path = new Queue<Point>();
 
-        private object currentWalkSynchronizationContext;
+        private TaskCompletionSource currentWalkTask = new();
         private double pixelsToMove;
         private CharacterAnimationController currentAnimation;
         private CharacterAnimationController idleAnimation;
@@ -92,42 +92,42 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns.Characters
             return inventory.Contains(campaigns.AsMonoGame().CurrentController.InventoryItems[typeof(T)]);
         }
 
-        public void Walk(int x, int y)
+        public Task WalkAsync(int x, int y)
         {
-            // Async task for calculating walk path can be fired multiple times by spamming the mouse button
-            // or similar, so we need a mechanism to synchronize so we only use the result from the latest.
-            // If current has changed from the local variable it means we can disregard the result.
-            var walkSynchronizationContext = currentWalkSynchronizationContext = new object();
-
             // Clearing current path must happen before we calculate a new walk path asynchronously, because
             // if the character moves even a single unit from the current position while the calculation is
             // working, the logic can encounter unexpected situations, and in worst case crash.
             path.Clear();
-            var from = new Point(X, Y);
-            var to = new Point(x, y);
+            currentWalkTask.TrySetResult();
+            var walkTask = currentWalkTask = new();
+            Point from = new(X, Y);
+            Point to = new(x, y);
 
             // Calculating paths can be computation intensive, especially if we want to do it for multiple
             // characters at the same time, so doing it asynchronously will help prevent stuttering
-            Task.Run(() =>
+            _ = Task.Run(() =>
             {
                 try
                 {
-                    Thread.CurrentThread.Name = $"{nameof(Walk)}-{Module.Name}";
+                    Thread.CurrentThread.Name = $"{nameof(WalkAsync)}-{Module.Name}";
                     var newPath = ((WalkAreasController)Room.WalkAreas).GetPath(from, to);
 
-                    if (newPath != null && currentWalkSynchronizationContext == walkSynchronizationContext)
-                    {
+                    if (newPath != null && currentWalkTask == walkTask)
                         newPath.Skip(1).ForEach(p => path.Enqueue(p));
+                    else
+                    {
+                        walkTask.SetException(new Exception(
+                            $"Path from {from} to {to} for character {Module.Name} could not be calculated. Are both pixels in the same walkable region?"));
                     }
                 }
                 catch (Exception e)
                 {
                     logger.LogError(e, $"{e.GetType()} when calculating walkable path for character {Module.Name} from {from} to {to}.");
-#if DEBUG
-                    throw;
-#endif
+                    walkTask.SetException(e);
                 }
             });
+
+            return walkTask.Task;
         }
 
         public void Face(CharacterDirection direction)
@@ -236,9 +236,10 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns.Characters
                 X = newLocation.X;
                 Y = newLocation.Y;
 
-                if (path.Count == 0)
+                if (!path.Any())
                 {
                     pixelsToMove = 0.0;
+                    currentWalkTask.TrySetResult();
                     break;
                 }
             }

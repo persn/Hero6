@@ -87,7 +87,7 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns.Rooms
         {
             if (interaction == Interaction.Move)
             {
-                campaigns.Current.Player.Walk(x, y);
+                campaigns.Current.Player.WalkAsync(x, y);
                 return true;
             }
 

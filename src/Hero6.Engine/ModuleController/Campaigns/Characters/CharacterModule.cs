@@ -87,7 +87,7 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns.Characters
         /// </summary>
         /// <param name="x">The x coordinate to walk to.</param>
         /// <param name="y">The y coordinate to walk to.</param>
-        public void Walk(int x, int y) => Controller.Walk(x, y);
+        public Task WalkAsync(int x, int y) => Controller.WalkAsync(x, y);
 
         /// <summary>
         /// Face towards the specified direciton.

@@ -33,7 +33,7 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns.Characters
 
         bool HasInventoryItem<T>() where T : IInventoryItemModule;
 
-        void Walk(int x, int y);
+        Task WalkAsync(int x, int y);
 
         void Face(CharacterDirection direction);
 
