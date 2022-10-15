@@ -1,6 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
+    <!-- Code generators must be netstandard2.0 -->
     <TargetFramework>netstandard2.0</TargetFramework>
     <RootNamespace>LateStartStudio.Hero6</RootNamespace>
     <IsRoslynComponent>true</IsRoslynComponent>

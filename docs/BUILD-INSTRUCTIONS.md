@@ -5,7 +5,6 @@
 * [git](https://git-scm.com/)
 * [git-lfs](https://git-lfs.github.com/)
 * [.NET Core SDK](https://dotnet.microsoft.com/download/dotnet-core/2.2) ([Get the version listed here](https://github.com/LateStartStudio/Hero6/blob/master/src/global.json))
-* [.NET Core SDK 3.1.301](https://github.com/dotnet/core/blob/main/release-notes/3.1/3.1.5/3.1.301-download.md), this version needs to be installed alongside with whatever SDK version we use for main development. Reason is that the MGCB requires a specific dotnet version, this is probably a bug that will be resolved in the future.
 
 ## Instructions
 
