@@ -4,7 +4,6 @@
 // 'LICENSE.CODE.md', which is a part of this source code package.
 // </copyright>
 
-using System;
 using LateStartStudio.Hero6.Services.Campaigns;
 using LateStartStudio.Hero6.Services.DotNetWrappers;
 using LateStartStudio.Hero6.Services.PlatformInfo;

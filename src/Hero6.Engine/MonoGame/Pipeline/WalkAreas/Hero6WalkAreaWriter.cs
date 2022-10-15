@@ -4,8 +4,6 @@
 // 'LICENSE.CODE.md', which is a part of this source code package.
 // </copyright>
 
-using System.Collections.Generic;
-using System.Linq;
 using LateStartStudio.Hero6.ModuleController.Campaigns.Rooms.Regions;
 using Microsoft.Xna.Framework.Content.Pipeline;
 using Microsoft.Xna.Framework.Content.Pipeline.Serialization.Compiler;

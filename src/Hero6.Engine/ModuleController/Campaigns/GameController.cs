@@ -4,10 +4,7 @@
 // 'LICENSE.CODE.md', which is a part of this source code package.
 // </copyright>
 
-using System;
-using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 
 namespace LateStartStudio.Hero6.ModuleController.Campaigns

@@ -4,7 +4,6 @@
 // 'LICENSE.CODE.md', which is a part of this source code package.
 // </copyright>
 
-using System;
 using System.Drawing;
 using LateStartStudio.Hero6.ModuleController.Campaigns.Characters;
 using Microsoft.Xna.Framework;

@@ -4,7 +4,6 @@
 // 'LICENSE.CODE.md', which is a part of this source code package.
 // </copyright>
 
-using System;
 using LateStartStudio.Hero6.Services.UserInterfaces.Input.Mouse;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;

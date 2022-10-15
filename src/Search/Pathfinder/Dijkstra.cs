@@ -4,8 +4,6 @@
 // 'LICENSE.CODE.md', which is a part of this source code package.
 // </copyright>
 
-using System.Collections.Generic;
-
 namespace LateStartStudio.Search.Pathfinder
 {
     /// <summary>

@@ -4,7 +4,6 @@
 // 'LICENSE.CODE.md', which is a part of this source code package.
 // </copyright>
 
-using System.Collections.Generic;
 using LateStartStudio.Hero6.ModuleController.Campaigns;
 
 namespace LateStartStudio.Hero6.Services.Campaigns

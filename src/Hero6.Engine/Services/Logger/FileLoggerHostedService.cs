@@ -4,10 +4,7 @@
 // 'LICENSE.CODE.md', which is a part of this source code package.
 // </copyright>
 
-using System.IO;
 using System.Reflection;
-using System.Threading;
-using System.Threading.Tasks;
 using LateStartStudio.Hero6.Services.PlatformInfo;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;

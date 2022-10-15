@@ -4,8 +4,6 @@
 // 'LICENSE.CODE.md', which is a part of this source code package.
 // </copyright>
 
-using System;
-using System.Collections.Generic;
 using LateStartStudio.Hero6.Extensions;
 using LateStartStudio.Hero6.ModuleController.UserInterfaces.Input.Mouse;
 using LateStartStudio.Hero6.MonoGame.GameLoop;

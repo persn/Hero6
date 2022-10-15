@@ -4,7 +4,6 @@
 // 'LICENSE.CODE.md', which is a part of this source code package.
 // </copyright>
 
-using System;
 using LateStartStudio.Hero6.ModuleController.UserInterfaces.Components;
 using LateStartStudio.Hero6.Services.Settings;
 using LateStartStudio.Hero6.Services.UserInterfaces;

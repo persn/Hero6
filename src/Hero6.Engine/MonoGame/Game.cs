@@ -5,7 +5,6 @@
 // </copyright>
 
 using System.Diagnostics;
-using System.Threading;
 using LateStartStudio.Hero6.Extensions;
 using LateStartStudio.Hero6.Services.Campaigns;
 using LateStartStudio.Hero6.Services.Settings;

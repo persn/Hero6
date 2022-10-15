@@ -4,8 +4,6 @@
 // 'LICENSE.CODE.md', which is a part of this source code package.
 // </copyright>
 
-using System;
-using System.Collections.Generic;
 using NUnit.Framework;
 
 namespace LateStartStudio.Search.Pathfinder

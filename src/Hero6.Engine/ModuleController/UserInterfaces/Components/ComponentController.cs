@@ -4,8 +4,6 @@
 // 'LICENSE.CODE.md', which is a part of this source code package.
 // </copyright>
 
-using System;
-
 namespace LateStartStudio.Hero6.ModuleController.UserInterfaces.Components
 {
     public abstract class ComponentController<TController, TModule> : Controller<TController, TModule>

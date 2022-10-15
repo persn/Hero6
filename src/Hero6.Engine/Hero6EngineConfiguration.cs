@@ -4,9 +4,6 @@
 // 'LICENSE.CODE.md', which is a part of this source code package.
 // </copyright>
 
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 using Hero6.Engine.Services.Logger;
 using LateStartStudio.Hero6.Extensions;
 using LateStartStudio.Hero6.ModuleController.Campaigns;

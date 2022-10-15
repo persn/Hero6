@@ -4,7 +4,6 @@
 // 'LICENSE.CODE.md', which is a part of this source code package.
 // </copyright>
 
-using System;
 using NUnit.Framework;
 
 namespace LateStartStudio.Hero6.Tests.Categories

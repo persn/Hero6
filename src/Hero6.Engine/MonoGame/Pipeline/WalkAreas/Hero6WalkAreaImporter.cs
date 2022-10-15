@@ -4,7 +4,6 @@
 // 'LICENSE.CODE.md', which is a part of this source code package.
 // </copyright>
 
-using System.IO;
 using Microsoft.Xna.Framework.Content.Pipeline;
 
 namespace LateStartStudio.Hero6.MonoGame.Pipeline.WalkAreas
