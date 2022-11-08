@@ -4,7 +4,7 @@
 
 * [git](https://git-scm.com/)
 * [git-lfs](https://git-lfs.github.com/)
-* [.NET Core SDK](https://dotnet.microsoft.com/download/dotnet-core/2.2) ([Get the version listed here](https://github.com/LateStartStudio/Hero6/blob/master/src/global.json))
+* [.NET SDK](https://dotnet.microsoft.com/en-us/download/dotnet) ([Get the version listed here](https://github.com/LateStartStudio/Hero6/blob/master/src/global.json))
 
 ## Instructions
 
@@ -15,8 +15,6 @@ If you have git and git-lfs installed and configured, simply cloning the project
 `git clone --recurse-submodules https://github.com/LateStartStudio/Hero6`
 
 ### Install dotnet tools
-
-You will need tools like paket to work with the source code.
 
 `dotnet tool restore`
 
