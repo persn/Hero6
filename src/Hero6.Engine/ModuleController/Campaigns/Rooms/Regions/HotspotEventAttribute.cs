@@ -4,20 +4,21 @@
 // 'LICENSE.CODE.md', which is a part of this source code package.
 // </copyright>
 
-namespace LateStartStudio.Hero6.ModuleController.Campaigns.Rooms.Regions
+using LateStartStudio.Hero6.Scripts;
+
+namespace LateStartStudio.Hero6.ModuleController.Campaigns.Rooms.Regions;
+
+/// <inheritdoc />
+[AttributeUsage(AttributeTargets.Method)]
+public class HotspotEventAttribute : ScriptEventAttribute
 {
-    /// <inheritdoc />
-    [AttributeUsage(AttributeTargets.Method)]
-    public class HotspotEventAttribute : GameEventAttribute
+    public HotspotEventAttribute(Type type, string id, HotspotEvent @event) : base(type)
     {
-        public HotspotEventAttribute(string id, HotspotEvent @event)
-        {
-            ID = id;
-            Event = @event;
-        }
-
-        public string ID { get; }
-
-        public HotspotEvent Event { get; }
+        ID = id;
+        Event = @event;
     }
+
+    public string ID { get; }
+
+    public HotspotEvent Event { get; }
 }

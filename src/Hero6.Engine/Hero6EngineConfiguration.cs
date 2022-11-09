@@ -10,6 +10,7 @@ using LateStartStudio.Hero6.ModuleController.Campaigns;
 using LateStartStudio.Hero6.ModuleController.Campaigns.Characters.Stats;
 using LateStartStudio.Hero6.ModuleController.UserInterfaces;
 using LateStartStudio.Hero6.MonoGame;
+using LateStartStudio.Hero6.Scripts;
 using LateStartStudio.Hero6.Services.Campaigns;
 using LateStartStudio.Hero6.Services.ControllerRepository;
 using LateStartStudio.Hero6.Services.DotNetWrappers;
@@ -99,6 +100,7 @@ namespace LateStartStudio.Hero6.Engine.Extensions
 
                     .AddSingleton<MonoGameUserInterfaces>()
                     .AddSingleton<IUserInterfaces>(s => s.GetService<MonoGameUserInterfaces>())
+                    .AddSingleton<IScriptRepository, ScriptRepository>()
 
                     .AddSingleton<IGameSettings, GameSettings>()
                     .AddSingleton<IUserSettings, UserSettings>()

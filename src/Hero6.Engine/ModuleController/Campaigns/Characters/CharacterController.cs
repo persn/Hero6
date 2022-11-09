@@ -10,6 +10,7 @@ using LateStartStudio.Hero6.ModuleController.Campaigns.Characters.Stats;
 using LateStartStudio.Hero6.ModuleController.Campaigns.InventoryItems;
 using LateStartStudio.Hero6.ModuleController.Campaigns.Rooms;
 using LateStartStudio.Hero6.ModuleController.Campaigns.Rooms.Regions;
+using LateStartStudio.Hero6.Scripts;
 using LateStartStudio.Hero6.Services.Campaigns;
 using Microsoft.Extensions.Logging;
 using Microsoft.Xna.Framework;
@@ -22,6 +23,7 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns.Characters
     public class CharacterController : GameController<ICharacterController, ICharacterModule>, ICharacterController
     {
         private readonly ICampaigns campaigns;
+        private readonly IScriptRepository scriptRepository;
         private readonly ILogger<CharacterController> logger;
         private readonly StatsController stats;
         private readonly List<InventoryItemController> inventory = new List<InventoryItemController>();
@@ -37,10 +39,11 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns.Characters
         /// Makes a new instance of the <see cref="CharacterController"/> class.
         /// </summary>
         /// <param name="module">The module corresponding to this character.</param>
-        public CharacterController(ICharacterModule module, IServiceProvider services, ICampaigns campaigns, ILogger<CharacterController> logger, StatsController stats)
+        public CharacterController(ICharacterModule module, IServiceProvider services, ICampaigns campaigns, IScriptRepository scriptRepository, ILogger<CharacterController> logger, StatsController stats)
             : base(module, services)
         {
             this.campaigns = campaigns;
+            this.scriptRepository = scriptRepository;
             this.logger = logger;
             this.stats = stats;
         }
@@ -245,26 +248,29 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns.Characters
             }
         }
 
-        private void InitializeGameEvents() => InitializeGameEvents(logger, (method, attribute) =>
+        private void InitializeGameEvents()
         {
-            if (attribute is CharacterEventAttribute characterAttribute)
+            foreach (var scriptMethod in scriptRepository.GetScriptMethods(Module.GetType()))
             {
-                if (characterAttribute.Event == CharacterEvent.Grab)
-                    Grab = () => InvokeGameEvent(method, new object[0]);
-                else if (characterAttribute.Event == CharacterEvent.Talk)
-                    Talk = () => InvokeGameEvent(method, new object[0]);
-                else if (characterAttribute.Event == CharacterEvent.Look)
-                    Look = () => InvokeGameEvent(method, new object[0]);
-                else
+                if (scriptMethod.Attribute is CharacterEventAttribute characterAttribute)
                 {
-                    var message = $@"Unrecognized character event ""{characterAttribute.Event}"".";
-                    var exception = new GameEventException(message, method);
-                    logger.LogWarning(exception, message);
+                    if (characterAttribute.Event == CharacterEvent.Grab)
+                        Grab = () => scriptMethod.Invoke();
+                    else if (characterAttribute.Event == CharacterEvent.Talk)
+                        Talk = () => scriptMethod.Invoke();
+                    else if (characterAttribute.Event == CharacterEvent.Look)
+                        Look = () => scriptMethod.Invoke();
+                    else
+                    {
+                        var message = $@"Unrecognized character event ""{characterAttribute.Event}"".";
+                        var exception = new ScriptEventException(message, scriptMethod.Method);
+                        logger.LogWarning(exception, message);
 #if DEBUG
-                    throw exception;
+                        throw exception;
 #endif
+                    }
                 }
             }
-        });
+        }
     }
 }

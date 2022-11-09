@@ -11,12 +11,16 @@
   <ItemGroup>
     <Compile Include="$(MSBuildThisFileDirectory)ModuleController\Campaigns\Characters\CharacterEvent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ModuleController\Campaigns\Characters\CharacterEventAttribute.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ModuleController\Campaigns\GameEventAttribute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ModuleController\Campaigns\Items\ItemEvent.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ModuleController\Campaigns\Items\ItemEventAttribute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ModuleController\Campaigns\Rooms\Regions\HotspotEventAttribute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)ModuleController\Campaigns\Rooms\Regions\HotspotEvent.cs" />
-    <Compile Include="$(MSBuildThisFileDirectory)ModuleController\Campaigns\GameEventException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Scripts\IScriptRepository.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Scripts\Script.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Scripts\ScriptEventAttribute.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Scripts\ScriptEventException.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Scripts\ScriptMethod.cs" />
+    <Compile Include="$(MSBuildThisFileDirectory)Scripts\ScriptRepository.cs" />
     <Compile Include="..\Hero6.Engine\Hero6EngineConfiguration.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Services\DependencyInjection\IgnoreAttribute.cs" />
     <Compile Include="$(MSBuildThisFileDirectory)Extensions\CampaignExtensions.cs" />

@@ -4,6 +4,7 @@
 // 'LICENSE.CODE.md', which is a part of this source code package.
 // </copyright>
 
+using LateStartStudio.Hero6.Scripts;
 using Microsoft.Extensions.Logging;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -16,6 +17,7 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns.Items
     /// </summary>
     public class ItemController : GameController<IItemController, IItemModule>, IItemController
     {
+        private readonly IScriptRepository scriptRepository;
         private readonly ILogger<ItemController> logger;
         private readonly ContentManager content;
         private readonly SpriteBatch spriteBatch;
@@ -27,9 +29,10 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns.Items
         /// Makes a new instance of the <see cref="ItemController"/> class.
         /// </summary>
         /// <param name="module">The module for this controller.</param>
-        public ItemController(IItemModule module, IServiceProvider services, ILogger<ItemController> logger, ContentManager content, SpriteBatch spriteBatch)
+        public ItemController(IItemModule module, IServiceProvider services, IScriptRepository scriptRepository, ILogger<ItemController> logger, ContentManager content, SpriteBatch spriteBatch)
             : base(module, services)
         {
+            this.scriptRepository = scriptRepository;
             this.logger = logger;
             this.content = content;
             this.spriteBatch = spriteBatch;
@@ -95,26 +98,29 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns.Items
             }
         }
 
-        private void InitializeGameEvents() => InitializeGameEvents(logger, (method, attribute) =>
+        private void InitializeGameEvents()
         {
-            if (attribute is ItemEventAttribute itemAttribute)
+            foreach (var scriptMethod in scriptRepository.GetScriptMethods(Module.GetType()))
             {
-                if (itemAttribute.Event == ItemEvent.Grab)
-                    Grab = () => InvokeGameEvent(method, new object[0]);
-                else if (itemAttribute.Event == ItemEvent.Talk)
-                    Talk = () => InvokeGameEvent(method, new object[0]);
-                else if (itemAttribute.Event == ItemEvent.Look)
-                    Look = () => InvokeGameEvent(method, new object[0]);
-                else
+                if (scriptMethod.Attribute is ItemEventAttribute itemAttribute)
                 {
-                    var message = $@"Unrecognized item event ""{itemAttribute.Event}"".";
-                    var exception = new GameEventException(message, method);
-                    logger.LogWarning(exception, message);
+                    if (itemAttribute.Event == ItemEvent.Grab)
+                        Grab = () => scriptMethod.Invoke();
+                    else if (itemAttribute.Event == ItemEvent.Talk)
+                        Talk = () => scriptMethod.Invoke();
+                    else if (itemAttribute.Event == ItemEvent.Look)
+                        Look = () => scriptMethod.Invoke();
+                    else
+                    {
+                        var message = $@"Unrecognized item event ""{itemAttribute.Event}"".";
+                        var exception = new ScriptEventException(message, scriptMethod.Method);
+                        logger.LogWarning(exception, message);
 #if DEBUG
-                    throw exception;
+                        throw exception;
 #endif
+                    }
                 }
             }
-        });
+        }
     }
 }

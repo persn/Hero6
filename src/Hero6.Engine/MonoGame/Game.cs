@@ -6,6 +6,7 @@
 
 using System.Diagnostics;
 using LateStartStudio.Hero6.Extensions;
+using LateStartStudio.Hero6.Scripts;
 using LateStartStudio.Hero6.Services.Campaigns;
 using LateStartStudio.Hero6.Services.Settings;
 using LateStartStudio.Hero6.Services.UserInterfaces;
@@ -22,6 +23,7 @@ namespace LateStartStudio.Hero6.MonoGame
     {
         private readonly ILogger logger;
         private readonly IGameSettings gameSettings;
+        private readonly IScriptRepository scriptRepository;
         private readonly MonoGameUserInterfaces ui;
         private readonly MonoGameCampaigns campaigns;
 
@@ -30,6 +32,7 @@ namespace LateStartStudio.Hero6.MonoGame
         public Game(
             ILogger<Game> logger,
             IGameSettings gameSettings,
+            IScriptRepository scriptRepository,
             IUserSettings userSettings,
             MonoGameUserInterfaces ui,
             MonoGameCampaigns campaigns)
@@ -38,6 +41,7 @@ namespace LateStartStudio.Hero6.MonoGame
 
             this.logger = logger;
             this.gameSettings = gameSettings;
+            this.scriptRepository = scriptRepository;
             this.ui = ui;
             this.campaigns = campaigns;
 
@@ -82,6 +86,11 @@ namespace LateStartStudio.Hero6.MonoGame
             UpdateScale();
             ui.Initialize();
             campaigns.Initialize();
+
+            foreach (var script in scriptRepository.GetScripts())
+            {
+                script.Initialize();
+            }
 
             base.Initialize();
 

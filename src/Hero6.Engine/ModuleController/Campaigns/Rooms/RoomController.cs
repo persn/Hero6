@@ -8,6 +8,7 @@ using LateStartStudio.Hero6.Extensions;
 using LateStartStudio.Hero6.ModuleController.Campaigns.Characters;
 using LateStartStudio.Hero6.ModuleController.Campaigns.Items;
 using LateStartStudio.Hero6.ModuleController.Campaigns.Rooms.Regions;
+using LateStartStudio.Hero6.Scripts;
 using LateStartStudio.Hero6.Services.Campaigns;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
@@ -23,6 +24,7 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns.Rooms
     public class RoomController : GameController<IRoomController, IRoomModule>, IRoomController
     {
         private readonly ICampaigns campaigns;
+        private readonly IScriptRepository scriptRepository;
         private readonly ILogger<RoomController> logger;
         private readonly ContentManager content;
         private readonly SpriteBatch spriteBatch;
@@ -38,10 +40,11 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns.Rooms
         /// Makes a new <see cref="RoomController"/> instance.
         /// </summary>
         /// <param name="module">The module for this controller.</param>
-        public RoomController(IRoomModule module, IServiceProvider services, ICampaigns campaigns, ILogger<RoomController> logger, ContentManager content, SpriteBatch spriteBatch)
+        public RoomController(IRoomModule module, IServiceProvider services, ICampaigns campaigns, IScriptRepository scriptRepository, ILogger<RoomController> logger, ContentManager content, SpriteBatch spriteBatch)
             : base(module, services)
         {
             this.campaigns = campaigns;
+            this.scriptRepository = scriptRepository;
             this.logger = logger;
             this.content = content;
             this.spriteBatch = spriteBatch;
@@ -162,30 +165,33 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns.Rooms
             hotspots.Draw(time);
         }
 
-        private void InitializeGameEvents() => InitializeGameEvents(logger, (method, attribute) =>
+        private void InitializeGameEvents()
         {
-            if (attribute is HotspotEventAttribute hotspotAttribute)
+            foreach (var scriptMethod in scriptRepository.GetScriptMethods(Module.GetType()))
             {
-                var hotspot = Hotspots[hotspotAttribute.ID];
-
-                if (hotspotAttribute.Event == HotspotEvent.StandingOn)
-                    hotspot.StandingOn = s => InvokeGameEvent(method, new object[] { s });
-                else if (hotspotAttribute.Event == HotspotEvent.Grab)
-                    hotspot.Grab = () => InvokeGameEvent(method, new object[0]);
-                else if (hotspotAttribute.Event == HotspotEvent.Talk)
-                    hotspot.Talk = () => InvokeGameEvent(method, new object[0]);
-                else if (hotspotAttribute.Event == HotspotEvent.Look)
-                    hotspot.Look = () => InvokeGameEvent(method, new object[0]);
-                else
+                if (scriptMethod.Attribute is HotspotEventAttribute hotspotAttribute)
                 {
-                    var message = $@"Unrecognized hotspot event ""{hotspotAttribute.Event}"".";
-                    var exception = new GameEventException(message, method);
-                    logger.LogWarning(exception, message);
+                    var hotspot = Hotspots[hotspotAttribute.ID];
+
+                    if (hotspotAttribute.Event == HotspotEvent.StandingOn)
+                        hotspot.StandingOn = s => scriptMethod.Invoke(new object[] { s });
+                    else if (hotspotAttribute.Event == HotspotEvent.Grab)
+                        hotspot.Grab = () => scriptMethod.Invoke();
+                    else if (hotspotAttribute.Event == HotspotEvent.Talk)
+                        hotspot.Talk = () => scriptMethod.Invoke();
+                    else if (hotspotAttribute.Event == HotspotEvent.Look)
+                        hotspot.Look = () => scriptMethod.Invoke();
+                    else
+                    {
+                        var message = $@"Unrecognized hotspot event ""{hotspotAttribute.Event}"".";
+                        var exception = new ScriptEventException(message, scriptMethod.Method);
+                        logger.LogWarning(exception, message);
 #if DEBUG
-                    throw exception;
+                        throw exception;
 #endif
+                    }
                 }
             }
-        });
+        }
     }
 }

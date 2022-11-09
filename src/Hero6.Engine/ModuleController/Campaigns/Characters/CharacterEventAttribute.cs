@@ -4,15 +4,16 @@
 // 'LICENSE.CODE.md', which is a part of this source code package.
 // </copyright>
 
-namespace LateStartStudio.Hero6.ModuleController.Campaigns.Characters
-{
-    public class CharacterEventAttribute : GameEventAttribute
-    {
-        public CharacterEventAttribute(CharacterEvent @event)
-        {
-            Event = @event;
-        }
+using LateStartStudio.Hero6.Scripts;
 
-        public CharacterEvent Event { get; }
+namespace LateStartStudio.Hero6.ModuleController.Campaigns.Characters;
+
+public class CharacterEventAttribute : ScriptEventAttribute
+{
+    public CharacterEventAttribute(Type type, CharacterEvent @event) : base(type)
+    {
+        Event = @event;
     }
+
+    public CharacterEvent Event { get; }
 }

@@ -5,6 +5,7 @@
 // </copyright>
 
 using System.Reflection;
+using LateStartStudio.Hero6.Scripts;
 using Microsoft.Extensions.Logging;
 
 namespace LateStartStudio.Hero6.ModuleController.Campaigns
@@ -51,44 +52,5 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns
         /// <param name="interaction">The type of interaction.</param>
         /// <returns>True if interaction was succesful, false if not.</returns>
         public abstract bool Interact(int x, int y, Interaction interaction);
-
-        /// <summary>
-        /// Goes through the <see cref="IGameController"/> methods and makes sure they can be invoked
-        /// if the return type is void or Task. A game event will always fire off on a new thread.
-        /// </summary>
-        protected void InitializeGameEvents(ILogger logger, Action<MethodInfo, GameEventAttribute> eventAttribute)
-        {
-            var scriptEvents = Module
-                .GetType()
-                .GetMethods()
-                .Select(m => (method: m, attribute: m.GetCustomAttribute<GameEventAttribute>()))
-                .Where(m => m.attribute != null);
-
-            foreach (var (method, attribute) in scriptEvents)
-            {
-                if (!(method.ReturnType == typeof(void) || method.ReturnType == typeof(Task)))
-                {
-                    var message = $@"Return type must be ""void"" or ""{nameof(Task)}"" but currently it's ""{method.ReturnType}"".";
-                    var exception = new GameEventException(message, method);
-                    logger.LogError(exception, message);
-
-#if DEBUG
-                    throw exception;
-#else
-                    continue;
-#endif
-                }
-
-                eventAttribute(method, attribute);
-            }
-        }
-
-        protected void InvokeGameEvent(MethodInfo method, object[] args) => Task.Run(async () =>
-        {
-            if (method.ReturnType == typeof(void))
-                method.Invoke(Module, args);
-            else
-                await (Task)method.Invoke(Module, args);
-        });
     }
 }

@@ -97,6 +97,11 @@ namespace LateStartStudio.Hero6
                         formattedSource =
 @"                    services.AddSingleton<{0}>();";
                     }
+                    else if (group.Key == "LateStartStudio.Hero6.Scripts.Script")
+                    {
+                        formattedSource =
+@"                    services.AddSingleton<LateStartStudio.Hero6.Scripts.Script, {0}>();";
+                    }
                     else
                     {
                         continue; // Not a Hero6 Engine construct so do nothing
