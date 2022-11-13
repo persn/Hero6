@@ -64,13 +64,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "azure-pipelines", "azure-pi
 		..\scripts\azure-pipelines\run-tests.yaml = ..\scripts\azure-pipelines\run-tests.yaml
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hero6.Engine.Desktop.Tests", "Hero6.Engine.Desktop.Tests\Hero6.Engine.Desktop.Tests.csproj", "{E346D4EA-A08B-457D-8C23-4B27AB111667}"
-EndProject
-Project("{D954291E-2A0B-460D-934E-DC6B0785DB48}") = "Hero6.Engine.Tests", "Hero6.Engine.Tests\Hero6.Engine.Tests.shproj", "{4F1E3941-9BB3-412E-9F68-A4F959D460B8}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hero6.Engine.CodeGenerator", "Hero6.Engine.CodeGenerator\Hero6.Engine.CodeGenerator.csproj", "{DC6F7A13-B6AF-4DBE-BF51-DBF1FAAF36F7}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hero6.Engine", "Hero6.Engine\Hero6.Engine.csproj", "{2DBD5A4F-CE64-49BF-8886-F0F08609BB8C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hero6.Engine.Tests", "Hero6.Engine.Tests\Hero6.Engine.Tests.csproj", "{1F339D24-AF52-488E-AAB3-E40F87627B82}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -176,14 +174,6 @@ Global
 		{D1071FFB-86E1-48DD-9F84-7D84ED962434}.Release|Any CPU.Build.0 = Release|Any CPU
 		{D1071FFB-86E1-48DD-9F84-7D84ED962434}.Release|x86.ActiveCfg = Release|Any CPU
 		{D1071FFB-86E1-48DD-9F84-7D84ED962434}.Release|x86.Build.0 = Release|Any CPU
-		{E346D4EA-A08B-457D-8C23-4B27AB111667}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E346D4EA-A08B-457D-8C23-4B27AB111667}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E346D4EA-A08B-457D-8C23-4B27AB111667}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{E346D4EA-A08B-457D-8C23-4B27AB111667}.Debug|x86.Build.0 = Debug|Any CPU
-		{E346D4EA-A08B-457D-8C23-4B27AB111667}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E346D4EA-A08B-457D-8C23-4B27AB111667}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E346D4EA-A08B-457D-8C23-4B27AB111667}.Release|x86.ActiveCfg = Release|Any CPU
-		{E346D4EA-A08B-457D-8C23-4B27AB111667}.Release|x86.Build.0 = Release|Any CPU
 		{DC6F7A13-B6AF-4DBE-BF51-DBF1FAAF36F7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DC6F7A13-B6AF-4DBE-BF51-DBF1FAAF36F7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DC6F7A13-B6AF-4DBE-BF51-DBF1FAAF36F7}.Debug|x86.ActiveCfg = Debug|Any CPU
@@ -200,6 +190,14 @@ Global
 		{2DBD5A4F-CE64-49BF-8886-F0F08609BB8C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2DBD5A4F-CE64-49BF-8886-F0F08609BB8C}.Release|x86.ActiveCfg = Release|Any CPU
 		{2DBD5A4F-CE64-49BF-8886-F0F08609BB8C}.Release|x86.Build.0 = Release|Any CPU
+		{1F339D24-AF52-488E-AAB3-E40F87627B82}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1F339D24-AF52-488E-AAB3-E40F87627B82}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1F339D24-AF52-488E-AAB3-E40F87627B82}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{1F339D24-AF52-488E-AAB3-E40F87627B82}.Debug|x86.Build.0 = Debug|Any CPU
+		{1F339D24-AF52-488E-AAB3-E40F87627B82}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1F339D24-AF52-488E-AAB3-E40F87627B82}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1F339D24-AF52-488E-AAB3-E40F87627B82}.Release|x86.ActiveCfg = Release|Any CPU
+		{1F339D24-AF52-488E-AAB3-E40F87627B82}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -220,21 +218,18 @@ Global
 		{5BD8BDF3-2B54-4228-9272-BFCC6D1AE541} = {887BCA83-96AC-4E83-BAF5-567626AF670B}
 		{D1071FFB-86E1-48DD-9F84-7D84ED962434} = {887BCA83-96AC-4E83-BAF5-567626AF670B}
 		{FD983D91-82AF-44DA-B456-315A61E1A38B} = {F6DAB1F9-6741-4246-8B78-1CDDA0F447C8}
-		{E346D4EA-A08B-457D-8C23-4B27AB111667} = {2937997A-C105-4911-90ED-1458D86A3D87}
-		{4F1E3941-9BB3-412E-9F68-A4F959D460B8} = {2937997A-C105-4911-90ED-1458D86A3D87}
 		{DC6F7A13-B6AF-4DBE-BF51-DBF1FAAF36F7} = {2937997A-C105-4911-90ED-1458D86A3D87}
 		{2DBD5A4F-CE64-49BF-8886-F0F08609BB8C} = {2937997A-C105-4911-90ED-1458D86A3D87}
+		{1F339D24-AF52-488E-AAB3-E40F87627B82} = {2937997A-C105-4911-90ED-1458D86A3D87}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D79F9E72-AE93-4A79-A968-902EC57B5900}
 	EndGlobalSection
 	GlobalSection(SharedMSBuildProjectFiles) = preSolution
 		Hero6.Tests\Hero6.Tests.projitems*{33dca6ab-2df5-400a-b981-4e5b06cec36d}*SharedItemsImports = 5
-		Hero6.Engine.Tests\Hero6.Engine.Tests.projitems*{4f1e3941-9bb3-412e-9f68-a4f959d460b8}*SharedItemsImports = 13
 		Hero6.Tests\Hero6.Tests.projitems*{b59e1a53-68b3-4d31-8b69-cefc3d5cebb4}*SharedItemsImports = 13
 		Hero6\Hero6.projitems*{d1071ffb-86e1-48dd-9f84-7d84ed962434}*SharedItemsImports = 5
 		Hero6\Hero6.projitems*{df3851f5-aea2-4d44-bab1-88e63c470f30}*SharedItemsImports = 13
-		Hero6.Engine.Tests\Hero6.Engine.Tests.projitems*{e346d4ea-a08b-457d-8c23-4b27ab111667}*SharedItemsImports = 5
 	EndGlobalSection
 	GlobalSection(MonoDevelopProperties) = preSolution
 		Policies = $0

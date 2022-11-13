@@ -16,5 +16,4 @@
   <ItemGroup>
     <ProjectReference Include="..\Hero6.Tests.HelperTools\Hero6.Tests.HelperTools.csproj" />
   </ItemGroup>
-  <Import Project="..\Hero6.Engine.Tests\Hero6.Engine.Tests.projitems" Label="Shared" />
 </Project>
