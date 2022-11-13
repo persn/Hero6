@@ -27,5 +27,4 @@
   <ItemGroup>
     <TrimmerRootAssembly Include="Microsoft.Xna.Framework.Content.ContentTypeReader" Visible="false" />
   </ItemGroup>
-  <Import Project="..\Hero6.Engine\Hero6.Engine.projitems" Label="Shared" />
 </Project>

@@ -12,6 +12,6 @@
     <PackageReference Include="NUnit" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Hero6.Engine.Desktop\Hero6.Engine.Desktop.csproj" />
+    <ProjectReference Include="..\Hero6.Engine\Hero6.Engine.csproj" />
   </ItemGroup>
 </Project>
