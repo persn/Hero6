@@ -2,6 +2,9 @@
   <PropertyGroup>
     <CodeAnalysisRuleSet>../Hero6.ruleset</CodeAnalysisRuleSet>
     <ImplicitUsings>true</ImplicitUsings>
+    <AccelerateBuildsInVisualStudio>true</AccelerateBuildsInVisualStudio>
+    <!-- Build Acceleration needs <ProductReferenceAssembly> to be explicitly set for now https://github.com/dotnet/project-system/issues/8865 -->
+    <ProduceReferenceAssembly>true</ProduceReferenceAssembly>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
     <DefineConstants>DEBUG</DefineConstants>
