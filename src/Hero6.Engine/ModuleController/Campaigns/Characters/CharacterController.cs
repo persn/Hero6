@@ -250,7 +250,7 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns.Characters
 
         private void InitializeGameEvents()
         {
-            foreach (var scriptMethod in scriptRepository.GetScriptMethods(Module.GetType()))
+            foreach (var scriptMethod in scriptRepository.GetScriptMethods(Module.Name))
             {
                 if (scriptMethod.Attribute is CharacterEventAttribute characterAttribute)
                 {

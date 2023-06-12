@@ -12,7 +12,7 @@ public class ScriptRepository : IScriptRepository
 {
     private readonly ILogger<ScriptRepository> logger;
     private readonly IEnumerable<Script> scripts;
-    private readonly ILookup<Type, ScriptMethod> scriptMethods;
+    private readonly ILookup<string, ScriptMethod> scriptMethods;
 
     public ScriptRepository(ILogger<ScriptRepository> logger, IEnumerable<Script> scripts)
     {
@@ -36,7 +36,7 @@ public class ScriptRepository : IScriptRepository
 
                 return true;
             })
-            .ToLookup(m => m.Attribute.Type, m => m);
+            .ToLookup(m => m.Attribute.Name, m => m);
     }
 
     public IEnumerable<Script> GetScripts()
@@ -47,5 +47,5 @@ public class ScriptRepository : IScriptRepository
 
     public IEnumerable<ScriptMethod> GetScriptMethods() => scriptMethods.SelectMany(s => s);
 
-    public IEnumerable<ScriptMethod> GetScriptMethods(Type type) => scriptMethods[type];
+    public IEnumerable<ScriptMethod> GetScriptMethods(string entityName) => scriptMethods[entityName];
 }

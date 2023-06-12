@@ -9,6 +9,10 @@ using System.Reflection;
 
 namespace LateStartStudio.Hero6.Scripts;
 
+/// <summary>
+/// Container for the scripted methods that will trigger on the events specified with the
+/// <see cref="ScriptEventAttribute"/>.
+/// </summary>
 public class ScriptMethod
 {
     public ScriptMethod(Script parent, MethodInfo method)

@@ -10,7 +10,7 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns.Characters;
 
 public class CharacterEventAttribute : ScriptEventAttribute
 {
-    public CharacterEventAttribute(Type type, CharacterEvent @event) : base(type)
+    public CharacterEventAttribute(string name, CharacterEvent @event) : base(name)
     {
         Event = @event;
     }

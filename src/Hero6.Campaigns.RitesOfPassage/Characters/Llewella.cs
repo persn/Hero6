@@ -16,7 +16,9 @@ namespace LateStartStudio.Hero6.Campaigns.RitesOfPassage.Characters;
 
 public class Llewella : CharacterModule
 {
-    public override string Name => "Llewella";
+    public const string Id = "Llewella";
+
+    public override string Name => Id;
 }
 
 public class LlewellaScript : Script
@@ -39,19 +41,19 @@ public class LlewellaScript : Script
         llewella.IdleAnimation = campaigns.Current.GetCharacterAnimation<LlewellaIdle>();
     }
 
-    [CharacterEvent(typeof(Llewella), CharacterEvent.Look)]
+    [CharacterEvent(Llewella.Id, CharacterEvent.Look)]
     public void OnLook()
     {
         userInterfaces.Current.ShowTextBox(Strings.LlewellaLook);
     }
 
-    [CharacterEvent(typeof(Llewella), CharacterEvent.Grab)]
+    [CharacterEvent(Llewella.Id, CharacterEvent.Grab)]
     public void OnGrab()
     {
         userInterfaces.Current.ShowTextBox(Strings.LlewellaGrab);
     }
 
-    [CharacterEvent(typeof(Llewella), CharacterEvent.Talk)]
+    [CharacterEvent(Llewella.Id, CharacterEvent.Talk)]
     public void OnTalk()
     {
         if (llewella.HasInventoryItem<BentSword>())

@@ -7,14 +7,14 @@
 namespace LateStartStudio.Hero6.Scripts;
 
 /// <summary>
-/// <see cref="Attribute"/> for declaring Hero6 game events.
+/// <see cref="Attribute"/> for declaring Hero6 scriptable game events.
 /// </summary>
 public abstract class ScriptEventAttribute : Attribute
 {
-    protected ScriptEventAttribute(Type type)
+    protected ScriptEventAttribute(string name)
     {
-        Type = type;
+        Name = name;
     }
 
-    public Type Type { get; }
+    public string Name { get; }
 }

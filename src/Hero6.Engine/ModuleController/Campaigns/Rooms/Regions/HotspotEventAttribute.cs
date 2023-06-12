@@ -12,7 +12,7 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns.Rooms.Regions;
 [AttributeUsage(AttributeTargets.Method)]
 public class HotspotEventAttribute : ScriptEventAttribute
 {
-    public HotspotEventAttribute(Type type, string id, HotspotEvent @event) : base(type)
+    public HotspotEventAttribute(string name, string id, HotspotEvent @event) : base(name)
     {
         ID = id;
         Event = @event;

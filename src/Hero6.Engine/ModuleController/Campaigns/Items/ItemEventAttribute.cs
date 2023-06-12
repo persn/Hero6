@@ -10,7 +10,7 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns.Items;
 
 public class ItemEventAttribute : ScriptEventAttribute
 {
-    public ItemEventAttribute(Type type, ItemEvent @event) : base(type)
+    public ItemEventAttribute(string name, ItemEvent @event) : base(name)
     {
         Event = @event;
     }

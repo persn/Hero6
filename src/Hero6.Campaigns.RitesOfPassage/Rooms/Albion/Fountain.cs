@@ -17,7 +17,9 @@ namespace LateStartStudio.Hero6.Campaigns.RitesOfPassage.Rooms.Albion;
 
 public class Fountain : RoomModule
 {
-    public override string Name => "Fountain";
+    public const string Id = "Fountain";
+
+    public override string Name => Id;
 
     public override string Background => "Campaigns/Rites of Albion/Rooms/Albion/Fountain/Background";
 
@@ -50,25 +52,25 @@ public class FountainScript : Script
         room.AddCharacter<Llewella>();
     }
 
-    [HotspotEvent(typeof(Fountain), Hotspots.SouthExit, HotspotEvent.StandingOn)]
+    [HotspotEvent(Fountain.Id, Hotspots.SouthExit, HotspotEvent.StandingOn)]
     public void OnWhileStandingOnSouthExit(StandingOn e)
     {
         e.Character.ChangeRoom<HillOverAlbion>(220, 190, CharacterDirection.CenterDown);
     }
 
-    [HotspotEvent(typeof(Fountain), Hotspots.Fountain, HotspotEvent.Look)]
+    [HotspotEvent(Fountain.Id, Hotspots.Fountain, HotspotEvent.Look)]
     public void OnLookFountain()
     {
         userInterfaces.Current.ShowTextBox(Strings.FountainLook);
     }
 
-    [HotspotEvent(typeof(Fountain), Hotspots.Fountain, HotspotEvent.Grab)]
+    [HotspotEvent(Fountain.Id, Hotspots.Fountain, HotspotEvent.Grab)]
     public void OnGrabFountain()
     {
         userInterfaces.Current.ShowTextBox(Strings.FountainGrab);
     }
 
-    [HotspotEvent(typeof(Fountain), Hotspots.Fountain, HotspotEvent.Talk)]
+    [HotspotEvent(Fountain.Id, Hotspots.Fountain, HotspotEvent.Talk)]
     public void OnTalkFountain()
     {
         userInterfaces.Current.ShowTextBox(Strings.FountainTalk);

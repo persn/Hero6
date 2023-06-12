@@ -14,7 +14,9 @@ namespace LateStartStudio.Hero6.Campaigns.RitesOfPassage.Items;
 
 public class BentSword : ItemModule
 {
-    public override string Name => "Bent Sword";
+    public const string Id = "Bent Sword";
+
+    public override string Name => Id;
 
     public override string Sprite => "Campaigns/Rites of Albion/Sprites/Items/Bent Sword";
 }
@@ -38,13 +40,13 @@ public class BentSwordScript : Script
         bentSword = campaigns.Current.GetItem<BentSword>();
     }
 
-    [ItemEvent(typeof(BentSword), ItemEvent.Look)]
+    [ItemEvent(BentSword.Id, ItemEvent.Look)]
     public void OnLook()
     {
         userInterfaces.Current.ShowTextBox(Strings.BentSwordLook);
     }
 
-    [ItemEvent(typeof(BentSword), ItemEvent.Grab)]
+    [ItemEvent(BentSword.Id, ItemEvent.Grab)]
     public void OnGrab()
     {
         bentSword.IsVisible = false;
@@ -52,7 +54,7 @@ public class BentSwordScript : Script
         campaigns.Current.Player.AddInventoryItem<InventoryItems.BentSword>();
     }
 
-    [ItemEvent(typeof(BentSword), ItemEvent.Talk)]
+    [ItemEvent(BentSword.Id, ItemEvent.Talk)]
     public void OnTalk()
     {
         userInterfaces.Current.ShowTextBox(Strings.BentSwordTalk);

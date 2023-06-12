@@ -100,7 +100,7 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns.Items
 
         private void InitializeGameEvents()
         {
-            foreach (var scriptMethod in scriptRepository.GetScriptMethods(Module.GetType()))
+            foreach (var scriptMethod in scriptRepository.GetScriptMethods(Module.Name))
             {
                 if (scriptMethod.Attribute is ItemEventAttribute itemAttribute)
                 {

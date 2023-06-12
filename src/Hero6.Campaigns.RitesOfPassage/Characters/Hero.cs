@@ -16,7 +16,9 @@ namespace LateStartStudio.Hero6.Campaigns.RitesOfPassage.Characters;
 
 public sealed class Hero : CharacterModule
 {
-    public override string Name => "Hero";
+    public const string Id = "Hero";
+
+    public override string Name => Id;
 }
 
 public class HeroScript : Script
@@ -38,19 +40,19 @@ public class HeroScript : Script
         hero.MoveAnimation = campaigns.Current.GetCharacterAnimation<HeroWalk>();
     }
 
-    [CharacterEvent(typeof(Hero), CharacterEvent.Look)]
+    [CharacterEvent(Hero.Id, CharacterEvent.Look)]
     public void OnLook()
     {
         userInterfaces.Current.ShowTextBox(Strings.HeroLook);
     }
 
-    [CharacterEvent(typeof(Hero), CharacterEvent.Grab)]
+    [CharacterEvent(Hero.Id, CharacterEvent.Grab)]
     public void OnGrab()
     {
         userInterfaces.Current.ShowTextBox(Strings.HeroGrab);
     }
 
-    [CharacterEvent(typeof(Hero), CharacterEvent.Talk)]
+    [CharacterEvent(Hero.Id, CharacterEvent.Talk)]
     public void OnTalk()
     {
         userInterfaces.Current.ShowTextBox(Strings.HeroTalk);

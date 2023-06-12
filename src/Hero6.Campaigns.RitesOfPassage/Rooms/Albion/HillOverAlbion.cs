@@ -18,6 +18,8 @@ namespace LateStartStudio.Hero6.Campaigns.RitesOfPassage.Rooms.Albion;
 
 public class HillOverAlbion : RoomModule
 {
+    public const string Id = "Hill Over Albion";
+
     public override string Name => "Hill Over Albion";
 
     public override string Background => "Campaigns/Rites of Albion/Rooms/Albion/Hill Over Albion/Background";
@@ -56,25 +58,25 @@ public class HillOverAlbionScript : Script
         room.AddItem<BentSword>();
     }
 
-    [HotspotEvent(typeof(HillOverAlbion), Hotspots.NorthExit, HotspotEvent.StandingOn)]
+    [HotspotEvent(HillOverAlbion.Id, Hotspots.NorthExit, HotspotEvent.StandingOn)]
     public void OnWhileStandingInNorthExit(StandingOn e)
     {
         e.Character.ChangeRoom<Fountain>(100, 200, CharacterDirection.CenterUp);
     }
 
-    [HotspotEvent(typeof(HillOverAlbion), Hotspots.AlbionSign, HotspotEvent.Look)]
+    [HotspotEvent(HillOverAlbion.Id, Hotspots.AlbionSign, HotspotEvent.Look)]
     public void OnLookAlbionSign()
     {
         userInterfaces.Current.ShowTextBox(Strings.AlbionSignLook);
     }
 
-    [HotspotEvent(typeof(HillOverAlbion), Hotspots.AlbionSign, HotspotEvent.Grab)]
+    [HotspotEvent(HillOverAlbion.Id, Hotspots.AlbionSign, HotspotEvent.Grab)]
     public void OnGrabAlbionSign()
     {
         userInterfaces.Current.ShowTextBox(Strings.AlbionSignGrab);
     }
 
-    [HotspotEvent(typeof(HillOverAlbion), Hotspots.AlbionSign, HotspotEvent.Talk)]
+    [HotspotEvent(HillOverAlbion.Id, Hotspots.AlbionSign, HotspotEvent.Talk)]
     public void OnTalkAlbionSign()
     {
         userInterfaces.Current.ShowTextBox(Strings.AlbionSignTalk);
