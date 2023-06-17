@@ -4,9 +4,9 @@
 // 'LICENSE.CODE.md', which is a part of this source code package.
 // </copyright>
 
+using LateStartStudio.Hero6.InventoryItems;
 using LateStartStudio.Hero6.ModuleController.Campaigns.Animations;
 using LateStartStudio.Hero6.ModuleController.Campaigns.Characters.Stats;
-using LateStartStudio.Hero6.ModuleController.Campaigns.InventoryItems;
 using LateStartStudio.Hero6.ModuleController.Campaigns.Rooms;
 
 namespace LateStartStudio.Hero6.ModuleController.Campaigns.Characters
@@ -25,13 +25,13 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns.Characters
 
         ICharacterAnimationModule MoveAnimation { get; set; }
 
-        IEnumerable<IInventoryItemModule> Inventory { get; }
+        IEnumerable<IInventoryItem> Inventory { get; }
 
-        void AddInventoryItem<T>() where T : IInventoryItemModule;
+        void AddInventoryItem(IInventoryItem item);
 
-        void RemoveInventoryItem<T>() where T : IInventoryItemModule;
+        void RemoveInventoryItem(IInventoryItem item);
 
-        bool HasInventoryItem<T>() where T : IInventoryItemModule;
+        bool HasInventoryItem(IInventoryItem item);
 
         Task WalkAsync(int x, int y);
 

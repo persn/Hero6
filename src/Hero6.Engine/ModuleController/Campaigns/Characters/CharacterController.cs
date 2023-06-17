@@ -5,10 +5,10 @@
 // </copyright>
 
 using LateStartStudio.Hero6.Extensions;
+using LateStartStudio.Hero6.InventoryItems;
 using LateStartStudio.Hero6.Items;
 using LateStartStudio.Hero6.ModuleController.Campaigns.Animations;
 using LateStartStudio.Hero6.ModuleController.Campaigns.Characters.Stats;
-using LateStartStudio.Hero6.ModuleController.Campaigns.InventoryItems;
 using LateStartStudio.Hero6.ModuleController.Campaigns.Rooms;
 using LateStartStudio.Hero6.ModuleController.Campaigns.Rooms.Regions;
 using LateStartStudio.Hero6.Scripts;
@@ -27,7 +27,7 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns.Characters
         private readonly IScriptRepository scriptRepository;
         private readonly ILogger<CharacterController> logger;
         private readonly StatsController stats;
-        private readonly List<InventoryItemController> inventory = new List<InventoryItemController>();
+        private readonly List<InventoryItem> inventory = new();
         private readonly Queue<Point> path = new Queue<Point>();
 
         private TaskCompletionSource currentWalkTask = new();
@@ -79,21 +79,21 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns.Characters
             set { moveAnimation = campaigns.AsMonoGame().CurrentController.CharacterAnimations[value.Module.GetType()]; }
         }
 
-        public IEnumerable<IInventoryItemController> Inventory => inventory;
+        public IEnumerable<IInventoryItem> Inventory => inventory;
 
-        public void AddInventoryItem<T>() where T : IInventoryItemModule
+        public void AddInventoryItem(IInventoryItem item)
         {
-            inventory.Add(campaigns.AsMonoGame().CurrentController.InventoryItems[typeof(T)]);
+            inventory.Add((InventoryItem)item);
         }
 
-        public void RemoveInventoryItem<T>() where T : IInventoryItemModule
+        public void RemoveInventoryItem(IInventoryItem item)
         {
-            inventory.Remove(campaigns.AsMonoGame().CurrentController.InventoryItems[typeof(T)]);
+            inventory.Remove((InventoryItem)item);
         }
 
-        public bool HasInventoryItem<T>() where T : IInventoryItemModule
+        public bool HasInventoryItem(IInventoryItem item)
         {
-            return inventory.Contains(campaigns.AsMonoGame().CurrentController.InventoryItems[typeof(T)]);
+            return inventory.Contains((InventoryItem)item);
         }
 
         public Task WalkAsync(int x, int y)

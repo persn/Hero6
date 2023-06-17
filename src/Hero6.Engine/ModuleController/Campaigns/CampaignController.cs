@@ -7,7 +7,6 @@
 using LateStartStudio.Hero6.Extensions;
 using LateStartStudio.Hero6.ModuleController.Campaigns.Animations;
 using LateStartStudio.Hero6.ModuleController.Campaigns.Characters;
-using LateStartStudio.Hero6.ModuleController.Campaigns.InventoryItems;
 using LateStartStudio.Hero6.ModuleController.Campaigns.Rooms;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Xna.Framework;
@@ -41,8 +40,6 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns
 
         public IDictionary<Type, CharacterController> Characters { get; } = new Dictionary<Type, CharacterController>();
 
-        public IDictionary<Type, InventoryItemController> InventoryItems { get; } = new Dictionary<Type, InventoryItemController>();
-
         public override int Width => currentRoom?.Width ?? 0;
 
         public override int Height => currentRoom?.Height ?? 0;
@@ -60,8 +57,6 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns
 
         public CharacterController GetCharacter<T>() where T : ICharacterModule => Characters[typeof(T)];
 
-        public InventoryItemController GetInventoryItem<T>() where T : IInventoryItemModule => InventoryItems[typeof(T)];
-
         public RoomController GetRoom<T>() where T : IRoomModule => Rooms[typeof(T)];
 
         public override void Initialize()
@@ -69,20 +64,17 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns
             FindModules<AnimationModule>().ForEach(a => Animations.Add(a, ActivatorUtilities.CreateInstance<AnimationController>(services, (AnimationModule)services.GetService(a))));
             FindModules<CharacterAnimationModule>().ForEach(a => CharacterAnimations.Add(a, ActivatorUtilities.CreateInstance<CharacterAnimationController>(services, (CharacterAnimationModule)services.GetService(a))));
             FindModules<CharacterModule>().ForEach(a => Characters.Add(a, ActivatorUtilities.CreateInstance<CharacterController>(services, (CharacterModule)services.GetService(a))));
-            FindModules<InventoryItemModule>().ForEach(a => InventoryItems.Add(a, ActivatorUtilities.CreateInstance<InventoryItemController>(services, (InventoryItemModule)services.GetService(a))));
             FindModules<RoomModule>().ForEach(a => Rooms.Add(a, ActivatorUtilities.CreateInstance<RoomController>(services, (RoomModule)services.GetService(a))));
 
             PreInitialize();
             Animations.Values.ForEach(a => a.PreInitialize());
             CharacterAnimations.Values.ForEach(c => c.PreInitialize());
             Characters.Values.ForEach(c => c.PreInitialize());
-            InventoryItems.Values.ForEach(i => i.PreInitialize());
             Rooms.Values.ForEach(r => r.PreInitialize());
 
             Animations.Values.ForEach(a => a.Initialize());
             CharacterAnimations.Values.ForEach(c => c.Initialize());
             Characters.Values.ForEach(c => c.Initialize());
-            InventoryItems.Values.ForEach(i => i.Initialize());
             Rooms.Values.ForEach(r => r.Initialize());
 
             base.Initialize();
@@ -93,7 +85,6 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns
             Animations.Values.ForEach(a => a.Load());
             CharacterAnimations.Values.ForEach(c => c.Load());
             Characters.Values.ForEach(c => c.Load());
-            InventoryItems.Values.ForEach(i => i.Load());
             Rooms.Values.ForEach(r => r.Load());
         }
 
@@ -103,7 +94,6 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns
             CharacterAnimations.Values.ForEach(c => c.Unload());
             Rooms.Values.ForEach(r => r.Unload());
             Characters.Values.ForEach(c => c.Unload());
-            InventoryItems.Values.ForEach(i => i.Unload());
         }
 
         public override void Update(GameTime time)

@@ -17,6 +17,7 @@ namespace LateStartStudio.Hero6.Generators
     {
         public void Initialize(IncrementalGeneratorInitializationContext context)
         {
+            GenerateEntityAPI(context, "InventoryItem");
             GenerateEntityAPI(context, "Item");
         }
 
@@ -45,11 +46,11 @@ namespace LateStartStudio.Hero6.API
                 foreach (var e in entities)
                 {
                     sb.AppendLine(
-$@"         public static I{entity} {Path.GetFileName(e).Replace($".{entity.ToLower()}.json", string.Empty)} => ItemRepository[@""{e}""];");
+$@"         public static I{entity} {Path.GetFileName(e).Replace($".{entity.ToLower()}.json", string.Empty)} => {entity}Repository[@""{e}""];");
                 }
 
                 sb.AppendLine(
-$@"         private static IRepository<I{entity}> ItemRepository => GlobalServiceProvider.Instance.GetService<IRepository<I{entity}>>();
+$@"         private static IRepository<I{entity}> {entity}Repository => GlobalServiceProvider.Instance.GetService<IRepository<I{entity}>>();
     }}
 }}");
 

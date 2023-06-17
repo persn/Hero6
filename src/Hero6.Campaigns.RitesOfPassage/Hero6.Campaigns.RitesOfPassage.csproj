@@ -6,9 +6,11 @@
     <Version>1.0.0</Version>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="InventoryItems\*.inventoryitem.json" />
     <None Remove="Items\*.item.json" />
   </ItemGroup>
   <ItemGroup>
+    <AdditionalFiles Include="InventoryItems\*.inventoryitem.json" />
     <AdditionalFiles Include="Items\*.item.json" />
   </ItemGroup>
   <ItemGroup>

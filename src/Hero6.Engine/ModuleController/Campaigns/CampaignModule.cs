@@ -6,7 +6,6 @@
 
 using LateStartStudio.Hero6.ModuleController.Campaigns.Animations;
 using LateStartStudio.Hero6.ModuleController.Campaigns.Characters;
-using LateStartStudio.Hero6.ModuleController.Campaigns.InventoryItems;
 using LateStartStudio.Hero6.ModuleController.Campaigns.Rooms;
 
 namespace LateStartStudio.Hero6.ModuleController.Campaigns
@@ -50,13 +49,6 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns
         /// <typeparam name="T">The character specified by type.</typeparam>
         /// <returns>The character.</returns>
         public ICharacterModule GetCharacter<T>() where T : CharacterModule => Controller.GetCharacter<T>().Module;
-
-        /// <summary>
-        /// Gets any inventory item from this campaign.
-        /// </summary>
-        /// <typeparam name="T">The inventory item specified by type.</typeparam>
-        /// <returns>The inventory item.</returns>
-        public IInventoryItemModule GetInventoryItem<T>() where T : InventoryItemModule => Controller.GetInventoryItem<T>().Module;
 
         /// <summary>
         /// Gets any room from this campaign.

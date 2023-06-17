@@ -4,9 +4,9 @@
 // 'LICENSE.CODE.md', which is a part of this source code package.
 // </copyright>
 
+using LateStartStudio.Hero6.InventoryItems;
 using LateStartStudio.Hero6.ModuleController.Campaigns.Animations;
 using LateStartStudio.Hero6.ModuleController.Campaigns.Characters.Stats;
-using LateStartStudio.Hero6.ModuleController.Campaigns.InventoryItems;
 using LateStartStudio.Hero6.ModuleController.Campaigns.Rooms;
 
 namespace LateStartStudio.Hero6.ModuleController.Campaigns.Characters
@@ -48,26 +48,26 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns.Characters
         /// <summary>
         /// Gets the inventory of this character.
         /// </summary>
-        IEnumerable<IInventoryItemController> Inventory { get; }
+        IEnumerable<IInventoryItem> Inventory { get; }
 
         /// <summary>
         /// Adds inventory item to this character's inventory.
         /// </summary>
         /// <typeparam name="T">The inventory item.</typeparam>
-        void AddInventoryItem<T>() where T : IInventoryItemModule;
+        void AddInventoryItem(IInventoryItem item);
 
         /// <summary>
         /// Removes inventory item to this character's inventory.
         /// </summary>
         /// <typeparam name="T">the inventory item.</typeparam>
-        void RemoveInventoryItem<T>() where T : IInventoryItemModule;
+        void RemoveInventoryItem(IInventoryItem item);
 
         /// <summary>
         /// Checks if the character has inventory item.
         /// </summary>
         /// <typeparam name="T">The inventory item.</typeparam>
         /// <returns>True if the character has the inventory item. False if not.</returns>
-        bool HasInventoryItem<T>() where T : IInventoryItemModule;
+        bool HasInventoryItem(IInventoryItem item);
 
         /// <summary>
         /// Make the character walk to the input coordinates.

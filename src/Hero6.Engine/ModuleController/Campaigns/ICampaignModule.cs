@@ -6,7 +6,6 @@
 
 using LateStartStudio.Hero6.ModuleController.Campaigns.Animations;
 using LateStartStudio.Hero6.ModuleController.Campaigns.Characters;
-using LateStartStudio.Hero6.ModuleController.Campaigns.InventoryItems;
 using LateStartStudio.Hero6.ModuleController.Campaigns.Rooms;
 
 namespace LateStartStudio.Hero6.ModuleController.Campaigns
@@ -22,8 +21,6 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns
         ICharacterAnimationModule GetCharacterAnimation<T>() where T : CharacterAnimationModule;
 
         ICharacterModule GetCharacter<T>() where T : CharacterModule;
-
-        IInventoryItemModule GetInventoryItem<T>() where T : InventoryItemModule;
 
         IRoomModule GetRoom<T>() where T : RoomModule;
     }

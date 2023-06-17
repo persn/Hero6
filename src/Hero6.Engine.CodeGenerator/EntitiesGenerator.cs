@@ -18,9 +18,9 @@ namespace LateStartStudio.Hero6.Generators
         {
             var assemblyName = context.CompilationProvider.Select((c, _) => c.AssemblyName.Replace(".", string.Empty));
             var entitiesData = context.AdditionalTextsProvider
-                .Where(f => f.Path.EndsWith("item.json"))
+                .Where(f => f.Path.EndsWith(".json"))
                 .Select((text, cancellationToken) => (
-                    fileName: Path.GetFileNameWithoutExtension(text.Path.Replace(".item.json", string.Empty)),
+                    fileName: text.Path,
                     content: text.GetText(cancellationToken).ToString()))
                 .Combine(assemblyName)
                 .Collect();
@@ -32,7 +32,8 @@ namespace LateStartStudio.Hero6.Generators
 
                 var sb = new StringBuilder();
                 sb.AppendLine(
-$@"using LateStartStudio.Hero6.Items;
+$@"using LateStartStudio.Hero6.InventoryItems;
+using LateStartStudio.Hero6.Items;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Text.Json;
@@ -47,18 +48,41 @@ public static class GeneratedEntities
 
                 foreach (var (fileName, content) in entities.Select(e => e.Left))
                 {
-                    sb.AppendLine(
+                    var dataType = string.Empty;
+                    var name = string.Empty;
+
+                    if (fileName.EndsWith(".inventoryitem.json"))
+                    {
+                        dataType = "InventoryItemData";
+                        name = fileName.Replace(".inventoryitem.json", string.Empty);
+                    }
+                    else if (fileName.EndsWith(".item.json"))
+                    {
+                        dataType = "ItemData";
+                        name = fileName.Replace(".item.json", string.Empty);
+                    }
+                    else
+                    {
+                        // Unrecognized file type so just skip
+                    }
+
+                    name = Path.GetFileNameWithoutExtension(name);
+
+                    if (!string.IsNullOrEmpty(dataType))
+                    {
+                        sb.AppendLine(
 $@"            services.AddSingleton(s =>
             {{
-                var res = JsonSerializer.Deserialize<ItemData>(@$""{content.SanitizeJson()}"");
+                var res = JsonSerializer.Deserialize<{dataType}>(@$""{content.SanitizeJson()}"");
                 if (string.IsNullOrEmpty(res.Name))
-                    res.Name = ""{fileName}"";
-                return res;");
+                    res.Name = ""{name}"";
+                return res;
+            }});");
+                    }
                 }
 
                 sb = sb.AppendLine(
-$@"            }});
-        }});
+$@"     }});
 }}");
 
                 spc.AddSource("Entities.g.cs", sb.ToString());

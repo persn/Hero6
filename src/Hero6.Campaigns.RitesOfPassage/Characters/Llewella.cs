@@ -5,7 +5,7 @@
 // </copyright>
 
 using LateStartStudio.Hero6.Campaigns.RitesOfPassage.Animations.Characters.Llewella.Idle;
-using LateStartStudio.Hero6.Campaigns.RitesOfPassage.InventoryItems;
+using LateStartStudio.Hero6.InventoryItems;
 using LateStartStudio.Hero6.Localization;
 using LateStartStudio.Hero6.ModuleController.Campaigns.Characters;
 using LateStartStudio.Hero6.Scripts;
@@ -27,6 +27,7 @@ public class LlewellaScript : Script
     private readonly ICampaigns campaigns;
 
     private ICharacterModule llewella;
+    private IInventoryItem bentSword;
 
     public LlewellaScript(IUserInterfaces userInterfaces, ICampaigns campaigns)
     {
@@ -39,6 +40,7 @@ public class LlewellaScript : Script
         base.Initialize();
         llewella = campaigns.Current.GetCharacter<Llewella>();
         llewella.IdleAnimation = campaigns.Current.GetCharacterAnimation<LlewellaIdle>();
+        bentSword = API.InventoryItems.BentSword;
     }
 
     [ScriptEvent<CharacterEvent>(Llewella.Id, CharacterEvent.Look)]
@@ -56,15 +58,15 @@ public class LlewellaScript : Script
     [ScriptEvent<CharacterEvent>(Llewella.Id, CharacterEvent.Talk)]
     public void OnTalk()
     {
-        if (llewella.HasInventoryItem<BentSword>())
+        if (llewella.HasInventoryItem(bentSword))
         {
             userInterfaces.Current.ShowTextBox(Strings.LlewellaTalk3);
         }
-        else if (campaigns.Current.Player.HasInventoryItem<BentSword>())
+        else if (campaigns.Current.Player.HasInventoryItem(bentSword))
         {
             userInterfaces.Current.ShowTextBox(Strings.LlewellaTalk1);
-            llewella.AddInventoryItem<BentSword>();
-            campaigns.Current.Player.RemoveInventoryItem<BentSword>();
+            llewella.AddInventoryItem(bentSword);
+            campaigns.Current.Player.RemoveInventoryItem(bentSword);
         }
         else
         {

@@ -8,6 +8,7 @@ using Hero6.Engine.Services.Logger;
 using LateStartStudio.Hero6.Components;
 using LateStartStudio.Hero6.DependencyInjection;
 using LateStartStudio.Hero6.Extensions;
+using LateStartStudio.Hero6.InventoryItems;
 using LateStartStudio.Hero6.Items;
 using LateStartStudio.Hero6.ModuleController.Campaigns;
 using LateStartStudio.Hero6.ModuleController.Campaigns.Characters.Stats;
@@ -127,6 +128,12 @@ namespace LateStartStudio.Hero6.Engine.Extensions
                     .AddSingleton<IMouse, Mouse>()
 
                     // Repositories
+                    .AddSingleton<IRepository<IInventoryItem>>(s => s.CreateInstance<Repository<IInventoryItem>>(s
+                        .GetRequiredService<IEnumerable<InventoryItemData>>()
+                        .Select(data =>
+                        {
+                            return s.CreateInstance<InventoryItem>(data);
+                        })))
                     .AddSingleton<IRepository<IItem>>(s => s.CreateInstance<Repository<IItem>>(s
                         .GetRequiredService<IEnumerable<ItemData>>()
                         .Select(data =>
@@ -155,6 +162,9 @@ namespace LateStartStudio.Hero6.Engine.Extensions
 
         private static IEnumerable<Microsoft.Xna.Framework.IGameComponent> BuildGameComponents(IServiceProvider s)
         {
+            foreach (var i in s.GetRequiredService<IRepository<IInventoryItem>>().GetAll())
+                yield return s.CreateInstance<InventoryItemGameComponent>(i);
+
             foreach (var i in s.GetRequiredService<IRepository<IItem>>().GetAll())
                 yield return s.CreateInstance<ItemGameComponent>(i);
         }
