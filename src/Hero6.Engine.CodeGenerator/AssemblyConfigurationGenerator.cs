@@ -10,7 +10,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
 
-namespace LateStartStudio.Hero6
+namespace LateStartStudio.Hero6.Generators
 {
     [Generator]
     public class AssemblyConfigurationGenerator : ISourceGenerator

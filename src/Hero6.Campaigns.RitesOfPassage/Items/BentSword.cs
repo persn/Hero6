@@ -4,29 +4,20 @@
 // 'LICENSE.CODE.md', which is a part of this source code package.
 // </copyright>
 
+using LateStartStudio.Hero6.Items;
 using LateStartStudio.Hero6.Localization;
-using LateStartStudio.Hero6.ModuleController.Campaigns.Items;
 using LateStartStudio.Hero6.Scripts;
 using LateStartStudio.Hero6.Services.Campaigns;
 using LateStartStudio.Hero6.Services.UserInterfaces;
 
 namespace LateStartStudio.Hero6.Campaigns.RitesOfPassage.Items;
 
-public class BentSword : ItemModule
-{
-    public const string Id = "Bent Sword";
-
-    public override string Name => Id;
-
-    public override string Sprite => "Campaigns/Rites of Albion/Sprites/Items/Bent Sword";
-}
-
 public class BentSwordScript : Script
 {
     private readonly IUserInterfaces userInterfaces;
     private readonly ICampaigns campaigns;
 
-    private IItemModule bentSword;
+    private IItem bentSword;
 
     public BentSwordScript(IUserInterfaces userInterfaces, ICampaigns campaigns)
     {
@@ -37,24 +28,24 @@ public class BentSwordScript : Script
     public override void Initialize()
     {
         base.Initialize();
-        bentSword = campaigns.Current.GetItem<BentSword>();
+        bentSword = API.Items.BentSword;
     }
 
-    [ItemEvent(BentSword.Id, ItemEvent.Look)]
+    [ScriptEvent<ItemEvent>(nameof(API.Items.BentSword), ItemEvent.Look)]
     public void OnLook()
     {
         userInterfaces.Current.ShowTextBox(Strings.BentSwordLook);
     }
 
-    [ItemEvent(BentSword.Id, ItemEvent.Grab)]
+    [ScriptEvent<ItemEvent>(nameof(API.Items.BentSword), ItemEvent.Grab)]
     public void OnGrab()
     {
-        bentSword.IsVisible = false;
+        campaigns.Current.Player.Room.Remove(bentSword);
         userInterfaces.Current.ShowTextBox(Strings.BentSwordGrab);
         campaigns.Current.Player.AddInventoryItem<InventoryItems.BentSword>();
     }
 
-    [ItemEvent(BentSword.Id, ItemEvent.Talk)]
+    [ScriptEvent<ItemEvent>(nameof(API.Items.BentSword), ItemEvent.Talk)]
     public void OnTalk()
     {
         userInterfaces.Current.ShowTextBox(Strings.BentSwordTalk);

@@ -12,5 +12,8 @@ namespace LateStartStudio.Hero6
     {
         public static string GetFullName(this INamedTypeSymbol namedTypeSymbol)
             => $"{namedTypeSymbol.ContainingNamespace}.{namedTypeSymbol.Name}";
+
+        public static string SanitizeJson(this string rawJson) => rawJson
+            .Replace("{", "{{").Replace("}", "}}").Replace(@"""", @"""""");
     }
 }

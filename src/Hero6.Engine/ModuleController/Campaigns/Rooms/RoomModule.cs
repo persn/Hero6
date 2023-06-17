@@ -4,8 +4,8 @@
 // 'LICENSE.CODE.md', which is a part of this source code package.
 // </copyright>
 
+using LateStartStudio.Hero6.Items;
 using LateStartStudio.Hero6.ModuleController.Campaigns.Characters;
-using LateStartStudio.Hero6.ModuleController.Campaigns.Items;
 
 namespace LateStartStudio.Hero6.ModuleController.Campaigns.Rooms
 {
@@ -47,7 +47,8 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns.Rooms
         /// <summary>
         /// Adds item to this room.
         /// </summary>
-        /// <typeparam name="T">Item by type.</typeparam>
-        public void AddItem<T>() where T : IItemModule => Controller.AddItem<T>();
+        public void Add(IItem item) => Controller.Add(item);
+
+        public void Remove(IItem item) => Controller.Remove(item);
     }
 }

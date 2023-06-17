@@ -22,6 +22,7 @@
     <PackageReference Include="NLog.Extensions.Logging" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Hero6.Core\Hero6.Core.csproj" />
     <ProjectReference Include="..\Search\Search.csproj" />
   </ItemGroup>
   <ItemGroup>

@@ -28,6 +28,7 @@ namespace LateStartStudio.Hero6
             .CreateDefaultBuilder(args)
             .ConfigureHero6Engine()
             .ConfigureHero6CampaignsRitesOfPassage()
+            .ConfigureEntitiesHero6CampaignsRitesOfPassage()
             .ConfigureHero6UserInterfacesSierraVga();
     }
 }

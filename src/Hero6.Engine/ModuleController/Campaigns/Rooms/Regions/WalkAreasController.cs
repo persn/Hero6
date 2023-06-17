@@ -4,6 +4,7 @@
 // 'LICENSE.CODE.md', which is a part of this source code package.
 // </copyright>
 
+using LateStartStudio.Hero6.Components;
 using LateStartStudio.Hero6.Extensions;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;

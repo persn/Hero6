@@ -5,8 +5,8 @@
 // </copyright>
 
 using LateStartStudio.Hero6.Extensions;
+using LateStartStudio.Hero6.Items;
 using LateStartStudio.Hero6.ModuleController.Campaigns.Characters;
-using LateStartStudio.Hero6.ModuleController.Campaigns.Items;
 using LateStartStudio.Hero6.ModuleController.Campaigns.Rooms.Regions;
 using LateStartStudio.Hero6.Scripts;
 using LateStartStudio.Hero6.Services.Campaigns;
@@ -29,7 +29,7 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns.Rooms
         private readonly ContentManager content;
         private readonly SpriteBatch spriteBatch;
         private readonly List<CharacterController> characters = new List<CharacterController>();
-        private readonly List<ItemController> items = new List<ItemController>();
+        private readonly List<Item> items = new();
         private readonly HotspotsController hotspots;
         private readonly WalkAreasController walkAreas;
 
@@ -58,6 +58,8 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns.Rooms
 
         public IEnumerable<ICharacterController> Characters => characters;
 
+        public IEnumerable<IItem> Items => items;
+
         public IWalkAreasController WalkAreas => walkAreas;
 
         public IHotspotsController Hotspots => hotspots;
@@ -81,9 +83,17 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns.Rooms
             characters.Remove(character);
         }
 
-        public void AddItem<T>() where T : IItemModule
+        public void Add(IItem item)
         {
-            items.Add(campaigns.AsMonoGame().CurrentController.Items[typeof(T)]);
+            var i = (Item)item;
+            items.Add(i);
+            i.IsVisible |= campaigns.Current.Player.Room == Module;
+        }
+
+        public void Remove(IItem item)
+        {
+            items.Remove((Item)item);
+            item.IsVisible = false;
         }
 
         public override bool Interact(int x, int y, Interaction interaction)
@@ -132,7 +142,6 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns.Rooms
         public override void Unload()
         {
             characters.ForEach(c => c.Unload());
-            items.ForEach(i => i.Unload());
             walkAreas.Unload();
             hotspots.Unload();
         }
@@ -145,7 +154,6 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns.Rooms
                 hotspots.StandingOn(c);
             }
 
-            items.ForEach(i => i.Update(time));
             walkAreas.Update(time);
             hotspots.Update(time);
             position.X = X;
@@ -160,7 +168,6 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns.Rooms
             }
 
             characters.ForEach(c => c.Draw(time));
-            items.ForEach(i => i.Draw(time));
             walkAreas.Draw(time);
             hotspots.Draw(time);
         }

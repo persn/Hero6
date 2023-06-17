@@ -4,8 +4,8 @@
 // 'LICENSE.CODE.md', which is a part of this source code package.
 // </copyright>
 
+using LateStartStudio.Hero6.Items;
 using LateStartStudio.Hero6.ModuleController.Campaigns.Characters;
-using LateStartStudio.Hero6.ModuleController.Campaigns.Items;
 
 namespace LateStartStudio.Hero6.ModuleController.Campaigns.Rooms
 {
@@ -33,6 +33,16 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns.Rooms
         /// <param name="character">Character to remove.</param>
         void RemoveCharacter(ICharacterModule character);
 
-        void AddItem<T>() where T : IItemModule;
+        /// <summary>
+        /// Adds item to this room.
+        /// </summary>
+        /// <param name="item"></param>
+        void Add(IItem item);
+
+        /// <summary>
+        /// Removes item from this room.
+        /// </summary>
+        /// <param name="item"></param>
+        void Remove(IItem item);
     }
 }

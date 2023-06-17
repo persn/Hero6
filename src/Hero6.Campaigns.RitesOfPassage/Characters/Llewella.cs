@@ -41,19 +41,19 @@ public class LlewellaScript : Script
         llewella.IdleAnimation = campaigns.Current.GetCharacterAnimation<LlewellaIdle>();
     }
 
-    [CharacterEvent(Llewella.Id, CharacterEvent.Look)]
+    [ScriptEvent<CharacterEvent>(Llewella.Id, CharacterEvent.Look)]
     public void OnLook()
     {
         userInterfaces.Current.ShowTextBox(Strings.LlewellaLook);
     }
 
-    [CharacterEvent(Llewella.Id, CharacterEvent.Grab)]
+    [ScriptEvent<CharacterEvent>(Llewella.Id, CharacterEvent.Grab)]
     public void OnGrab()
     {
         userInterfaces.Current.ShowTextBox(Strings.LlewellaGrab);
     }
 
-    [CharacterEvent(Llewella.Id, CharacterEvent.Talk)]
+    [ScriptEvent<CharacterEvent>(Llewella.Id, CharacterEvent.Talk)]
     public void OnTalk()
     {
         if (llewella.HasInventoryItem<BentSword>())

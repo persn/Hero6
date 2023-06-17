@@ -5,6 +5,7 @@
 // </copyright>
 
 using LateStartStudio.Hero6.Extensions;
+using LateStartStudio.Hero6.Items;
 using LateStartStudio.Hero6.ModuleController.Campaigns.Animations;
 using LateStartStudio.Hero6.ModuleController.Campaigns.Characters.Stats;
 using LateStartStudio.Hero6.ModuleController.Campaigns.InventoryItems;
@@ -160,8 +161,22 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns.Characters
             X = x;
             Y = y;
             Face(direction);
+
+            if (IsPlayer)
+            {
+                foreach (var r in Room.Items.Cast<Item>())
+                    r.IsVisible = false;
+            }
+
             Room.RemoveCharacter(Module);
-            campaigns.AsMonoGame().CurrentController.Rooms[typeof(T)].AddCharacter(this);
+            var newRoom = campaigns.AsMonoGame().CurrentController.Rooms[typeof(T)];
+            newRoom.AddCharacter(this);
+
+            if (IsPlayer)
+            {
+                foreach (var r in newRoom.Items.Cast<Item>())
+                    r.IsVisible = true;
+            }
         }
 
         public void SetAsPlayer() => campaigns.Current.Player = Module;
@@ -252,7 +267,7 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns.Characters
         {
             foreach (var scriptMethod in scriptRepository.GetScriptMethods(Module.Name))
             {
-                if (scriptMethod.Attribute is CharacterEventAttribute characterAttribute)
+                if (scriptMethod.Attribute is ScriptEventAttribute<CharacterEvent> characterAttribute)
                 {
                     if (characterAttribute.Event == CharacterEvent.Grab)
                         Grab = () => scriptMethod.Invoke();

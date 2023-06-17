@@ -40,19 +40,19 @@ public class HeroScript : Script
         hero.MoveAnimation = campaigns.Current.GetCharacterAnimation<HeroWalk>();
     }
 
-    [CharacterEvent(Hero.Id, CharacterEvent.Look)]
+    [ScriptEvent<CharacterEvent>(Hero.Id, CharacterEvent.Look)]
     public void OnLook()
     {
         userInterfaces.Current.ShowTextBox(Strings.HeroLook);
     }
 
-    [CharacterEvent(Hero.Id, CharacterEvent.Grab)]
+    [ScriptEvent<CharacterEvent>(Hero.Id, CharacterEvent.Grab)]
     public void OnGrab()
     {
         userInterfaces.Current.ShowTextBox(Strings.HeroGrab);
     }
 
-    [CharacterEvent(Hero.Id, CharacterEvent.Talk)]
+    [ScriptEvent<CharacterEvent>(Hero.Id, CharacterEvent.Talk)]
     public void OnTalk()
     {
         userInterfaces.Current.ShowTextBox(Strings.HeroTalk);

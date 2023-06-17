@@ -3,12 +3,22 @@
   <PropertyGroup>
     <!-- Code generators must be netstandard2.0 -->
     <TargetFramework>netstandard2.0</TargetFramework>
-    <RootNamespace>LateStartStudio.Hero6</RootNamespace>
+    <RootNamespace>LateStartStudio.Hero6.Generators</RootNamespace>
     <IsRoslynComponent>true</IsRoslynComponent>
     <ImplicitUsings>disable</ImplicitUsings>
+    <GetTargetPathDependsOn>$(GetTargetPathDependsOn);GetDependencyTargetPaths</GetTargetPathDependsOn>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" />
-    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.CodeAnalysis.Analyzers" PrivateAssets="all" />
+    <PackageReference Include="Microsoft.CSharp" />
+    <PackageReference Include="System.Text.Json" PrivateAssets="all" GeneratePathProperty="true" />
   </ItemGroup>
+  <Target Name="GetDependencyTargetPaths">
+    <ItemGroup>
+      <TargetPathWithTargetPlatformMoniker
+         Include="$(PKGSystem_Text_Json)\lib\netstandard2.0\System.Text.Json.dll"
+         IncludeRuntimeDependency="false" />
+    </ItemGroup>
+  </Target>
 </Project>

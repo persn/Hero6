@@ -87,12 +87,12 @@ namespace LateStartStudio.Hero6.MonoGame
             ui.Initialize();
             campaigns.Initialize();
 
+            base.Initialize();
+
             foreach (var script in scriptRepository.GetScripts())
             {
                 script.Initialize();
             }
-
-            base.Initialize();
 
             sw.Stop();
             logger.LogInformation($"Game initialized after {sw.Elapsed}.");
@@ -161,9 +161,8 @@ namespace LateStartStudio.Hero6.MonoGame
             SpriteBatch.Begin(SpriteSortMode.Deferred, transformMatrix: transform);
             campaigns.Draw(time);
             ui.Draw(time);
-            SpriteBatch.End();
-
             base.Draw(time);
+            SpriteBatch.End();
         }
 
         private void UpdateScale()

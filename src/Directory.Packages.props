@@ -9,6 +9,7 @@
   <ItemGroup>
     <PackageVersion Include="Microsoft.CodeAnalysis.Analyzers" Version="3.3.3" />
     <PackageVersion Include="Microsoft.CodeAnalysis.CSharp" Version="4.1" />
+    <PackageVersion Include="Microsoft.CSharp" Version="4.7.0" />
     <PackageVersion Include="Microsoft.Extensions.Hosting" Version="5.0" />
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="16.6.1" />
     <PackageVersion Include="MonoGame.Content.Builder.Task" Version="3.8.1.303" />
@@ -23,5 +24,6 @@
     <PackageVersion Include="OptimizedPriorityQueue" Version="4.2" />
     <PackageVersion Include="SixLabors.ImageSharp" Version="1.0.1" />
     <PackageVersion Include="StyleCop.Analyzers" Version="1.1.118" />
+    <PackageVersion Include="System.Text.Json" Version="7.0.0" />
   </ItemGroup>
 </Project>

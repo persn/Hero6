@@ -5,11 +5,15 @@
 // </copyright>
 
 using Hero6.Engine.Services.Logger;
+using LateStartStudio.Hero6.Components;
+using LateStartStudio.Hero6.DependencyInjection;
 using LateStartStudio.Hero6.Extensions;
+using LateStartStudio.Hero6.Items;
 using LateStartStudio.Hero6.ModuleController.Campaigns;
 using LateStartStudio.Hero6.ModuleController.Campaigns.Characters.Stats;
 using LateStartStudio.Hero6.ModuleController.UserInterfaces;
 using LateStartStudio.Hero6.MonoGame;
+using LateStartStudio.Hero6.Repositories;
 using LateStartStudio.Hero6.Scripts;
 using LateStartStudio.Hero6.Services.Campaigns;
 using LateStartStudio.Hero6.Services.ControllerRepository;
@@ -42,6 +46,13 @@ namespace LateStartStudio.Hero6.Engine.Extensions
             {
                 using (var game = services.GetService<Game>())
                 {
+                    GlobalServiceProvider.Instance = services;
+
+                    // By adding IGameComponent instances to the Game, Initialize/Load/Update/Draw/Unload handling will be deferred to
+                    // MonoGame. We can adjust behavior on the GameLoop by changing our GameComponent implementations.
+                    foreach (var gameComponent in services.GetRequiredService<IEnumerable<Microsoft.Xna.Framework.IGameComponent>>())
+                        game.Components.Add(gameComponent);
+
                     // First load all game modules
                     // TODO The services should probably load the modules themselves, but circular dependencies needs to be resolved
                     var ui = services.GetService<MonoGameUserInterfaces>();
@@ -90,6 +101,7 @@ namespace LateStartStudio.Hero6.Engine.Extensions
                     .AddSingleton(s => s.GetService<Game>().Content)
                     .AddSingleton(s => s.GetService<Game>().GraphicsDeviceManager)
                     .AddSingleton(s => s.GetService<Game>().SpriteBatch)
+                    .AddSingleton(BuildGameComponents)
 
                     // Hero6 services
                     .AddSingleton<IFileWrapper, FileWrapper>()
@@ -112,7 +124,18 @@ namespace LateStartStudio.Hero6.Engine.Extensions
                     .AddTransient<StatsController>()
 
                     .AddSingleton<IMouseCore, MouseCore>()
-                    .AddSingleton<IMouse, Mouse>();
+                    .AddSingleton<IMouse, Mouse>()
+
+                    // Repositories
+                    .AddSingleton<IRepository<IItem>>(s => s.CreateInstance<Repository<IItem>>(s
+                        .GetRequiredService<IEnumerable<ItemData>>()
+                        .Select(data =>
+                        {
+                            var position = s.CreateInstance<SystemDrawingPositionComponent<Item>>();
+                            var visibility = s.CreateInstance<VisibleComponent<Item>>();
+                            var scriptable = s.CreateInstance<ScriptComponent<Item, ItemEvent>>();
+                            return s.CreateInstance<Item>(data, position, visibility, scriptable);
+                        })));
             })
             .ConfigureLogging(logging =>
             {
@@ -129,5 +152,11 @@ namespace LateStartStudio.Hero6.Engine.Extensions
 
                 logging.ClearProviders().AddDebug().AddNLog(loggingConfig);
             });
+
+        private static IEnumerable<Microsoft.Xna.Framework.IGameComponent> BuildGameComponents(IServiceProvider s)
+        {
+            foreach (var i in s.GetRequiredService<IRepository<IItem>>().GetAll())
+                yield return s.CreateInstance<ItemGameComponent>(i);
+        }
     }
 }

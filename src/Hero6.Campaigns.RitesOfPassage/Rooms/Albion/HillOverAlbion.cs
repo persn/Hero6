@@ -5,7 +5,6 @@
 // </copyright>
 
 using LateStartStudio.Hero6.Campaigns.RitesOfPassage.Characters;
-using LateStartStudio.Hero6.Campaigns.RitesOfPassage.Items;
 using LateStartStudio.Hero6.Localization;
 using LateStartStudio.Hero6.ModuleController.Campaigns.Characters;
 using LateStartStudio.Hero6.ModuleController.Campaigns.Rooms;
@@ -52,10 +51,10 @@ public class HillOverAlbionScript : Script
         hero.Face(CharacterDirection.CenterDown);
         room.AddCharacter<Hero>();
 
-        var bentSword = campaigns.Current.GetItem<BentSword>();
+        var bentSword = API.Items.BentSword;
         bentSword.X = 150;
         bentSword.Y = 170;
-        room.AddItem<BentSword>();
+        room.Add(bentSword);
     }
 
     [HotspotEvent(HillOverAlbion.Id, Hotspots.NorthExit, HotspotEvent.StandingOn)]

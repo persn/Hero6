@@ -4,7 +4,6 @@
 // 'LICENSE.CODE.md', which is a part of this source code package.
 // </copyright>
 
-using System;
 using System.Reflection;
 
 namespace LateStartStudio.Hero6.Scripts;
@@ -19,7 +18,7 @@ public class ScriptMethod
     {
         Parent = parent;
         Method = method;
-        Attribute = method.GetCustomAttribute<ScriptEventAttribute>();
+        Attribute = method.GetCustomAttribute<BaseScriptEventAttribute>();
     }
 
     /// <summary>
@@ -35,7 +34,7 @@ public class ScriptMethod
     /// <summary>
     /// Attribute that was assigned to the <see cref="ScriptMethod". />.
     /// </summary>
-    public ScriptEventAttribute Attribute { get; }
+    public BaseScriptEventAttribute Attribute { get; }
 
     /// <summary>
     /// Invokes the script method.

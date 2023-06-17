@@ -1,12 +1,13 @@
-﻿// <copyright file="IItemController.cs" company="Late Start Studio">
+﻿// <copyright file="DrawOrder.cs" company="Late Start Studio">
 // Copyright (C) Late Start Studio
 // This file is subject to the terms and conditions of the MIT license specified in the file
 // 'LICENSE.CODE.md', which is a part of this source code package.
 // </copyright>
 
-namespace LateStartStudio.Hero6.ModuleController.Campaigns.Items
+namespace LateStartStudio.Hero6.MonoGame
 {
-    public interface IItemController : IGameController
+    internal enum DrawOrder
     {
+        Item,
     }
 }
