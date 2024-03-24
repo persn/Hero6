@@ -44,7 +44,7 @@ public class ScriptMethod
     /// <summary>
     /// Invokes the script method.
     /// </summary>
-    public void Invoke(object[] args) => Task.Run(async () =>
+    public void Invoke(params object[] args) => Task.Run(async () =>
     {
         if (Method.ReturnType == typeof(void))
             Method.Invoke(Parent, args);

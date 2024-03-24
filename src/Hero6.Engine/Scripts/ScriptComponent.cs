@@ -11,24 +11,33 @@ namespace LateStartStudio.Hero6.Scripts;
 
 internal interface IScriptComponent<TEvent> : IComponent where TEvent : Enum
 {
-    void Invoke(TEvent @event);
+    /// <summary>
+    /// Invoke the event attached on this entity.
+    /// </summary>
+    /// <param name="event">The event to invoke.</param>
+    bool Invoke(int x, int y, TEvent @event);
 }
 
-internal class ScriptComponent<TParent, TEvent> : Component, IScriptComponent<TEvent>
+internal class ScriptComponent<TEvent> : Component, IScriptComponent<TEvent>
     where TEvent : Enum
 {
     private readonly IScriptRepository repository;
-    private readonly Dictionary<TEvent, Action> events = new();
+    private readonly Dictionary<TEvent, ScriptMethod> events = new();
 
     public ScriptComponent(IScriptRepository repository)
     {
         this.repository = repository;
     }
 
-    public void Invoke(TEvent @event)
+    public bool Invoke(int x, int y, TEvent @event)
     {
-        if (events.TryGetValue(@event, out var scriptMethod))
+        if (Parent.Get<IPositionComponent>().Intersects(x, y) && events.TryGetValue(@event, out var scriptMethod))
+        {
             scriptMethod?.Invoke();
+            return true;
+        }
+
+        return false;
     }
 
     public override void Initialize()
@@ -41,7 +50,8 @@ internal class ScriptComponent<TParent, TEvent> : Component, IScriptComponent<TE
             {
                 if (scriptMethod.Attribute is ScriptEventAttribute<TEvent> itemAttribute)
                 {
-                    events[itemAttribute.Event] = () => scriptMethod.Invoke();
+                    var @event = itemAttribute.Event;
+                    events[@event] = scriptMethod;
                 }
             }
         }

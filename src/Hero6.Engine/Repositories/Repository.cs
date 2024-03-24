@@ -17,8 +17,7 @@ internal class Repository<T> : IRepository<T> where T : INameable
 
     public T Get(string name)
     {
-        repository.TryGetValue(name, out T res);
-        return res;
+        return repository[name];
     }
 
     public IEnumerable<T> GetAll() => repository.Values;

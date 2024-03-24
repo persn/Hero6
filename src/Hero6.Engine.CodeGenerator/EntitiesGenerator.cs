@@ -32,8 +32,11 @@ namespace LateStartStudio.Hero6.Generators
 
                 var sb = new StringBuilder();
                 sb.AppendLine(
-$@"using LateStartStudio.Hero6.InventoryItems;
+$@"using LateStartStudio.Hero6.Animations;
+using LateStartStudio.Hero6.Characters;
+using LateStartStudio.Hero6.InventoryItems;
 using LateStartStudio.Hero6.Items;
+using LateStartStudio.Hero6.Rooms;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System.Text.Json;
@@ -51,7 +54,22 @@ public static class GeneratedEntities
                     var dataType = string.Empty;
                     var name = string.Empty;
 
-                    if (fileName.EndsWith(".inventoryitem.json"))
+                    if (fileName.EndsWith(".animation.json"))
+                    {
+                        dataType = "AnimationData";
+                        name = fileName.Replace(".animation.json", string.Empty);
+                    }
+                    else if (fileName.EndsWith(".characteranimation.json"))
+                    {
+                        dataType = "CharacterAnimationData";
+                        name = fileName.Replace(".characteranimation.json", string.Empty);
+                    }
+                    else if (fileName.EndsWith(".character.json"))
+                    {
+                        dataType = "CharacterData";
+                        name = fileName.Replace(".character.json", string.Empty);
+                    }
+                    else if (fileName.EndsWith(".inventoryitem.json"))
                     {
                         dataType = "InventoryItemData";
                         name = fileName.Replace(".inventoryitem.json", string.Empty);
@@ -60,6 +78,11 @@ public static class GeneratedEntities
                     {
                         dataType = "ItemData";
                         name = fileName.Replace(".item.json", string.Empty);
+                    }
+                    else if (fileName.EndsWith(".room.json"))
+                    {
+                        dataType = "RoomData";
+                        name = fileName.Replace(".room.json", string.Empty);
                     }
                     else
                     {

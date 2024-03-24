@@ -1,0 +1,6 @@
+{
+  "Name": "Fountain",
+  "Background": "Campaigns/Rites of Albion/Rooms/Albion/Fountain/Background",
+  "WalkAreasMask": "Campaigns/Rites of Albion/Rooms/Albion/Fountain/WalkAreas",
+  "HotspotsMask": "Campaigns/Rites of Albion/Rooms/Albion/Fountain/Hotspots"
+}

@@ -1,0 +1,11 @@
+{
+  "Name": "Hero Walk Animation",
+  "CenterDown": "Hero Walk Center Down",
+  "CenterUp": "Hero Walk Center Up",
+  "LeftCenter": "Hero Walk Left Center",
+  "LeftDown": "Hero Walk Left Down",
+  "LeftUp": "Hero Walk Left Up",
+  "RightCenter": "Hero Walk Right Center",
+  "RightDown": "Hero Walk Right Down",
+  "RightUp": "Hero Walk Right Up"
+}

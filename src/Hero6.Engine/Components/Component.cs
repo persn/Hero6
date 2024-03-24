@@ -4,6 +4,8 @@
 // 'LICENSE.CODE.md', which is a part of this source code package.
 // </copyright>
 
+using Microsoft.Xna.Framework;
+
 namespace LateStartStudio.Hero6.Components;
 
 internal interface IComponent
@@ -13,17 +15,27 @@ internal interface IComponent
     bool Enabled { get; set; }
 }
 
+internal interface ILoadable
+{
+    void Load();
+}
+
+internal interface IDrawable
+{
+    void Draw(GameTime gameTime);
+}
+
 internal class Component : IComponent
 {
-    private bool enabled;
+    private bool enabled = true;
 
     public event EventHandler<EventArgs> EnabledChanged;
 
-    public Composite Parent { get; internal set; }
+    public virtual Composite Parent { get; internal set; }
 
-    public bool Enabled
+    public virtual bool Enabled
     {
-        get => enabled;
+        get => enabled && Parent.Enabled;
         set
         {
             if (enabled != value)
@@ -38,7 +50,7 @@ internal class Component : IComponent
     {
     }
 
-    public virtual void Update()
+    public virtual void Update(GameTime time)
     {
     }
 }
@@ -47,20 +59,19 @@ internal class Composite : IComponent
 {
     private readonly List<Component> components = new();
 
-    private bool enabled;
+    private bool enabled = false;
 
     protected Composite(params IComponent[] components)
     {
-        foreach (var component in components.Cast<Component>())
+        foreach (var component in components)
         {
-            this.components.Add(component);
-            component.Parent = this;
+            Add(component);
         }
     }
 
     public event EventHandler<EventArgs> EnabledChanged;
 
-    public bool Enabled
+    public virtual bool Enabled
     {
         get => enabled;
         set
@@ -80,18 +91,51 @@ internal class Composite : IComponent
         return components.OfType<TComponent>().SingleOrDefault();
     }
 
+    public virtual void Add(IComponent component)
+    {
+        if (component is Component c)
+        {
+            components.Add(c);
+            c.Parent = this;
+        }
+    }
+
+    public virtual void Remove(IComponent component)
+    {
+        if (component is Component c)
+        {
+            components.Remove(c);
+            c.Parent = null;
+        }
+    }
+
     public virtual void Initialize()
     {
         foreach (var component in components)
             component.Initialize();
     }
 
-    public virtual void Update()
+    public virtual void Load()
+    {
+        foreach (var component in components.OfType<ILoadable>())
+            component.Load();
+    }
+
+    public virtual void Update(GameTime time)
     {
         if (Enabled)
         {
             foreach (var component in components.Where(c => c.Enabled))
-                component.Update();
+                component.Update(time);
+        }
+    }
+
+    public virtual void Draw(GameTime time)
+    {
+        if (Enabled)
+        {
+            foreach (var component in components.Where(c => c.Enabled).OfType<IDrawable>())
+                component.Draw(time);
         }
     }
 }

@@ -5,6 +5,8 @@
 // </copyright>
 
 using Hero6.Engine.Services.Logger;
+using LateStartStudio.Hero6.Animations;
+using LateStartStudio.Hero6.Characters;
 using LateStartStudio.Hero6.Components;
 using LateStartStudio.Hero6.DependencyInjection;
 using LateStartStudio.Hero6.Extensions;
@@ -15,6 +17,7 @@ using LateStartStudio.Hero6.ModuleController.Campaigns.Characters.Stats;
 using LateStartStudio.Hero6.ModuleController.UserInterfaces;
 using LateStartStudio.Hero6.MonoGame;
 using LateStartStudio.Hero6.Repositories;
+using LateStartStudio.Hero6.Rooms;
 using LateStartStudio.Hero6.Scripts;
 using LateStartStudio.Hero6.Services.Campaigns;
 using LateStartStudio.Hero6.Services.ControllerRepository;
@@ -23,6 +26,8 @@ using LateStartStudio.Hero6.Services.PlatformInfo;
 using LateStartStudio.Hero6.Services.Settings;
 using LateStartStudio.Hero6.Services.UserInterfaces;
 using LateStartStudio.Hero6.Services.UserInterfaces.Input.Mouse;
+using LateStartStudio.Hero6.Threading;
+using LateStartStudio.Hero6.Verbs;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -102,7 +107,7 @@ namespace LateStartStudio.Hero6.Engine.Extensions
                     .AddSingleton(s => s.GetService<Game>().Content)
                     .AddSingleton(s => s.GetService<Game>().GraphicsDeviceManager)
                     .AddSingleton(s => s.GetService<Game>().SpriteBatch)
-                    .AddSingleton(BuildGameComponents)
+                    .AddSingleton(ConfigureGameComponents)
 
                     // Hero6 services
                     .AddSingleton<IFileWrapper, FileWrapper>()
@@ -127,7 +132,31 @@ namespace LateStartStudio.Hero6.Engine.Extensions
                     .AddSingleton<IMouseCore, MouseCore>()
                     .AddSingleton<IMouse, Mouse>()
 
+                    .AddSingleton<IVerbHandler, VerbHandler>()
+
                     // Repositories
+                    .AddSingleton<IRepository<IAnimation>>(s => s.CreateInstance<Repository<IAnimation>>(s
+                        .GetRequiredService<IEnumerable<AnimationData>>()
+                        .Select(data =>
+                        {
+                            return s.CreateInstance<Animation>(data);
+                        })))
+                    .AddSingleton<IRepository<ICharacterAnimation>>(s => s.CreateInstance<Repository<ICharacterAnimation>>(s
+                        .GetRequiredService<IEnumerable<CharacterAnimationData>>()
+                        .Select(data =>
+                        {
+                            return s.CreateInstance<CharacterAnimation>(data);
+                        })))
+                    .AddSingleton<IRepository<ICharacter>>(s => s.CreateInstance<Repository<ICharacter>>(s
+                        .GetRequiredService<IEnumerable<CharacterData>>()
+                        .Select(data =>
+                        {
+                            var position = s.CreateInstance<SystemDrawingPositionComponent>();
+                            var visibility = s.CreateInstance<VisibleComponent>();
+                            var scriptable = s.CreateInstance<ScriptComponent<CharacterEvent>>();
+                            var moveable = s.CreateInstance<MoveableComponent>();
+                            return s.CreateInstance<Character>(data, position, visibility, scriptable, moveable);
+                        })))
                     .AddSingleton<IRepository<IInventoryItem>>(s => s.CreateInstance<Repository<IInventoryItem>>(s
                         .GetRequiredService<IEnumerable<InventoryItemData>>()
                         .Select(data =>
@@ -138,10 +167,20 @@ namespace LateStartStudio.Hero6.Engine.Extensions
                         .GetRequiredService<IEnumerable<ItemData>>()
                         .Select(data =>
                         {
-                            var position = s.CreateInstance<SystemDrawingPositionComponent<Item>>();
-                            var visibility = s.CreateInstance<VisibleComponent<Item>>();
-                            var scriptable = s.CreateInstance<ScriptComponent<Item, ItemEvent>>();
-                            return s.CreateInstance<Item>(data, position, visibility, scriptable);
+                            var position = s.CreateInstance<SystemDrawingPositionComponent>();
+                            var visibility = s.CreateInstance<VisibleComponent>();
+                            var scriptable = s.CreateInstance<ScriptComponent<ItemEvent>>();
+                            var spriteRenderer = s.CreateInstance<SpriteRendererComponent>();
+                            return s.CreateInstance<Item>(data, position, visibility, scriptable, spriteRenderer);
+                        })))
+                    .AddSingleton<IRepository<IRoom>>(s => s.CreateInstance<Repository<IRoom>>(s
+                        .GetRequiredService<IEnumerable<RoomData>>()
+                        .Select(data =>
+                        {
+                            var visibility = s.CreateInstance<VisibleComponent>();
+                            var scriptable = s.CreateInstance<HotspotsScriptComponent>(data.HotspotsMask);
+                            var spriteRenderer = s.CreateInstance<SpriteRendererComponent>();
+                            return s.CreateInstance<Room>(data, visibility, scriptable, spriteRenderer);
                         })));
             })
             .ConfigureLogging(logging =>
@@ -160,13 +199,25 @@ namespace LateStartStudio.Hero6.Engine.Extensions
                 logging.ClearProviders().AddDebug().AddNLog(loggingConfig);
             });
 
-        private static IEnumerable<Microsoft.Xna.Framework.IGameComponent> BuildGameComponents(IServiceProvider s)
+        private static IEnumerable<Microsoft.Xna.Framework.IGameComponent> ConfigureGameComponents(IServiceProvider s)
         {
+            yield return s.CreateInstance<UpdateSynchronizationGameComponent>();
+
+            foreach (var c in s.GetRequiredService<IRepository<ICharacter>>().GetAll())
+                yield return s.CreateInstance<CharacterGameComponent>(c);
+
             foreach (var i in s.GetRequiredService<IRepository<IInventoryItem>>().GetAll())
                 yield return s.CreateInstance<InventoryItemGameComponent>(i);
 
             foreach (var i in s.GetRequiredService<IRepository<IItem>>().GetAll())
                 yield return s.CreateInstance<ItemGameComponent>(i);
+
+            foreach (var c in s.GetRequiredService<IRepository<IRoom>>().GetAll().Cast<Room>())
+            {
+                yield return s.CreateInstance<RoomGameComponent>(c);
+                yield return s.CreateInstance<WalkAreasGameComponent>(c.WalkAreas);
+                yield return s.CreateInstance<HotspotsGameComponent>(c.Get<IScriptComponent<HotspotEvent>>());
+            }
         }
     }
 }

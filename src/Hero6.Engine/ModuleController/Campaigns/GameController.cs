@@ -4,10 +4,6 @@
 // 'LICENSE.CODE.md', which is a part of this source code package.
 // </copyright>
 
-using System.Reflection;
-using LateStartStudio.Hero6.Scripts;
-using Microsoft.Extensions.Logging;
-
 namespace LateStartStudio.Hero6.ModuleController.Campaigns
 {
     /// <summary>
@@ -27,30 +23,5 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns
             : base(module, services)
         {
         }
-
-        /// <summary>
-        /// Gets or sets the look event.
-        /// </summary>
-        public Action Look { get; protected set; }
-
-        /// <summary>
-        /// Gets or sets the grab event.
-        /// </summary>
-        public Action Grab { get; protected set; }
-
-        /// <summary>
-        /// Gets or sets the talk event.
-        /// </summary>
-        public Action Talk { get; protected set; }
-
-        /// <summary>
-        /// User interaction with this <see cref="GameController{TController,TModule}"/> instance. Should succeed if
-        /// interaction coordinates intersects with this instance and if interation is relevant for this type.
-        /// </summary>
-        /// <param name="x">The x coordinate of the interaction.</param>
-        /// <param name="y">The y coordinate of the interaction.</param>
-        /// <param name="interaction">The type of interaction.</param>
-        /// <returns>True if interaction was succesful, false if not.</returns>
-        public abstract bool Interact(int x, int y, Interaction interaction);
     }
 }

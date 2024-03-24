@@ -4,11 +4,15 @@
 // 'LICENSE.CODE.md', which is a part of this source code package.
 // </copyright>
 
+using System;
+using System.Diagnostics;
+using System.Dynamic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
+using Newtonsoft.Json;
 
 namespace LateStartStudio.Hero6.Generators
 {
@@ -17,16 +21,25 @@ namespace LateStartStudio.Hero6.Generators
     {
         public void Initialize(IncrementalGeneratorInitializationContext context)
         {
+            GenerateEntityAPI(context, "Animation");
+            GenerateEntityAPI(context, "CharacterAnimation", "Animation");
+            GenerateEntityAPI(context, "Character");
             GenerateEntityAPI(context, "InventoryItem");
             GenerateEntityAPI(context, "Item");
+            GenerateEntityAPI(context, "Room");
         }
 
         private void GenerateEntityAPI(IncrementalGeneratorInitializationContext context, string entity)
+            => GenerateEntityAPI(context, entity, entity);
+
+        private void GenerateEntityAPI(IncrementalGeneratorInitializationContext context, string entity, string namespaceOverride)
         {
             var fileExtension = $".{entity.ToLower()}.json";
             var entityData = context.AdditionalTextsProvider
                 .Where(t => t.Path.EndsWith(fileExtension))
-                .Select((text, cancellationToken) => Path.GetFileNameWithoutExtension(text.Path.Replace(fileExtension, string.Empty)))
+                .Select((text, cancellationToken) => (
+                    fileName: Path.GetFileNameWithoutExtension(text.Path.Replace(fileExtension, string.Empty)),
+                    content: JsonConvert.DeserializeObject<ExpandoObject>(text.GetText().ToString())))
                 .Collect();
 
             context.RegisterSourceOutput(entityData, (spc, entities) =>
@@ -34,24 +47,34 @@ namespace LateStartStudio.Hero6.Generators
                 var sb = new StringBuilder();
                 sb.AppendLine(
 $@"using Microsoft.Extensions.DependencyInjection;
-using LateStartStudio.Hero6.{entity}s;
+using LateStartStudio.Hero6.{namespaceOverride}s;
 using LateStartStudio.Hero6.DependencyInjection;
 using LateStartStudio.Hero6.Repositories;
 
-namespace LateStartStudio.Hero6.API
-{{
-    public static class {entity}s
-    {{");
+namespace LateStartStudio.Hero6.API;
 
-                foreach (var e in entities)
+public static class {entity}s
+{{");
+                foreach (var (fileName, content) in entities)
                 {
+                    dynamic dynamicContent = content;
+
+                    try
+                    {
+                        _ = dynamicContent.Name;
+                    }
+                    catch
+                    {
+                        throw new Exception($@"Entity {fileName} is missing a valid Name from the json.");
+                    }
+
                     sb.AppendLine(
-$@"         public static I{entity} {Path.GetFileName(e).Replace($".{entity.ToLower()}.json", string.Empty)} => {entity}Repository[@""{e}""];");
+$@"     public const string {fileName}Name = ""{dynamicContent.Name}"";
+     public static I{entity} {fileName} => {entity}Repository[{fileName}Name];");
                 }
 
                 sb.AppendLine(
-$@"         private static IRepository<I{entity}> {entity}Repository => GlobalServiceProvider.Instance.GetService<IRepository<I{entity}>>();
-    }}
+$@"     private static IRepository<I{entity}> {entity}Repository => GlobalServiceProvider.Instance.GetService<IRepository<I{entity}>>();
 }}");
 
                 spc.AddSource($"{entity}sAPI.g.cs", sb.ToString());

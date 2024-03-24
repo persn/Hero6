@@ -34,21 +34,21 @@ public class BentSwordScript : Script
         invBentSword = API.InventoryItems.BentSword;
     }
 
-    [ScriptEvent<ItemEvent>(nameof(API.Items.BentSword), ItemEvent.Look)]
+    [ScriptEvent<ItemEvent>(API.Items.BentSwordName, ItemEvent.Look)]
     public void OnLook()
     {
         userInterfaces.Current.ShowTextBox(Strings.BentSwordLook);
     }
 
-    [ScriptEvent<ItemEvent>(nameof(API.Items.BentSword), ItemEvent.Grab)]
+    [ScriptEvent<ItemEvent>(API.Items.BentSwordName, ItemEvent.Grab)]
     public void OnGrab()
     {
         campaigns.Current.Player.Room.Remove(bentSword);
         userInterfaces.Current.ShowTextBox(Strings.BentSwordGrab);
-        campaigns.Current.Player.AddInventoryItem(invBentSword);
+        campaigns.Current.Player.Add(invBentSword);
     }
 
-    [ScriptEvent<ItemEvent>(nameof(API.Items.BentSword), ItemEvent.Talk)]
+    [ScriptEvent<ItemEvent>(API.Items.BentSwordName, ItemEvent.Talk)]
     public void OnTalk()
     {
         userInterfaces.Current.ShowTextBox(Strings.BentSwordTalk);

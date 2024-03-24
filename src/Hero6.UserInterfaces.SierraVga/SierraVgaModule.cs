@@ -4,24 +4,23 @@
 // 'LICENSE.CODE.md', which is a part of this source code package.
 // </copyright>
 
-using LateStartStudio.Hero6.ModuleController.Campaigns;
 using LateStartStudio.Hero6.ModuleController.UserInterfaces;
-using LateStartStudio.Hero6.Services.Campaigns;
 using LateStartStudio.Hero6.Services.UserInterfaces.Input.Mouse;
 using LateStartStudio.Hero6.UserInterfaces.SierraVga.Input.Mouse;
 using LateStartStudio.Hero6.UserInterfaces.SierraVga.Windows;
+using LateStartStudio.Hero6.Verbs;
 
 namespace LateStartStudio.Hero6.UserInterfaces.SierraVga
 {
     public class SierraVgaModule : UserInterfaceModule
     {
         private readonly IMouse mouse;
-        private readonly ICampaigns campaigns;
+        private readonly IVerbHandler verbHandler;
 
-        public SierraVgaModule(IMouse mouse, ICampaigns campaigns)
+        public SierraVgaModule(IMouse mouse, IVerbHandler verbHandler)
         {
             this.mouse = mouse;
-            this.campaigns = campaigns;
+            this.verbHandler = verbHandler;
         }
 
         public override string Name => "Sierra VGA";
@@ -49,19 +48,19 @@ namespace LateStartStudio.Hero6.UserInterfaces.SierraVga
             {
                 if (mouse.Cursor.Equals<Walk>())
                 {
-                    campaigns.Interact(mouse.X, mouse.Y, Interaction.Move);
+                    verbHandler.Interact(mouse.X, mouse.Y, Verb.Move);
                 }
                 else if (mouse.Cursor.Equals<Look>())
                 {
-                    campaigns.Interact(mouse.X, mouse.Y, Interaction.Eye);
+                    verbHandler.Interact(mouse.X, mouse.Y, Verb.Look);
                 }
                 else if (mouse.Cursor.Equals<Hand>())
                 {
-                    campaigns.Interact(mouse.X, mouse.Y, Interaction.Hand);
+                    verbHandler.Interact(mouse.X, mouse.Y, Verb.Grab);
                 }
                 else if (mouse.Cursor.Equals<Talk>())
                 {
-                    campaigns.Interact(mouse.X, mouse.Y, Interaction.Mouth);
+                    verbHandler.Interact(mouse.X, mouse.Y, Verb.Talk);
                 }
             }
         }

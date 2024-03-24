@@ -1,0 +1,5 @@
+{
+  "Name": "Hero",
+  "IdleAnimation": "Hero Idle Animation",
+  "MoveAnimation": "Hero Walk Animation"
+}

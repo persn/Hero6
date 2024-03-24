@@ -4,38 +4,20 @@
 // 'LICENSE.CODE.md', which is a part of this source code package.
 // </copyright>
 
-using LateStartStudio.Hero6.Campaigns.RitesOfPassage.Characters;
+using LateStartStudio.Hero6.Characters;
 using LateStartStudio.Hero6.Localization;
-using LateStartStudio.Hero6.ModuleController.Campaigns.Characters;
-using LateStartStudio.Hero6.ModuleController.Campaigns.Rooms;
-using LateStartStudio.Hero6.ModuleController.Campaigns.Rooms.Regions;
+using LateStartStudio.Hero6.Rooms;
 using LateStartStudio.Hero6.Scripts;
-using LateStartStudio.Hero6.Services.Campaigns;
 using LateStartStudio.Hero6.Services.UserInterfaces;
 
 namespace LateStartStudio.Hero6.Campaigns.RitesOfPassage.Rooms.Albion;
 
-public class Fountain : RoomModule
-{
-    public const string Id = "Fountain";
-
-    public override string Name => Id;
-
-    public override string Background => "Campaigns/Rites of Albion/Rooms/Albion/Fountain/Background";
-
-    public override string WalkAreasMask => "Campaigns/Rites of Albion/Rooms/Albion/Fountain/WalkAreas";
-
-    public override string HotspotsMask => "Campaigns/Rites of Albion/Rooms/Albion/Fountain/Hotspots";
-}
-
 public class FountainScript : Script
 {
-    private readonly ICampaigns campaigns;
     private readonly IUserInterfaces userInterfaces;
 
-    public FountainScript(ICampaigns campaigns, IUserInterfaces userInterfaces)
+    public FountainScript(IUserInterfaces userInterfaces)
     {
-        this.campaigns = campaigns;
         this.userInterfaces = userInterfaces;
     }
 
@@ -43,34 +25,28 @@ public class FountainScript : Script
     {
         base.Initialize();
 
-        var room = campaigns.Current.GetRoom<Fountain>();
-
-        var llewella = campaigns.Current.GetCharacter<Llewella>();
-        llewella.X = 200;
-        llewella.Y = 150;
-        llewella.Face(CharacterDirection.CenterDown);
-        room.AddCharacter<Llewella>();
+        API.Characters.Llewella.ChangeRoom(API.Rooms.Fountain, 200, 150);
     }
 
-    [HotspotEvent(Fountain.Id, Hotspots.SouthExit, HotspotEvent.StandingOn)]
+    [HotspotEvent(API.Rooms.FountainName, Hotspots.SouthExit, HotspotEvent.StandingOn)]
     public void OnWhileStandingOnSouthExit(StandingOn e)
     {
-        e.Character.ChangeRoom<HillOverAlbion>(220, 190, CharacterDirection.CenterDown);
+        e.Character.ChangeRoom(API.Rooms.HillOverAlbion, 220, 190, CharacterDirection.CenterDown);
     }
 
-    [HotspotEvent(Fountain.Id, Hotspots.Fountain, HotspotEvent.Look)]
+    [HotspotEvent(API.Rooms.FountainName, Hotspots.Fountain, HotspotEvent.Look)]
     public void OnLookFountain()
     {
         userInterfaces.Current.ShowTextBox(Strings.FountainLook);
     }
 
-    [HotspotEvent(Fountain.Id, Hotspots.Fountain, HotspotEvent.Grab)]
+    [HotspotEvent(API.Rooms.FountainName, Hotspots.Fountain, HotspotEvent.Grab)]
     public void OnGrabFountain()
     {
         userInterfaces.Current.ShowTextBox(Strings.FountainGrab);
     }
 
-    [HotspotEvent(Fountain.Id, Hotspots.Fountain, HotspotEvent.Talk)]
+    [HotspotEvent(API.Rooms.FountainName, Hotspots.Fountain, HotspotEvent.Talk)]
     public void OnTalkFountain()
     {
         userInterfaces.Current.ShowTextBox(Strings.FountainTalk);

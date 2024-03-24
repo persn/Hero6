@@ -4,7 +4,7 @@
 // 'LICENSE.CODE.md', which is a part of this source code package.
 // </copyright>
 
-using LateStartStudio.Hero6.ModuleController.Campaigns.Rooms.Regions;
+using LateStartStudio.Hero6.Rooms;
 using LateStartStudio.Search.Pathfinder;
 using Microsoft.Xna.Framework.Content;
 

@@ -33,8 +33,6 @@ namespace LateStartStudio.Hero6.Services.Campaigns
 
         public void Add(ICampaignModule module) => campaigns.Add(ActivatorUtilities.CreateInstance<CampaignController>(services, module));
 
-        public bool Interact(int x, int y, Interaction interaction) => CurrentController.Interact(x, y, interaction);
-
         public void Initialize()
         {
             CurrentController = campaigns[0];

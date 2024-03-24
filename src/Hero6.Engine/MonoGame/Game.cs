@@ -160,8 +160,8 @@ namespace LateStartStudio.Hero6.MonoGame
 
             SpriteBatch.Begin(SpriteSortMode.Deferred, transformMatrix: transform);
             campaigns.Draw(time);
-            ui.Draw(time);
             base.Draw(time);
+            ui.Draw(time);
             SpriteBatch.End();
         }
 

@@ -13,9 +13,9 @@ internal interface IVisibleComponent : IComponent
     bool IsVisible { get; set; }
 }
 
-internal class VisibleComponent<TParent> : Component, IVisibleComponent
+internal class VisibleComponent : Component, IVisibleComponent
 {
-    private bool isVisible = true;
+    private bool isVisible;
 
     public event EventHandler IsVisibleChanged;
 

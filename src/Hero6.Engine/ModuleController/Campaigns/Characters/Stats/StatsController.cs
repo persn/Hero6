@@ -91,11 +91,6 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns.Characters.Stats
 
         public ILearningStatController Magic { get; }
 
-        public override bool Interact(int x, int y, Interaction interaction)
-        {
-            throw new System.NotImplementedException();
-        }
-
         public override void Load()
         {
         }

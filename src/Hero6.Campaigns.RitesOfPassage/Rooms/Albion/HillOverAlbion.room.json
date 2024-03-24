@@ -1,0 +1,6 @@
+{
+  "Name": "Hill Over Albion",
+  "Background": "Campaigns/Rites of Albion/Rooms/Albion/Hill Over Albion/Background",
+  "WalkAreasMask": "Campaigns/Rites of Albion/Rooms/Albion/Hill Over Albion/WalkAreas",
+  "HotspotsMask": "Campaigns/Rites of Albion/Rooms/Albion/Hill Over Albion/Hotspots"
+}

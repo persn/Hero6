@@ -4,29 +4,21 @@
 // 'LICENSE.CODE.md', which is a part of this source code package.
 // </copyright>
 
-using LateStartStudio.Hero6.Campaigns.RitesOfPassage.Animations.Characters.Llewella.Idle;
+using LateStartStudio.Hero6.Characters;
 using LateStartStudio.Hero6.InventoryItems;
 using LateStartStudio.Hero6.Localization;
-using LateStartStudio.Hero6.ModuleController.Campaigns.Characters;
 using LateStartStudio.Hero6.Scripts;
 using LateStartStudio.Hero6.Services.Campaigns;
 using LateStartStudio.Hero6.Services.UserInterfaces;
 
 namespace LateStartStudio.Hero6.Campaigns.RitesOfPassage.Characters;
 
-public class Llewella : CharacterModule
-{
-    public const string Id = "Llewella";
-
-    public override string Name => Id;
-}
-
 public class LlewellaScript : Script
 {
     private readonly IUserInterfaces userInterfaces;
     private readonly ICampaigns campaigns;
 
-    private ICharacterModule llewella;
+    private ICharacter llewella;
     private IInventoryItem bentSword;
 
     public LlewellaScript(IUserInterfaces userInterfaces, ICampaigns campaigns)
@@ -38,35 +30,34 @@ public class LlewellaScript : Script
     public override void Initialize()
     {
         base.Initialize();
-        llewella = campaigns.Current.GetCharacter<Llewella>();
-        llewella.IdleAnimation = campaigns.Current.GetCharacterAnimation<LlewellaIdle>();
+        llewella = API.Characters.Llewella;
         bentSword = API.InventoryItems.BentSword;
     }
 
-    [ScriptEvent<CharacterEvent>(Llewella.Id, CharacterEvent.Look)]
+    [ScriptEvent<CharacterEvent>(API.Characters.LlewellaName, CharacterEvent.Look)]
     public void OnLook()
     {
         userInterfaces.Current.ShowTextBox(Strings.LlewellaLook);
     }
 
-    [ScriptEvent<CharacterEvent>(Llewella.Id, CharacterEvent.Grab)]
+    [ScriptEvent<CharacterEvent>(API.Characters.LlewellaName, CharacterEvent.Grab)]
     public void OnGrab()
     {
         userInterfaces.Current.ShowTextBox(Strings.LlewellaGrab);
     }
 
-    [ScriptEvent<CharacterEvent>(Llewella.Id, CharacterEvent.Talk)]
+    [ScriptEvent<CharacterEvent>(API.Characters.LlewellaName, CharacterEvent.Talk)]
     public void OnTalk()
     {
-        if (llewella.HasInventoryItem(bentSword))
+        if (llewella.Has(bentSword))
         {
             userInterfaces.Current.ShowTextBox(Strings.LlewellaTalk3);
         }
-        else if (campaigns.Current.Player.HasInventoryItem(bentSword))
+        else if (campaigns.Current.Player.Has(bentSword))
         {
             userInterfaces.Current.ShowTextBox(Strings.LlewellaTalk1);
-            llewella.AddInventoryItem(bentSword);
-            campaigns.Current.Player.RemoveInventoryItem(bentSword);
+            llewella.Add(bentSword);
+            campaigns.Current.Player.Remove(bentSword);
         }
         else
         {

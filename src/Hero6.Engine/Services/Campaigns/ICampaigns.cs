@@ -24,16 +24,5 @@ namespace LateStartStudio.Hero6.Services.Campaigns
         ICampaignModule Current { get; set; }
 
         void Add(ICampaignModule module);
-
-        /// <summary>
-        /// Interact event, looks for modules that the user have tried interacting with.
-        /// </summary>
-        /// <param name="x">The x coordinate the user interacted with.</param>
-        /// <param name="y">The y coordinate the user interacted with.</param>
-        /// <param name="interaction">The type of interaciton from user.</param>
-        /// <returns>
-        /// True if x and y intersects with a module and interaction is valid for said module. False if not.
-        /// </returns>
-        bool Interact(int x, int y, Interaction interaction);
     }
 }

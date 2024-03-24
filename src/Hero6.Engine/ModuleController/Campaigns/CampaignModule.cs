@@ -4,9 +4,7 @@
 // 'LICENSE.CODE.md', which is a part of this source code package.
 // </copyright>
 
-using LateStartStudio.Hero6.ModuleController.Campaigns.Animations;
-using LateStartStudio.Hero6.ModuleController.Campaigns.Characters;
-using LateStartStudio.Hero6.ModuleController.Campaigns.Rooms;
+using LateStartStudio.Hero6.Characters;
 
 namespace LateStartStudio.Hero6.ModuleController.Campaigns
 {
@@ -23,38 +21,6 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns
         /// <summary>
         /// Gets or sets the player character of this campaign.
         /// </summary>
-        public ICharacterModule Player
-        {
-            get { return Controller.Player.Module; }
-            set { Controller.Player = ((CharacterModule)value).Controller; }
-        }
-
-        /// <summary>
-        /// Gets any animation from this campaign.
-        /// </summary>
-        /// <typeparam name="T">The animation specified by type.</typeparam>
-        /// <returns>The animation.</returns>
-        public IAnimationModule GetAnimation<T>() where T : AnimationModule => Controller.GetAnimation<T>().Module;
-
-        /// <summary>
-        /// Gets any character animation from this campaign.
-        /// </summary>
-        /// <typeparam name="T">The character animation specified by type.</typeparam>
-        /// <returns>The character animation.</returns>
-        public ICharacterAnimationModule GetCharacterAnimation<T>() where T : CharacterAnimationModule => Controller.GetCharacterAnimation<T>().Module;
-
-        /// <summary>
-        /// Gets any character from this campaign.
-        /// </summary>
-        /// <typeparam name="T">The character specified by type.</typeparam>
-        /// <returns>The character.</returns>
-        public ICharacterModule GetCharacter<T>() where T : CharacterModule => Controller.GetCharacter<T>().Module;
-
-        /// <summary>
-        /// Gets any room from this campaign.
-        /// </summary>
-        /// <typeparam name="T">The room specified by type.</typeparam>
-        /// <returns>The room.</returns>
-        public IRoomModule GetRoom<T>() where T : RoomModule => Controller.GetRoom<T>().Module;
+        public ICharacter Player { get; set; }
     }
 }

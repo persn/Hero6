@@ -20,7 +20,7 @@ internal class InventoryItemGameComponent : DrawableGameComponent
     public override void Update(GameTime gameTime)
     {
         base.Update(gameTime);
-        inventoryItem.Update();
+        inventoryItem.Update(gameTime);
     }
 
     public override void Initialize()

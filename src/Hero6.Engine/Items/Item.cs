@@ -5,8 +5,8 @@
 // </copyright>
 
 using LateStartStudio.Hero6.Components;
-using LateStartStudio.Hero6.ModuleController.Campaigns;
 using LateStartStudio.Hero6.Scripts;
+using LateStartStudio.Hero6.Verbs;
 
 namespace LateStartStudio.Hero6.Items;
 
@@ -16,8 +16,9 @@ internal class Item : Composite, IItem
         ItemData data,
         IPositionComponent position,
         IVisibleComponent visibility,
-        IScriptComponent<ItemEvent> scriptable)
-        : base(position, visibility, scriptable)
+        IScriptComponent<ItemEvent> scriptable,
+        ISpriteRendererComponent spriteRenderer)
+        : base(position, visibility, spriteRenderer, scriptable)
     {
         Name = data.Name;
         Sprite = data.Sprite;
@@ -37,7 +38,11 @@ internal class Item : Composite, IItem
         set => Get<IPositionComponent>().Y = value;
     }
 
-    public string Sprite { get; }
+    public string Sprite
+    {
+        get => Get<ISpriteRendererComponent>().Sprite;
+        private set => Get<ISpriteRendererComponent>().Sprite = value;
+    }
 
     public bool IsVisible
     {
@@ -45,11 +50,11 @@ internal class Item : Composite, IItem
         set => Get<IVisibleComponent>().IsVisible = value;
     }
 
-    public bool Interact(int x, int y, Interaction interaction)
+    public bool Interact(int x, int y, Verb verb)
     {
-        if (Get<IPositionComponent>().Intersects(x, y) && interaction != Interaction.Move)
+        if (verb != Verb.Move)
         {
-            Get<IScriptComponent<ItemEvent>>().Invoke(interaction.ToItemEvent());
+            return Get<IScriptComponent<ItemEvent>>().Invoke(x, y, verb.ToItemEvent());
         }
 
         return false;

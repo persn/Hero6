@@ -55,11 +55,6 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns.Characters.Stats
             }
         }
 
-        public override bool Interact(int x, int y, Interaction interaction)
-        {
-            throw new System.NotImplementedException();
-        }
-
         public void Train(int factor)
         {
             var newBuffer = Buffer + factor;

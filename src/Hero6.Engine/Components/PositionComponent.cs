@@ -14,9 +14,15 @@ internal static class PositionExtensions
 {
     public static XnaPoint ToMonoGame(this Point point) => new(point.X, point.Y);
 
+    public static XnaPoint ToMonoGame(this IPositionComponent point) => new(point.X, point.Y);
+
     public static XnaVector2 ToVector2(this Point point) => new(point.X, point.Y);
 
+    public static XnaVector2 ToVector2(this IPositionComponent point) => new(point.X, point.Y);
+
     public static Point ToDotNet(this XnaPoint point) => new(point.X, point.Y);
+
+    public static Point ToDotNet(this IPositionComponent point) => new(point.X, point.Y);
 
     public static XnaVector2 ToVector2(this XnaPoint point) => new(point.X, point.Y);
 
@@ -27,6 +33,10 @@ internal static class PositionExtensions
         => position.Intersects(point.X, point.Y);
 }
 
+/// <summary>
+/// This component is typically used to calculate position and size for rendering
+/// sprites or animations.
+/// </summary>
 internal interface IPositionComponent : IComponent
 {
     event EventHandler PositionChanged;
@@ -48,7 +58,7 @@ internal interface IPositionComponent : IComponent
         y < Y + Height;
 }
 
-internal class SystemDrawingPositionComponent<TParent> : Component, IPositionComponent
+internal class SystemDrawingPositionComponent : Component, IPositionComponent
 {
     private Point position;
     private Size size;

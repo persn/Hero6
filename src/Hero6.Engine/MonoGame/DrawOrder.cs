@@ -4,10 +4,11 @@
 // 'LICENSE.CODE.md', which is a part of this source code package.
 // </copyright>
 
-namespace LateStartStudio.Hero6.MonoGame
+namespace LateStartStudio.Hero6.MonoGame;
+
+internal enum DrawOrder
 {
-    internal enum DrawOrder
-    {
-        Item,
-    }
+    Room,
+    Character = Room + 1,
+    Item = Character + 1,
 }
