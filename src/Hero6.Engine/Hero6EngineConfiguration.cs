@@ -4,7 +4,6 @@
 // 'LICENSE.CODE.md', which is a part of this source code package.
 // </copyright>
 
-using Hero6.Engine.Services.Logger;
 using LateStartStudio.Hero6.Animations;
 using LateStartStudio.Hero6.Characters;
 using LateStartStudio.Hero6.Components;
@@ -12,6 +11,7 @@ using LateStartStudio.Hero6.DependencyInjection;
 using LateStartStudio.Hero6.Extensions;
 using LateStartStudio.Hero6.InventoryItems;
 using LateStartStudio.Hero6.Items;
+using LateStartStudio.Hero6.Logging;
 using LateStartStudio.Hero6.ModuleController.Campaigns;
 using LateStartStudio.Hero6.ModuleController.Campaigns.Characters.Stats;
 using LateStartStudio.Hero6.ModuleController.UserInterfaces;
