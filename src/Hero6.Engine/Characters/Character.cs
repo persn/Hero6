@@ -251,10 +251,11 @@ internal class Character : Composite, ICharacter
         }
     }
 
-    private void OnIsMovingChanged(object sender, EventArgs e) => UpdateSynchronizationContext.Instance.Post(() =>
+    private async Task OnIsMovingChanged(object sender, EventArgs e)
     {
-        ToggleAnimationVisibility();
-    });
+        UpdateSynchronizationContext.Instance.Post(ToggleAnimationVisibility);
+        await Task.CompletedTask;
+    }
 
     private void ToggleAnimationVisibility()
     {

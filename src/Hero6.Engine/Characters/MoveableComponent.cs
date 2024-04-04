@@ -6,6 +6,7 @@
 
 using LateStartStudio.Hero6.Components;
 using LateStartStudio.Hero6.Rooms;
+using LateStartStudio.Hero6.Threading;
 using Microsoft.Extensions.Logging;
 using Microsoft.Xna.Framework;
 
@@ -13,7 +14,7 @@ namespace LateStartStudio.Hero6.Characters;
 
 internal interface IMoveableComponent : IComponent
 {
-    event EventHandler<EventArgs> IsMovingChanged;
+    event EventHandlerAsync<EventArgs> IsMovingChanged;
 
     /// <summary>
     /// Gets whether the component is moving or not.
@@ -54,7 +55,7 @@ internal class MoveableComponent : Component, IMoveableComponent
         this.logger = logger;
     }
 
-    public event EventHandler<EventArgs> IsMovingChanged;
+    public event EventHandlerAsync<EventArgs> IsMovingChanged;
 
     public bool IsMoving => path.Any();
 
@@ -99,9 +100,9 @@ internal class MoveableComponent : Component, IMoveableComponent
         if (!pathFound)
             walkTask.SetResult(pathFound);
 
-        IsMovingChanged?.Invoke(this, EventArgs.Empty);
+        await (IsMovingChanged?.InvokeAsync(this, EventArgs.Empty) ?? Task.CompletedTask);
         var res = await walkTask.Task;
-        IsMovingChanged?.Invoke(this, EventArgs.Empty);
+        await (IsMovingChanged?.InvokeAsync(this, EventArgs.Empty) ?? Task.CompletedTask);
 
         return res;
     }
