@@ -20,4 +20,6 @@ public abstract class Script
     public virtual void Initialize()
     {
     }
+
+    public virtual Task InitializeAsync() => Task.CompletedTask;
 }

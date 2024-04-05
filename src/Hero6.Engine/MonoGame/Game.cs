@@ -87,6 +87,7 @@ namespace LateStartStudio.Hero6.MonoGame
             foreach (var script in scriptRepository.GetScripts())
             {
                 script.Initialize();
+                script.InitializeAsync().GetAwaiter().GetResult(); // TODO await this properly
             }
 
             sw.Stop();
