@@ -8,7 +8,6 @@ using LateStartStudio.Hero6.Characters;
 using LateStartStudio.Hero6.InventoryItems;
 using LateStartStudio.Hero6.Localization;
 using LateStartStudio.Hero6.Scripts;
-using LateStartStudio.Hero6.Services.Campaigns;
 using LateStartStudio.Hero6.Services.UserInterfaces;
 
 namespace LateStartStudio.Hero6.Campaigns.RitesOfPassage.Characters;
@@ -16,15 +15,13 @@ namespace LateStartStudio.Hero6.Campaigns.RitesOfPassage.Characters;
 public class LlewellaScript : Script
 {
     private readonly IUserInterfaces userInterfaces;
-    private readonly ICampaigns campaigns;
 
     private ICharacter llewella;
     private IInventoryItem bentSword;
 
-    public LlewellaScript(IUserInterfaces userInterfaces, ICampaigns campaigns)
+    public LlewellaScript(IUserInterfaces userInterfaces)
     {
         this.userInterfaces = userInterfaces;
-        this.campaigns = campaigns;
     }
 
     public override void Initialize()

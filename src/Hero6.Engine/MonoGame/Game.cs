@@ -7,7 +7,6 @@
 using System.Diagnostics;
 using LateStartStudio.Hero6.Extensions;
 using LateStartStudio.Hero6.Scripts;
-using LateStartStudio.Hero6.Services.Campaigns;
 using LateStartStudio.Hero6.Services.Settings;
 using LateStartStudio.Hero6.Services.UserInterfaces;
 using Microsoft.Extensions.Logging;
@@ -25,7 +24,6 @@ namespace LateStartStudio.Hero6.MonoGame
         private readonly IGameSettings gameSettings;
         private readonly IScriptRepository scriptRepository;
         private readonly MonoGameUserInterfaces ui;
-        private readonly MonoGameCampaigns campaigns;
 
         private Matrix transform = Matrix.Identity;
 
@@ -34,8 +32,7 @@ namespace LateStartStudio.Hero6.MonoGame
             IGameSettings gameSettings,
             IScriptRepository scriptRepository,
             IUserSettings userSettings,
-            MonoGameUserInterfaces ui,
-            MonoGameCampaigns campaigns)
+            MonoGameUserInterfaces ui)
         {
             Thread.CurrentThread.Name = "Hero6 Engine Main Thread";
 
@@ -43,7 +40,6 @@ namespace LateStartStudio.Hero6.MonoGame
             this.gameSettings = gameSettings;
             this.scriptRepository = scriptRepository;
             this.ui = ui;
-            this.campaigns = campaigns;
 
             Content.RootDirectory = "Content";
             Window.Title = "Hero6";
@@ -85,7 +81,6 @@ namespace LateStartStudio.Hero6.MonoGame
 
             UpdateScale();
             ui.Initialize();
-            campaigns.Initialize();
 
             base.Initialize();
 
@@ -108,7 +103,6 @@ namespace LateStartStudio.Hero6.MonoGame
             var sw = Stopwatch.StartNew();
 
             ui.Load();
-            campaigns.Load();
             base.LoadContent();
 
             sw.Stop();
@@ -126,7 +120,6 @@ namespace LateStartStudio.Hero6.MonoGame
 
             Content.Unload();
             ui.Unload();
-            campaigns.Unload();
             base.UnloadContent();
 
             sw.Stop();
@@ -142,11 +135,6 @@ namespace LateStartStudio.Hero6.MonoGame
         {
             ui.Update(time);
 
-            if (!gameSettings.IsPaused)
-            {
-                campaigns.Update(time);
-            }
-
             base.Update(time);
         }
 
@@ -159,7 +147,6 @@ namespace LateStartStudio.Hero6.MonoGame
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
             SpriteBatch.Begin(SpriteSortMode.Deferred, transformMatrix: transform);
-            campaigns.Draw(time);
             base.Draw(time);
             ui.Draw(time);
             SpriteBatch.End();

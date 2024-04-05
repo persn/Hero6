@@ -12,13 +12,11 @@ using LateStartStudio.Hero6.Extensions;
 using LateStartStudio.Hero6.InventoryItems;
 using LateStartStudio.Hero6.Items;
 using LateStartStudio.Hero6.Logging;
-using LateStartStudio.Hero6.ModuleController.Campaigns;
 using LateStartStudio.Hero6.ModuleController.UserInterfaces;
 using LateStartStudio.Hero6.MonoGame;
 using LateStartStudio.Hero6.Repositories;
 using LateStartStudio.Hero6.Rooms;
 using LateStartStudio.Hero6.Scripts;
-using LateStartStudio.Hero6.Services.Campaigns;
 using LateStartStudio.Hero6.Services.ControllerRepository;
 using LateStartStudio.Hero6.Services.DotNetWrappers;
 using LateStartStudio.Hero6.Services.PlatformInfo;
@@ -62,10 +60,7 @@ namespace LateStartStudio.Hero6.Engine.Extensions
                     // TODO The services should probably load the modules themselves, but circular dependencies needs to be resolved
                     var ui = services.GetService<MonoGameUserInterfaces>();
                     var userInterfaceModules = services.GetServices<IUserInterfaceModule>();
-                    var campaigns = services.GetService<MonoGameCampaigns>();
-                    var campaignModules = services.GetServices<ICampaignModule>();
                     userInterfaceModules.ForEach(m => ui.Add(m));
-                    campaignModules.ForEach(m => campaigns.Add(m));
 
                     // Start the host and all related mechanics, dependency injection, logging, etc.
                     // awaiting this will make the process hang around after the game had been closed, so don't
@@ -111,9 +106,6 @@ namespace LateStartStudio.Hero6.Engine.Extensions
                     // Hero6 services
                     .AddSingleton<IFileWrapper, FileWrapper>()
                     .AddSingleton<IDirectoryWrapper, DirectoryWrapper>()
-
-                    .AddSingleton<MonoGameCampaigns>()
-                    .AddSingleton<ICampaigns>(s => s.GetService<MonoGameCampaigns>())
 
                     .AddSingleton<MonoGameUserInterfaces>()
                     .AddSingleton<IUserInterfaces>(s => s.GetService<MonoGameUserInterfaces>())
