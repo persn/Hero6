@@ -13,11 +13,5 @@ namespace LateStartStudio.Hero6.Campaigns.RitesOfPassage
         public override string Name => "Rites of Passage";
 
         public override int StatCap => 100;
-
-        public override void Initialize()
-        {
-            base.Initialize();
-            API.Characters.Hero.SetAsPlayer();
-        }
     }
 }
