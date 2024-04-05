@@ -13,6 +13,6 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns
         /// <summary>
         /// Gets or sets the player character of this campaign.
         /// </summary>
-        ICharacter Player { get; set; }
+        //ICharacter Player { get; set; }
     }
 }

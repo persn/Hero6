@@ -28,7 +28,7 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns
 
         public override int Height => 0;
 
-        public ICharacter Player { get; set; }
+        //public ICharacter Player { get; set; }
 
         public override void Initialize()
         {

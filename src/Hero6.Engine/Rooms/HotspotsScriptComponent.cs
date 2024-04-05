@@ -20,16 +20,16 @@ internal class HotspotsScriptComponent : Component, IScriptComponent<HotspotEven
 {
     private readonly string source;
     private readonly IScriptRepository repository;
-    private readonly ICampaigns campaigns;
+    private readonly ICharacterRepository characterRepository;
     private readonly Dictionary<(HotspotEvent, Color), ScriptMethod> events = new();
 
     private Color[,] buffer;
 
-    public HotspotsScriptComponent(string source, IScriptRepository repository, ICampaigns campaigns)
+    public HotspotsScriptComponent(string source, IScriptRepository repository, ICharacterRepository characterRepository)
     {
         this.source = source;
         this.repository = repository;
-        this.campaigns = campaigns;
+        this.characterRepository = characterRepository;
     }
 
     public bool Invoke(int x, int y, HotspotEvent @event) => Invoke(x, y, @event, s => s.Invoke());
@@ -54,7 +54,7 @@ internal class HotspotsScriptComponent : Component, IScriptComponent<HotspotEven
     public override void Update(Microsoft.Xna.Framework.GameTime time)
     {
         base.Update(time);
-        var currentRoom = (Room)campaigns.Current.Player.Room;
+        var currentRoom = characterRepository.Player.Room;
 
         foreach (var character in currentRoom.Characters.Cast<Character>())
             StandingOn(character);

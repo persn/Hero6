@@ -12,6 +12,6 @@ namespace LateStartStudio.Hero6.ModuleController.Campaigns
     {
         int StatCap { get; }
 
-        ICharacter Player { get; set; }
+        //ICharacter Player { get; set; }
     }
 }

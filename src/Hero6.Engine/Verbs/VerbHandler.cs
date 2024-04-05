@@ -8,28 +8,27 @@ using LateStartStudio.Hero6.Characters;
 using LateStartStudio.Hero6.Items;
 using LateStartStudio.Hero6.Rooms;
 using LateStartStudio.Hero6.Scripts;
-using LateStartStudio.Hero6.Services.Campaigns;
 
 namespace LateStartStudio.Hero6.Verbs;
 
 internal class VerbHandler : IVerbHandler
 {
-    private readonly ICampaigns campaigns;
+    private readonly ICharacterRepository characterRepository;
 
-    public VerbHandler(ICampaigns campaigns)
+    public VerbHandler(ICharacterRepository characterRepository)
     {
-        this.campaigns = campaigns;
+        this.characterRepository = characterRepository;
     }
 
     public bool Interact(int x, int y, Verb verb)
     {
         if (verb == Verb.Move)
         {
-            _ = campaigns.Current.Player.WalkAsync(x, y);
+            _ = characterRepository.Player.WalkAsync(x, y);
             return true;
         }
 
-        var currentRoom = (Room)campaigns.Current.Player.Room;
+        var currentRoom = (Room)characterRepository.Player.Room;
 
         if (currentRoom.Characters.Cast<Character>().Any(c => c.Interact(x, y, verb)))
             return true;

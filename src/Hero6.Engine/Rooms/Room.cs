@@ -14,7 +14,7 @@ namespace LateStartStudio.Hero6.Rooms;
 
 internal class Room : Composite, IRoom
 {
-    private readonly ICampaigns campaigns;
+    private readonly ICharacterRepository characterRepository;
     private readonly List<Item> items = new();
     private readonly List<Character> characters = new();
 
@@ -23,12 +23,12 @@ internal class Room : Composite, IRoom
         IVisibleComponent visibleComponent,
         IScriptComponent<HotspotEvent> hotspotScripts,
         ISpriteRendererComponent spriteRendererComponent,
-        ICampaigns campaigns)
+        ICharacterRepository characterRepository)
         : base(visibleComponent, hotspotScripts, spriteRendererComponent)
     {
         Name = data.Name;
         Background = data.Background;
-        this.campaigns = campaigns;
+        this.characterRepository = characterRepository;
 
         // TODO Should probably DI WalkAreas and Hotspots, or they should be components...
         WalkAreas = new WalkAreas(data.WalkAreasMask);
@@ -64,7 +64,7 @@ internal class Room : Composite, IRoom
     {
         var i = (Item)item;
         items.Add(i);
-        if (campaigns.Current.Player.Room == this)
+        if (characterRepository.Player.Room == this)
             i.Enabled = i.IsVisible = true;
     }
 
@@ -72,7 +72,7 @@ internal class Room : Composite, IRoom
     {
         var i = (Item)item;
         items.Remove(i);
-        if (campaigns.Current.Player.Room == this)
+        if (characterRepository.Player.Room == this)
             i.Enabled = i.IsVisible = false;
     }
 

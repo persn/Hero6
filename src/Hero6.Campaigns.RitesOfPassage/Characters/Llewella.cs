@@ -53,11 +53,11 @@ public class LlewellaScript : Script
         {
             userInterfaces.Current.ShowTextBox(Strings.LlewellaTalk3);
         }
-        else if (campaigns.Current.Player.Has(bentSword))
+        else if (API.Characters.Player.Has(bentSword))
         {
             userInterfaces.Current.ShowTextBox(Strings.LlewellaTalk1);
             llewella.Add(bentSword);
-            campaigns.Current.Player.Remove(bentSword);
+            API.Characters.Player.Remove(bentSword);
         }
         else
         {

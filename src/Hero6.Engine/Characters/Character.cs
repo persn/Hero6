@@ -12,7 +12,6 @@ using LateStartStudio.Hero6.Items;
 using LateStartStudio.Hero6.Repositories;
 using LateStartStudio.Hero6.Rooms;
 using LateStartStudio.Hero6.Scripts;
-using LateStartStudio.Hero6.Services.Campaigns;
 using LateStartStudio.Hero6.Threading;
 using LateStartStudio.Hero6.Verbs;
 using Microsoft.Xna.Framework;
@@ -33,7 +32,6 @@ internal static class CharacterExtensions
 
 internal class Character : Composite, ICharacter
 {
-    private readonly ICampaigns campaigns;
     private readonly List<IInventoryItem> inventory = new();
 
     private Room room;
@@ -46,11 +44,9 @@ internal class Character : Composite, ICharacter
         IVisibleComponent visibility,
         IScriptComponent<CharacterEvent> scriptable,
         IMoveableComponent moveable,
-        ICampaigns campaigns,
         IRepository<ICharacterAnimation> characterAnimations)
         : base(position, visibility, scriptable, moveable)
     {
-        this.campaigns = campaigns;
         Name = data.Name;
         moveable.IsMovingChanged += OnIsMovingChanged;
 
@@ -115,7 +111,7 @@ internal class Character : Composite, ICharacter
         }
     }
 
-    public bool IsPlayer => campaigns.Current.Player == this;
+    public bool IsPlayer => Player == this;
 
     public int Speed
     {
@@ -144,6 +140,8 @@ internal class Character : Composite, ICharacter
     }
 
     public IEnumerable<IInventoryItem> Inventory => inventory;
+
+    internal static Character Player { get; set; }
 
     internal int FeetX
     {
@@ -201,10 +199,10 @@ internal class Character : Composite, ICharacter
 
     public void SetAsPlayer()
     {
-        if (campaigns.Current.Player is Character current)
-            current.Get<IMoveableComponent>().Enabled = false;
+        if (Player != null)
+            Player.Get<IMoveableComponent>().Enabled = false;
 
-        campaigns.Current.Player = this;
+        Player = this;
         Get<IMoveableComponent>().Enabled = true;
     }
 

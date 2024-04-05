@@ -145,7 +145,7 @@ namespace LateStartStudio.Hero6.Engine.Extensions
                         {
                             return s.CreateInstance<CharacterAnimation>(data);
                         })))
-                    .AddSingleton<IRepository<ICharacter>>(s => s.CreateInstance<Repository<ICharacter>>(s
+                    .AddSingleton<ICharacterRepository>(s => s.CreateInstance<CharacterRepository>(s
                         .GetRequiredService<IEnumerable<CharacterData>>()
                         .Select(data =>
                         {
@@ -155,6 +155,7 @@ namespace LateStartStudio.Hero6.Engine.Extensions
                             var moveable = s.CreateInstance<MoveableComponent>();
                             return s.CreateInstance<Character>(data, position, visibility, scriptable, moveable);
                         })))
+                    .AddSingleton<IRepository<ICharacter>>(s => s.GetRequiredService<ICharacterRepository>())
                     .AddSingleton<IRepository<IInventoryItem>>(s => s.CreateInstance<Repository<IInventoryItem>>(s
                         .GetRequiredService<IEnumerable<InventoryItemData>>()
                         .Select(data =>

@@ -5,7 +5,6 @@
 // </copyright>
 
 using System;
-using System.Diagnostics;
 using System.Dynamic;
 using System.IO;
 using System.Linq;
@@ -23,16 +22,20 @@ namespace LateStartStudio.Hero6.Generators
         {
             GenerateEntityAPI(context, "Animation");
             GenerateEntityAPI(context, "CharacterAnimation", "Animation");
-            GenerateEntityAPI(context, "Character");
+            GenerateEntityAPI(context, "Character", sb =>
+            {
+                sb.AppendLine(
+$@"     public static ICharacter Player => GlobalServiceProvider.Instance.GetService<ICharacterRepository>().Player;");
+            });
             GenerateEntityAPI(context, "InventoryItem");
             GenerateEntityAPI(context, "Item");
             GenerateEntityAPI(context, "Room");
         }
 
-        private void GenerateEntityAPI(IncrementalGeneratorInitializationContext context, string entity)
-            => GenerateEntityAPI(context, entity, entity);
+        private void GenerateEntityAPI(IncrementalGeneratorInitializationContext context, string entity, Action<StringBuilder> add = null)
+            => GenerateEntityAPI(context, entity, entity, add);
 
-        private void GenerateEntityAPI(IncrementalGeneratorInitializationContext context, string entity, string namespaceOverride)
+        private void GenerateEntityAPI(IncrementalGeneratorInitializationContext context, string entity, string namespaceOverride, Action<StringBuilder> add = null)
         {
             var fileExtension = $".{entity.ToLower()}.json";
             var entityData = context.AdditionalTextsProvider
@@ -74,8 +77,11 @@ $@"     public const string {fileName}Name = ""{dynamicContent.Name}"";
                 }
 
                 sb.AppendLine(
-$@"     private static IRepository<I{entity}> {entity}Repository => GlobalServiceProvider.Instance.GetService<IRepository<I{entity}>>();
-}}");
+$@"     private static IRepository<I{entity}> {entity}Repository => GlobalServiceProvider.Instance.GetService<IRepository<I{entity}>>();");
+
+                add?.Invoke(sb);
+
+                sb.AppendLine($"}}");
 
                 spc.AddSource($"{entity}sAPI.g.cs", sb.ToString());
             });

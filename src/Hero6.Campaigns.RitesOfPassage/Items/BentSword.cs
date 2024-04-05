@@ -8,7 +8,6 @@ using LateStartStudio.Hero6.InventoryItems;
 using LateStartStudio.Hero6.Items;
 using LateStartStudio.Hero6.Localization;
 using LateStartStudio.Hero6.Scripts;
-using LateStartStudio.Hero6.Services.Campaigns;
 using LateStartStudio.Hero6.Services.UserInterfaces;
 
 namespace LateStartStudio.Hero6.Campaigns.RitesOfPassage.Items;
@@ -16,15 +15,13 @@ namespace LateStartStudio.Hero6.Campaigns.RitesOfPassage.Items;
 public class BentSwordScript : Script
 {
     private readonly IUserInterfaces userInterfaces;
-    private readonly ICampaigns campaigns;
 
     private IItem bentSword;
     private IInventoryItem invBentSword;
 
-    public BentSwordScript(IUserInterfaces userInterfaces, ICampaigns campaigns)
+    public BentSwordScript(IUserInterfaces userInterfaces)
     {
         this.userInterfaces = userInterfaces;
-        this.campaigns = campaigns;
     }
 
     public override void Initialize()
@@ -43,9 +40,9 @@ public class BentSwordScript : Script
     [ScriptEvent<ItemEvent>(API.Items.BentSwordName, ItemEvent.Grab)]
     public void OnGrab()
     {
-        campaigns.Current.Player.Room.Remove(bentSword);
+        API.Characters.Player.Room.Remove(bentSword);
         userInterfaces.Current.ShowTextBox(Strings.BentSwordGrab);
-        campaigns.Current.Player.Add(invBentSword);
+        API.Characters.Player.Add(invBentSword);
     }
 
     [ScriptEvent<ItemEvent>(API.Items.BentSwordName, ItemEvent.Talk)]
