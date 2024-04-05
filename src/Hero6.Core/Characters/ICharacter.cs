@@ -43,6 +43,8 @@ public interface ICharacter : INameable
     /// </summary>
     IRoom Room { get; }
 
+    Stats Stats { get; }
+
     /// <summary>
     /// Gets or sets the idle animation of this character.
     /// </summary>

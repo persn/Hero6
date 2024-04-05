@@ -13,7 +13,6 @@ using LateStartStudio.Hero6.InventoryItems;
 using LateStartStudio.Hero6.Items;
 using LateStartStudio.Hero6.Logging;
 using LateStartStudio.Hero6.ModuleController.Campaigns;
-using LateStartStudio.Hero6.ModuleController.Campaigns.Characters.Stats;
 using LateStartStudio.Hero6.ModuleController.UserInterfaces;
 using LateStartStudio.Hero6.MonoGame;
 using LateStartStudio.Hero6.Repositories;
@@ -127,7 +126,6 @@ namespace LateStartStudio.Hero6.Engine.Extensions
                     .AddSingleton<IPlatformInfo, PlatformInfo>()
 
                     .AddSingleton<IControllerRepository, ControllerRepositoryProvider>()
-                    .AddTransient<StatsController>()
 
                     .AddSingleton<IMouseCore, MouseCore>()
                     .AddSingleton<IMouse, Mouse>()

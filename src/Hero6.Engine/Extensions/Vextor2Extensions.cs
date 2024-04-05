@@ -6,7 +6,6 @@
 
 using System.Drawing;
 using LateStartStudio.Hero6.Characters;
-using LateStartStudio.Hero6.ModuleController.Campaigns.Characters;
 using Microsoft.Xna.Framework;
 
 namespace LateStartStudio.Hero6.Extensions

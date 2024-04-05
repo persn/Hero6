@@ -129,6 +129,8 @@ internal class Character : Composite, ICharacter
         private set => room = (Room)value;
     }
 
+    public Stats Stats { get; } = new Stats();
+
     public ICharacterAnimation IdleAnimation
     {
         get => idleAnimation;
