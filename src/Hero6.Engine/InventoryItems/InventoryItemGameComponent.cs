@@ -4,6 +4,7 @@
 // 'LICENSE.CODE.md', which is a part of this source code package.
 // </copyright>
 
+using LateStartStudio.Hero6.MonoGame;
 using Microsoft.Xna.Framework;
 
 namespace LateStartStudio.Hero6.InventoryItems;
@@ -12,7 +13,7 @@ internal class InventoryItemGameComponent : DrawableGameComponent
 {
     private readonly InventoryItem inventoryItem;
 
-    public InventoryItemGameComponent(InventoryItem inventoryItem, LateStartStudio.Hero6.MonoGame.Game game) : base(game)
+    public InventoryItemGameComponent(InventoryItem inventoryItem, MainGame game) : base(game)
     {
         this.inventoryItem = inventoryItem;
     }

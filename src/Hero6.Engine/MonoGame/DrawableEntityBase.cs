@@ -11,7 +11,7 @@ namespace LateStartStudio.Hero6.MonoGame;
 
 internal class DrawableEntityBase<T> : DrawableGameComponent where T : Composite
 {
-    protected DrawableEntityBase(T entity, UpdateOrder updateOrder, DrawOrder drawOrder, Game game) : base(game)
+    protected DrawableEntityBase(T entity, UpdateOrder updateOrder, DrawOrder drawOrder, MainGame game) : base(game)
     {
         Entity = entity;
         UpdateOrder = (int)updateOrder;
@@ -33,7 +33,7 @@ internal class DrawableEntityBase<T> : DrawableGameComponent where T : Composite
 
     protected T Entity { get; }
 
-    protected new Game Game { get; }
+    protected new MainGame Game { get; }
 
     public override void Update(GameTime gameTime)
     {

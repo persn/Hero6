@@ -4,6 +4,7 @@
 // 'LICENSE.CODE.md', which is a part of this source code package.
 // </copyright>
 
+using LateStartStudio.Hero6.MonoGame;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -13,7 +14,7 @@ internal class HotspotsGameComponent : DrawableGameComponent
 {
     private readonly HotspotsScriptComponent hotspots;
 
-    public HotspotsGameComponent(HotspotsScriptComponent hotspots, LateStartStudio.Hero6.MonoGame.Game game) : base(game)
+    public HotspotsGameComponent(HotspotsScriptComponent hotspots, MainGame game) : base(game)
     {
         this.hotspots = hotspots;
         Visible = false; // We just want to load content, we have no drawing of Hotspots.. Yet

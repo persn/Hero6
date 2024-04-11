@@ -4,6 +4,7 @@
 // 'LICENSE.CODE.md', which is a part of this source code package.
 // </copyright>
 
+using LateStartStudio.Hero6.MonoGame;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -16,12 +17,12 @@ internal interface ISpriteRendererComponent : IComponent
 
 internal class SpriteRendererComponent : Component, ISpriteRendererComponent, ILoadable, IDrawable
 {
-    private readonly MonoGame.Game game;
+    private readonly MainGame game;
 
     private Texture2D sprite;
     private Vector2 position;
 
-    public SpriteRendererComponent(MonoGame.Game game)
+    public SpriteRendererComponent(MainGame game)
     {
         this.game = game;
     }

@@ -5,6 +5,7 @@
 // </copyright>
 
 using LateStartStudio.Hero6.Components;
+using LateStartStudio.Hero6.MonoGame;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -13,7 +14,7 @@ namespace LateStartStudio.Hero6.Animations;
 internal class Animation : Component, IAnimation, ILoadable, LateStartStudio.Hero6.Components.IDrawable
 {
     private readonly AnimationData data;
-    private readonly MonoGame.Game game;
+    private readonly MainGame game;
 
     private int frame;
     private double elapsed;
@@ -21,7 +22,7 @@ internal class Animation : Component, IAnimation, ILoadable, LateStartStudio.Her
     private Rectangle source;
     private Texture2D texture;
 
-    public Animation(AnimationData data, MonoGame.Game game)
+    public Animation(AnimationData data, MainGame game)
     {
         this.data = data;
         this.game = game;

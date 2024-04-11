@@ -10,7 +10,7 @@ namespace LateStartStudio.Hero6.Items;
 
 internal class ItemGameComponent : DrawableEntityBase<Item>
 {
-    public ItemGameComponent(Item entity, MonoGame.Game game)
+    public ItemGameComponent(Item entity, MainGame game)
         : base(entity, MonoGame.UpdateOrder.Item, MonoGame.DrawOrder.Item, game)
     {
     }

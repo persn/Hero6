@@ -4,13 +4,14 @@
 // 'LICENSE.CODE.md', which is a part of this source code package.
 // </copyright>
 
+using LateStartStudio.Hero6.MonoGame;
 using Microsoft.Xna.Framework;
 
 namespace LateStartStudio.Hero6.Threading;
 
 internal class UpdateSynchronizationGameComponent : GameComponent
 {
-    public UpdateSynchronizationGameComponent(MonoGame.Game game) : base(game)
+    public UpdateSynchronizationGameComponent(MainGame game) : base(game)
     {
         UpdateOrder = (int)MonoGame.UpdateOrder.Base;
     }

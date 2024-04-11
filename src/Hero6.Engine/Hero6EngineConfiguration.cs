@@ -47,7 +47,7 @@ namespace LateStartStudio.Hero6.Engine.Extensions
 
             try
             {
-                using (var game = services.GetService<Game>())
+                using (var game = services.GetService<MainGame>())
                 {
                     GlobalServiceProvider.Instance = services;
 
@@ -97,10 +97,10 @@ namespace LateStartStudio.Hero6.Engine.Extensions
                 services
 
                     // MonoGame constructs
-                    .AddSingleton<Game>() // Entry point
-                    .AddSingleton(s => s.GetService<Game>().Content)
-                    .AddSingleton(s => s.GetService<Game>().GraphicsDeviceManager)
-                    .AddSingleton(s => s.GetService<Game>().SpriteBatch)
+                    .AddSingleton<MainGame>() // Entry point
+                    .AddSingleton(s => s.GetService<MainGame>().Content)
+                    .AddSingleton(s => s.GetService<MainGame>().GraphicsDeviceManager)
+                    .AddSingleton(s => s.GetService<MainGame>().SpriteBatch)
                     .AddSingleton(ConfigureGameComponents)
 
                     // Hero6 services

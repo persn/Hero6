@@ -10,7 +10,7 @@ namespace LateStartStudio.Hero6.Rooms;
 
 internal class RoomGameComponent : DrawableEntityBase<Room>
 {
-    public RoomGameComponent(Room room, Game game)
+    public RoomGameComponent(Room room, MainGame game)
         : base(room, MonoGame.UpdateOrder.Room, MonoGame.DrawOrder.Room, game)
     {
     }

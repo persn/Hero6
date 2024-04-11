@@ -10,7 +10,7 @@ namespace LateStartStudio.Hero6.Characters;
 
 internal class CharacterGameComponent : DrawableEntityBase<Character>
 {
-    public CharacterGameComponent(Character entity, LateStartStudio.Hero6.MonoGame.Game game)
+    public CharacterGameComponent(Character entity, MainGame game)
         : base(entity, MonoGame.UpdateOrder.Character, MonoGame.DrawOrder.Character, game)
     {
     }

@@ -1,4 +1,4 @@
-// <copyright file="Game.cs" company="Late Start Studio">
+// <copyright file="MainGame.cs" company="Late Start Studio">
 // Copyright (C) Late Start Studio
 // This file is subject to the terms and conditions of the MIT license specified in the file
 // 'LICENSE.CODE.md', which is a part of this source code package.
@@ -18,7 +18,7 @@ namespace LateStartStudio.Hero6.MonoGame
     /// <summary>
     /// This is the main type for your game.
     /// </summary>
-    public class Game : Microsoft.Xna.Framework.Game
+    public class MainGame : Game
     {
         private readonly ILogger logger;
         private readonly IGameSettings gameSettings;
@@ -27,8 +27,8 @@ namespace LateStartStudio.Hero6.MonoGame
 
         private Matrix transform = Matrix.Identity;
 
-        public Game(
-            ILogger<Game> logger,
+        public MainGame(
+            ILogger<MainGame> logger,
             IGameSettings gameSettings,
             IScriptRepository scriptRepository,
             IUserSettings userSettings,
