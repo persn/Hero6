@@ -1,7 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
     <RootNamespace>LateStartStudio.Hero6.Campaigns.RitesOfPassage</RootNamespace>
     <Version>1.0.0</Version>
     <!-- Roslyn is not able to update generated code in the IDE properly when we change the generator code so we use this hack -->

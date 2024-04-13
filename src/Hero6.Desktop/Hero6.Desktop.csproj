@@ -2,7 +2,6 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <OutputType>WinExe</OutputType>
-    <TargetFramework>net7.0</TargetFramework>
     <RootNamespace>LateStartStudio.Hero6</RootNamespace>
     <AssemblyName>Hero6</AssemblyName>
     <ApplicationIcon>Icon.ico</ApplicationIcon>
