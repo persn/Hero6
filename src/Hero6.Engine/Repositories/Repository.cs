@@ -8,7 +8,7 @@ namespace LateStartStudio.Hero6.Repositories;
 
 internal class Repository<T> : IRepository<T> where T : INameable
 {
-    private readonly Dictionary<string, T> repository = new();
+    private readonly Dictionary<string, T> repository = [];
 
     public Repository(IEnumerable<T> items)
     {

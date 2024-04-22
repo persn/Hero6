@@ -6,8 +6,6 @@
 
 using LateStartStudio.Hero6.Animations;
 using LateStartStudio.Hero6.Characters;
-using LateStartStudio.Hero6.Components;
-using LateStartStudio.Hero6.DependencyInjection;
 using LateStartStudio.Hero6.Extensions;
 using LateStartStudio.Hero6.InventoryItems;
 using LateStartStudio.Hero6.Items;
@@ -50,6 +48,9 @@ namespace LateStartStudio.Hero6.Engine.Extensions
                 using (var game = services.GetService<MainGame>())
                 {
                     GlobalServiceProvider.Instance = services;
+
+                    // Run the "design" phase of the game and populate the repositories with data
+                    services.GetRequiredService<Designer>().Run();
 
                     // By adding IGameComponent instances to the Game, Initialize/Load/Update/Draw/Unload handling will be deferred to
                     // MonoGame. We can adjust behavior on the GameLoop by changing our GameComponent implementations.
@@ -103,76 +104,36 @@ namespace LateStartStudio.Hero6.Engine.Extensions
                     .AddSingleton(s => s.GetService<MainGame>().SpriteBatch)
                     .AddSingleton(ConfigureGameComponents)
 
-                    // Hero6 services
+                    // .NET wrappers
                     .AddSingleton<IFileWrapper, FileWrapper>()
                     .AddSingleton<IDirectoryWrapper, DirectoryWrapper>()
 
+                    // Hero6 services
                     .AddSingleton<MonoGameUserInterfaces>()
                     .AddSingleton<IUserInterfaces>(s => s.GetService<MonoGameUserInterfaces>())
-                    .AddSingleton<IScriptRepository, ScriptRepository>()
 
                     .AddSingleton<IGameSettings, GameSettings>()
                     .AddSingleton<IUserSettings, UserSettings>()
-                    .AddSingleton<FileLoggerSettings>()
-                    .AddHostedService<FileLoggerHostedService>()
                     .AddSingleton<IPlatformInfo, PlatformInfo>()
-
-                    .AddSingleton<IControllerRepository, ControllerRepositoryProvider>()
 
                     .AddSingleton<IMouseCore, MouseCore>()
                     .AddSingleton<IMouse, Mouse>()
 
                     .AddSingleton<IVerbHandler, VerbHandler>()
 
+                    .AddSingleton<Designer>()
+
+                    // Logging
+                    .AddSingleton<FileLoggerSettings>()
+                    .AddHostedService<FileLoggerHostedService>()
+
                     // Repositories
-                    .AddSingleton<IRepository<IAnimation>>(s => s.CreateInstance<Repository<IAnimation>>(s
-                        .GetRequiredService<IEnumerable<AnimationData>>()
-                        .Select(data =>
-                        {
-                            return s.CreateInstance<Animation>(data);
-                        })))
-                    .AddSingleton<IRepository<ICharacterAnimation>>(s => s.CreateInstance<Repository<ICharacterAnimation>>(s
-                        .GetRequiredService<IEnumerable<CharacterAnimationData>>()
-                        .Select(data =>
-                        {
-                            return s.CreateInstance<CharacterAnimation>(data);
-                        })))
-                    .AddSingleton<ICharacterRepository>(s => s.CreateInstance<CharacterRepository>(s
-                        .GetRequiredService<IEnumerable<CharacterData>>()
-                        .Select(data =>
-                        {
-                            var position = s.CreateInstance<SystemDrawingPositionComponent>();
-                            var visibility = s.CreateInstance<VisibleComponent>();
-                            var scriptable = s.CreateInstance<ScriptComponent<CharacterEvent>>();
-                            var moveable = s.CreateInstance<MoveableComponent>();
-                            return s.CreateInstance<Character>(data, position, visibility, scriptable, moveable);
-                        })))
+                    .AddSingleton<IControllerRepository, ControllerRepositoryProvider>()
+                    .AddSingleton(typeof(IRepository<>), typeof(Repository<>))
+                    .AddSingleton<ICharacterRepository, CharacterRepository>()
                     .AddSingleton<IRepository<ICharacter>>(s => s.GetRequiredService<ICharacterRepository>())
-                    .AddSingleton<IRepository<IInventoryItem>>(s => s.CreateInstance<Repository<IInventoryItem>>(s
-                        .GetRequiredService<IEnumerable<InventoryItemData>>()
-                        .Select(data =>
-                        {
-                            return s.CreateInstance<InventoryItem>(data);
-                        })))
-                    .AddSingleton<IRepository<IItem>>(s => s.CreateInstance<Repository<IItem>>(s
-                        .GetRequiredService<IEnumerable<ItemData>>()
-                        .Select(data =>
-                        {
-                            var position = s.CreateInstance<SystemDrawingPositionComponent>();
-                            var visibility = s.CreateInstance<VisibleComponent>();
-                            var scriptable = s.CreateInstance<ScriptComponent<ItemEvent>>();
-                            var spriteRenderer = s.CreateInstance<SpriteRendererComponent>();
-                            return s.CreateInstance<Item>(data, position, visibility, scriptable, spriteRenderer);
-                        })))
-                    .AddSingleton<IRepository<IRoom>>(s => s.CreateInstance<Repository<IRoom>>(s
-                        .GetRequiredService<IEnumerable<RoomData>>()
-                        .Select(data =>
-                        {
-                            var visibility = s.CreateInstance<VisibleComponent>();
-                            var scriptable = s.CreateInstance<HotspotsScriptComponent>(data.HotspotsMask);
-                            var spriteRenderer = s.CreateInstance<SpriteRendererComponent>();
-                            return s.CreateInstance<Room>(data, visibility, scriptable, spriteRenderer);
-                        })));
+                    .AddSingleton<IScriptRepository, ScriptRepository>()
+                ;
             })
             .ConfigureLogging(logging =>
             {
@@ -209,6 +170,8 @@ namespace LateStartStudio.Hero6.Engine.Extensions
                 yield return s.CreateInstance<WalkAreasGameComponent>(c.WalkAreas);
                 yield return s.CreateInstance<HotspotsGameComponent>(c.Get<IScriptComponent<HotspotEvent>>());
             }
+
+            yield return s.CreateInstance<ScriptsGameComponent>();
         }
     }
 }

@@ -4,6 +4,8 @@
 // 'LICENSE.CODE.md', which is a part of this source code package.
 // </copyright>
 
+using LateStartStudio.Hero6.Repositories;
+
 namespace LateStartStudio.Hero6.Scripts;
 
 /// <summary>
@@ -15,11 +17,19 @@ namespace LateStartStudio.Hero6.Scripts;
 /// interface as clean as possible which reduces boilerplate code for the game developers, and it also allows the
 /// engine developers flexibility because they'll have less code to maintain compatability for.
 /// </remarks>
-public abstract class Script
+public abstract class Script : INameable
 {
-    public virtual void Initialize()
+    public string Name => GetType().FullName;
+
+    public virtual void Design(IDesigner builder)
     {
+        // Intentionally left empty
     }
 
-    public virtual Task InitializeAsync() => Task.CompletedTask;
+    public virtual void Initialize()
+    {
+        // Intentionally left empty
+    }
+
+    public virtual Task InitializeAsync() => Task.CompletedTask; // Intentionally left empty
 }

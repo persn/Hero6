@@ -5,7 +5,6 @@
 // </copyright>
 
 using LateStartStudio.Hero6.Components;
-using LateStartStudio.Hero6.Repositories;
 
 namespace LateStartStudio.Hero6.Scripts;
 
@@ -18,44 +17,17 @@ internal interface IScriptComponent<TEvent> : IComponent where TEvent : Enum
     bool Invoke(int x, int y, TEvent @event);
 }
 
-internal class ScriptComponent<TEvent> : Component, IScriptComponent<TEvent>
+internal class ScriptComponent<TEvent>(Dictionary<TEvent, Func<Task>> events) : Component, IScriptComponent<TEvent>
     where TEvent : Enum
 {
-    private readonly IScriptRepository repository;
-    private readonly Dictionary<TEvent, ScriptMethod> events = new();
-
-    public ScriptComponent(IScriptRepository repository)
-    {
-        this.repository = repository;
-    }
-
     public bool Invoke(int x, int y, TEvent @event)
     {
         if (Parent.Get<IPositionComponent>().Intersects(x, y) && events.TryGetValue(@event, out var scriptMethod))
         {
-            scriptMethod?.Invoke();
+            _ = scriptMethod?.Invoke();
             return true;
         }
 
         return false;
-    }
-
-    public override void Initialize()
-    {
-        base.Initialize();
-
-        if (Parent is INameable nameable)
-        {
-            foreach (var scriptMethod in repository.GetScriptMethods(nameable.Name))
-            {
-                if (scriptMethod.Attribute is ScriptEventAttribute<TEvent> itemAttribute)
-                {
-                    var @event = itemAttribute.Event;
-                    events[@event] = scriptMethod;
-                }
-            }
-        }
-        else
-            throw new Exception(@$"Parent ""{Parent.GetType().Name}"" must implement interface ""{nameof(INameable)}"" in order to be scriptable.");
     }
 }

@@ -4,6 +4,7 @@
 // 'LICENSE.CODE.md', which is a part of this source code package.
 // </copyright>
 
+using LateStartStudio.Hero6.Characters;
 using LateStartStudio.Hero6.Scripts;
 
 namespace LateStartStudio.Hero6.Campaigns.RitesOfPassage;
@@ -12,7 +13,6 @@ internal class GlobalScript : Script
 {
     public override void Initialize()
     {
-        base.Initialize();
         API.Characters.Hero.SetAsPlayer();
     }
 }

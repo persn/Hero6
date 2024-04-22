@@ -6,10 +6,15 @@
 
 using Microsoft.Extensions.DependencyInjection;
 
-namespace LateStartStudio.Hero6.Extensions;
+namespace LateStartStudio.Hero6.DependencyInjection;
 
 internal static class ServiceProviderExtensions
 {
+    public static object CreateInstance(this IServiceProvider serviceProvider, Type type, params object[] parameters)
+    {
+        return ActivatorUtilities.CreateInstance(serviceProvider, type, parameters);
+    }
+
     public static T CreateInstance<T>(this IServiceProvider serviceProvider, params object[] parameters)
     {
         return ActivatorUtilities.CreateInstance<T>(serviceProvider, parameters);

@@ -6,7 +6,6 @@
 
 using System.Diagnostics;
 using LateStartStudio.Hero6.Extensions;
-using LateStartStudio.Hero6.Scripts;
 using LateStartStudio.Hero6.Services.Settings;
 using LateStartStudio.Hero6.Services.UserInterfaces;
 using Microsoft.Extensions.Logging;
@@ -22,7 +21,6 @@ namespace LateStartStudio.Hero6.MonoGame
     {
         private readonly ILogger logger;
         private readonly IGameSettings gameSettings;
-        private readonly IScriptRepository scriptRepository;
         private readonly MonoGameUserInterfaces ui;
 
         private Matrix transform = Matrix.Identity;
@@ -30,7 +28,6 @@ namespace LateStartStudio.Hero6.MonoGame
         public MainGame(
             ILogger<MainGame> logger,
             IGameSettings gameSettings,
-            IScriptRepository scriptRepository,
             IUserSettings userSettings,
             MonoGameUserInterfaces ui)
         {
@@ -38,7 +35,6 @@ namespace LateStartStudio.Hero6.MonoGame
 
             this.logger = logger;
             this.gameSettings = gameSettings;
-            this.scriptRepository = scriptRepository;
             this.ui = ui;
 
             Content.RootDirectory = "Content";
@@ -83,12 +79,6 @@ namespace LateStartStudio.Hero6.MonoGame
             ui.Initialize();
 
             base.Initialize();
-
-            foreach (var script in scriptRepository.GetScripts())
-            {
-                script.Initialize();
-                script.InitializeAsync().GetAwaiter().GetResult(); // TODO await this properly
-            }
 
             sw.Stop();
             logger.LogInformation($"Game initialized after {sw.Elapsed}.");

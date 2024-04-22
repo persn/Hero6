@@ -8,22 +8,6 @@
     <CompilerGeneratedFilesOutputPath>$(ProjectDir)Generated</CompilerGeneratedFilesOutputPath>-->
   </PropertyGroup>
   <ItemGroup>
-    <None Remove="Animations\**\*.animation.json" />
-    <None Remove="Animations\**\*.characteranimation.json" />
-    <None Remove="Characters\**\*.character.json" />
-    <None Remove="InventoryItems\**\*.inventoryitem.json" />
-    <None Remove="Items\**\*.item.json" />
-    <None Remove="Rooms\**\*.room.json" />
-  </ItemGroup>
-  <ItemGroup>
-    <AdditionalFiles Include="Animations\**\*.animation.json" />
-    <AdditionalFiles Include="Animations\**\*.characteranimation.json" />
-    <AdditionalFiles Include="Characters\**\*.character.json" />
-    <AdditionalFiles Include="InventoryItems\**\*.inventoryitem.json" />
-    <AdditionalFiles Include="Items\**\*.item.json" />
-    <AdditionalFiles Include="Rooms\**\*.room.json" />
-  </ItemGroup>
-  <ItemGroup>
     <PackageReference Include="Microsoft.Extensions.Hosting" />
   </ItemGroup>
   <ItemGroup>

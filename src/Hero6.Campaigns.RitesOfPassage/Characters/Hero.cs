@@ -11,28 +11,29 @@ using LateStartStudio.Hero6.Services.UserInterfaces;
 
 namespace LateStartStudio.Hero6.Campaigns.RitesOfPassage.Characters;
 
-public class HeroScript : Script
+public class HeroScript(IUserInterfaces userInterfaces) : Script
 {
-    private readonly IUserInterfaces userInterfaces;
+    private readonly IUserInterfaces userInterfaces = userInterfaces;
 
-    public HeroScript(IUserInterfaces userInterfaces)
-    {
-        this.userInterfaces = userInterfaces;
-    }
+    public override void Design(IDesigner designer) => designer
+        .Add<ICharacterBuilder>("Hero", builder => builder
+            .WithIdleAnimation("Hero Idle")
+            .WithMoveAnimation("Hero Walk")
+            .OnLook(OnLook)
+            .OnGrab(OnGrab)
+            .OnTalk(OnTalk))
+        ;
 
-    [ScriptEvent<CharacterEvent>(API.Characters.HeroName, CharacterEvent.Look)]
     public void OnLook()
     {
         userInterfaces.Current.ShowTextBox(Strings.HeroLook);
     }
 
-    [ScriptEvent<CharacterEvent>(API.Characters.HeroName, CharacterEvent.Grab)]
     public void OnGrab()
     {
         userInterfaces.Current.ShowTextBox(Strings.HeroGrab);
     }
 
-    [ScriptEvent<CharacterEvent>(API.Characters.HeroName, CharacterEvent.Talk)]
     public void OnTalk()
     {
         userInterfaces.Current.ShowTextBox(Strings.HeroTalk);

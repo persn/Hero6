@@ -12,14 +12,22 @@ using LateStartStudio.Hero6.Services.UserInterfaces;
 
 namespace LateStartStudio.Hero6.Campaigns.RitesOfPassage.Rooms.Albion;
 
-public class HillOverAlbionScript : Script
+public class HillOverAlbionScript(IUserInterfaces userInterfaces) : Script
 {
-    private readonly IUserInterfaces userInterfaces;
+    private readonly IUserInterfaces userInterfaces = userInterfaces;
 
-    public HillOverAlbionScript(IUserInterfaces userInterfaces)
-    {
-        this.userInterfaces = userInterfaces;
-    }
+    public override void Design(IDesigner designer) => designer
+        .Add<IRoomBuilder>("Hill Over Albion", builder => builder
+            .WithBackground("Campaigns/Rites of Albion/Rooms/Albion/Hill Over Albion/Background")
+            .WithWalkAreas("Campaigns/Rites of Albion/Rooms/Albion/Hill Over Albion/WalkAreas")
+            .WithHotspots("Campaigns/Rites of Albion/Rooms/Albion/Hill Over Albion/Hotspots", builder => builder
+                .For(Hotspots.NorthExit, builder => builder
+                    .OnStandingOn(OnWhileStandingInNorthExit))
+                .For(Hotspots.AlbionSign, builder => builder
+                    .OnLook(OnLookAlbionSign)
+                    .OnGrab(OnGrabAlbionSign)
+                    .OnTalk(OnTalkAlbionSign))))
+        ;
 
     public override void Initialize()
     {
@@ -36,25 +44,21 @@ public class HillOverAlbionScript : Script
         room.Add(bentSword);
     }
 
-    [HotspotEvent(API.Rooms.HillOverAlbionName, Hotspots.NorthExit, HotspotEvent.StandingOn)]
-    public void OnWhileStandingInNorthExit(StandingOn e)
+    public void OnWhileStandingInNorthExit()
     {
-        e.Character.ChangeRoom(API.Rooms.Fountain, 100, 200, CharacterDirection.CenterUp);
+        API.Characters.Player.ChangeRoom(API.Rooms.Fountain, 100, 200, CharacterDirection.CenterUp);
     }
 
-    [HotspotEvent(API.Rooms.HillOverAlbionName, Hotspots.AlbionSign, HotspotEvent.Look)]
     public void OnLookAlbionSign()
     {
         userInterfaces.Current.ShowTextBox(Strings.AlbionSignLook);
     }
 
-    [HotspotEvent(API.Rooms.HillOverAlbionName, Hotspots.AlbionSign, HotspotEvent.Grab)]
     public void OnGrabAlbionSign()
     {
         userInterfaces.Current.ShowTextBox(Strings.AlbionSignGrab);
     }
 
-    [HotspotEvent(API.Rooms.HillOverAlbionName, Hotspots.AlbionSign, HotspotEvent.Talk)]
     public void OnTalkAlbionSign()
     {
         userInterfaces.Current.ShowTextBox(Strings.AlbionSignTalk);

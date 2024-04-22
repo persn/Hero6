@@ -5,13 +5,12 @@
 // </copyright>
 
 using System;
-using System.Dynamic;
-using System.IO;
 using System.Linq;
 using System.Text;
 using Microsoft.CodeAnalysis;
+using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Text;
-using Newtonsoft.Json;
 
 namespace LateStartStudio.Hero6.Generators
 {
@@ -30,6 +29,11 @@ $@"     public static ICharacter Player => GlobalServiceProvider.Instance.GetSer
             GenerateEntityAPI(context, "InventoryItem");
             GenerateEntityAPI(context, "Item");
             GenerateEntityAPI(context, "Room");
+
+            context.RegisterPostInitializationOutput(callback =>
+            {
+                callback.AddSource($"GlobalUsings.API.g.cs", SourceText.From("global using LateStartStudio.Hero6.API;", Encoding.UTF8));
+            });
         }
 
         private void GenerateEntityAPI(IncrementalGeneratorInitializationContext context, string entity, Action<StringBuilder> add = null)
@@ -37,15 +41,33 @@ $@"     public static ICharacter Player => GlobalServiceProvider.Instance.GetSer
 
         private void GenerateEntityAPI(IncrementalGeneratorInitializationContext context, string entity, string namespaceOverride, Action<StringBuilder> add = null)
         {
-            var fileExtension = $".{entity.ToLower()}.json";
-            var entityData = context.AdditionalTextsProvider
-                .Where(t => t.Path.EndsWith(fileExtension))
-                .Select((text, cancellationToken) => (
-                    fileName: Path.GetFileNameWithoutExtension(text.Path.Replace(fileExtension, string.Empty)),
-                    content: JsonConvert.DeserializeObject<ExpandoObject>(text.GetText().ToString())))
+            ////if (!System.Diagnostics.Debugger.IsAttached)
+            ////    System.Diagnostics.Debugger.Launch();
+
+            var builders = context.SyntaxProvider.CreateSyntaxProvider((node, cancellationToken) =>
+            {
+                if (node is InvocationExpressionSyntax invocation && invocation.Expression is MemberAccessExpressionSyntax memberAccess)
+                {
+                    return invocation.ArgumentList.Arguments.Any() && memberAccess.Name.ToString().StartsWith($"Add<I{entity}Builder>");
+                }
+
+                return false;
+            },
+            (transformContext, cancellationToken) =>
+            {
+                return transformContext.Node as InvocationExpressionSyntax;
+            });
+
+            // Use compilation -> semantic model to check full namespace and name of the methods we're analyzing to verify their identity
+            var methodsCompilation = builders
+                .Combine(context.CompilationProvider)
+                .Select((invocation, cancellationToken) =>
+                    (invocation: invocation.Left,
+                    methodSymbol: invocation.Right.GetSemanticModel(invocation.Left.SyntaxTree).GetSymbolInfo(invocation.Left, cancellationToken).Symbol as IMethodSymbol))
+                .Where(m => m.methodSymbol?.ToDisplayString().StartsWith($"LateStartStudio.Hero6.Scripts.IDesigner.Add") ?? false)
                 .Collect();
 
-            context.RegisterSourceOutput(entityData, (spc, entities) =>
+            context.RegisterSourceOutput(methodsCompilation, (spc, methods) =>
             {
                 var sb = new StringBuilder();
                 sb.AppendLine(
@@ -58,44 +80,21 @@ namespace LateStartStudio.Hero6.API;
 
 public static class {entity}s
 {{");
-                foreach (var (fileName, content) in entities)
+
+                foreach (var m in methods)
                 {
-                    dynamic dynamicContent = content;
+                    var name = m.invocation.ArgumentList.Arguments.First().ToString().Replace("\"", string.Empty);
 
-                    try
-                    {
-                        _ = dynamicContent.Name;
-                    }
-                    catch
-                    {
-                        throw new Exception($@"Entity {fileName} is missing a valid Name from the json.");
-                    }
-
-                    sb.AppendLine(
-$@"     public const string {fileName}Name = ""{dynamicContent.Name}"";
-     public static I{entity} {fileName} => {entity}Repository[{fileName}Name];");
+                    sb.AppendLine($@"     public static I{entity} {name.Replace(" ", string.Empty)} => {entity}Repository[""{name}""];");
                 }
 
                 sb.AppendLine(
 $@"     private static IRepository<I{entity}> {entity}Repository => GlobalServiceProvider.Instance.GetService<IRepository<I{entity}>>();");
 
                 add?.Invoke(sb);
-
                 sb.AppendLine($"}}");
 
                 spc.AddSource($"{entity}sAPI.g.cs", sb.ToString());
-            });
-        }
-    }
-
-    [Generator]
-    public class GlobalUsingsAPIGenerator : IIncrementalGenerator
-    {
-        public void Initialize(IncrementalGeneratorInitializationContext context)
-        {
-            context.RegisterPostInitializationOutput(callback =>
-            {
-                callback.AddSource($"GlobalUsings.API.g.cs", SourceText.From("global using LateStartStudio.Hero6.API;", Encoding.UTF8));
             });
         }
     }

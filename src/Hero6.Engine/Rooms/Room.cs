@@ -14,8 +14,8 @@ namespace LateStartStudio.Hero6.Rooms;
 internal class Room : Composite, IRoom
 {
     private readonly ICharacterRepository characterRepository;
-    private readonly List<Item> items = new();
-    private readonly List<Character> characters = new();
+    private readonly List<Item> items = [];
+    private readonly List<Character> characters = [];
 
     public Room(
         RoomData data,

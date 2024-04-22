@@ -12,17 +12,20 @@ using LateStartStudio.Hero6.Services.UserInterfaces;
 
 namespace LateStartStudio.Hero6.Campaigns.RitesOfPassage.Characters;
 
-public class LlewellaScript : Script
+public class LlewellaScript(IUserInterfaces userInterfaces) : Script
 {
-    private readonly IUserInterfaces userInterfaces;
+    private readonly IUserInterfaces userInterfaces = userInterfaces;
 
     private ICharacter llewella;
     private IInventoryItem bentSword;
 
-    public LlewellaScript(IUserInterfaces userInterfaces)
-    {
-        this.userInterfaces = userInterfaces;
-    }
+    public override void Design(IDesigner designer) => designer
+        .Add<ICharacterBuilder>("Llewella", builder => builder
+            .WithIdleAnimation("Llewella Idle")
+            .OnLook(OnLook)
+            .OnGrab(OnGrab)
+            .OnTalk(OnTalk))
+        ;
 
     public override void Initialize()
     {
@@ -31,19 +34,16 @@ public class LlewellaScript : Script
         bentSword = API.InventoryItems.BentSword;
     }
 
-    [ScriptEvent<CharacterEvent>(API.Characters.LlewellaName, CharacterEvent.Look)]
     public void OnLook()
     {
         userInterfaces.Current.ShowTextBox(Strings.LlewellaLook);
     }
 
-    [ScriptEvent<CharacterEvent>(API.Characters.LlewellaName, CharacterEvent.Grab)]
     public void OnGrab()
     {
         userInterfaces.Current.ShowTextBox(Strings.LlewellaGrab);
     }
 
-    [ScriptEvent<CharacterEvent>(API.Characters.LlewellaName, CharacterEvent.Talk)]
     public void OnTalk()
     {
         if (llewella.Has(bentSword))

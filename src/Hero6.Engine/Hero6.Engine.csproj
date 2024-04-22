@@ -25,6 +25,9 @@
     <ProjectReference Include="..\Search\Search.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <Using Include="LateStartStudio.Hero6.DependencyInjection" />
+  </ItemGroup>
+  <ItemGroup>
     <TrimmerRootAssembly Include="Microsoft.Xna.Framework.Content.ContentTypeReader" Visible="false" />
   </ItemGroup>
 </Project>

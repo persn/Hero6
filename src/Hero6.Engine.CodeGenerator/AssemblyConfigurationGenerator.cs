@@ -47,42 +47,7 @@ namespace LateStartStudio.Hero6
                 {
                     string formattedSource;
 
-                    if (group.Key == "LateStartStudio.Hero6.ModuleController.Campaigns.CampaignModule")
-                    {
-                        formattedSource =
-@"                    services.AddSingleton<LateStartStudio.Hero6.ModuleController.Campaigns.ICampaignModule, {0}>();";
-                    }
-                    else if (group.Key == "LateStartStudio.Hero6.ModuleController.Campaigns.Animations.CharacterAnimationModule")
-                    {
-                        formattedSource =
-@"                    services.AddSingleton<{0}>();";
-                    }
-                    else if (group.Key == "LateStartStudio.Hero6.ModuleController.Campaigns.Animations.AnimationModule")
-                    {
-                        formattedSource =
-@"                    services.AddSingleton<{0}>();";
-                    }
-                    else if (group.Key == "LateStartStudio.Hero6.ModuleController.Campaigns.Characters.CharacterModule")
-                    {
-                        formattedSource =
-@"                    services.AddSingleton<{0}>();";
-                    }
-                    else if (group.Key == "LateStartStudio.Hero6.ModuleController.Campaigns.InventoryItems.InventoryItemModule")
-                    {
-                        formattedSource =
-@"                    services.AddSingleton<{0}>();";
-                    }
-                    else if (group.Key == "LateStartStudio.Hero6.ModuleController.Campaigns.Items.ItemModule")
-                    {
-                        formattedSource =
-@"                    services.AddSingleton<{0}>();";
-                    }
-                    else if (group.Key == "LateStartStudio.Hero6.ModuleController.Campaigns.Rooms.RoomModule")
-                    {
-                        formattedSource =
-@"                    services.AddSingleton<{0}>();";
-                    }
-                    else if (group.Key == "LateStartStudio.Hero6.ModuleController.UserInterfaces.UserInterfaceModule")
+                    if (group.Key == "LateStartStudio.Hero6.ModuleController.UserInterfaces.UserInterfaceModule")
                     {
                         formattedSource =
 @"                    services.AddSingleton<LateStartStudio.Hero6.ModuleController.UserInterfaces.IUserInterfaceModule, {0}>();";

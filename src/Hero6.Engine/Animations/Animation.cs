@@ -11,22 +11,16 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace LateStartStudio.Hero6.Animations;
 
-internal class Animation : Component, IAnimation, ILoadable, LateStartStudio.Hero6.Components.IDrawable
+internal class Animation(AnimationData data, MainGame game) : Component, IAnimation, ILoadable, LateStartStudio.Hero6.Components.IDrawable
 {
-    private readonly AnimationData data;
-    private readonly MainGame game;
+    private readonly AnimationData data = data;
+    private readonly MainGame game = game;
 
     private int frame;
     private double elapsed;
     private Rectangle destination;
     private Rectangle source;
     private Texture2D texture;
-
-    public Animation(AnimationData data, MainGame game)
-    {
-        this.data = data;
-        this.game = game;
-    }
 
     public string Name => data.Name;
 

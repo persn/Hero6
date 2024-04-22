@@ -12,14 +12,22 @@ using LateStartStudio.Hero6.Services.UserInterfaces;
 
 namespace LateStartStudio.Hero6.Campaigns.RitesOfPassage.Rooms.Albion;
 
-public class FountainScript : Script
+public class FountainScript(IUserInterfaces userInterfaces) : Script
 {
-    private readonly IUserInterfaces userInterfaces;
+    private readonly IUserInterfaces userInterfaces = userInterfaces;
 
-    public FountainScript(IUserInterfaces userInterfaces)
-    {
-        this.userInterfaces = userInterfaces;
-    }
+    public override void Design(IDesigner designer) => designer
+        .Add<IRoomBuilder>("Fountain", builder => builder
+            .WithBackground("Campaigns/Rites of Albion/Rooms/Albion/Fountain/Background")
+            .WithWalkAreas("Campaigns/Rites of Albion/Rooms/Albion/Fountain/WalkAreas")
+            .WithHotspots("Campaigns/Rites of Albion/Rooms/Albion/Fountain/Hotspots", builder => builder
+                .For(Hotspots.SouthExit, builder => builder
+                    .OnStandingOn(OnWhileStandingOnSouthExit))
+                .For(Hotspots.Fountain, builder => builder
+                    .OnLook(OnLookFountain)
+                    .OnGrab(OnGrabFountain)
+                    .OnTalk(OnTalkFountain))))
+        ;
 
     public override void Initialize()
     {
@@ -28,25 +36,21 @@ public class FountainScript : Script
         API.Characters.Llewella.ChangeRoom(API.Rooms.Fountain, 200, 150);
     }
 
-    [HotspotEvent(API.Rooms.FountainName, Hotspots.SouthExit, HotspotEvent.StandingOn)]
-    public void OnWhileStandingOnSouthExit(StandingOn e)
+    public void OnWhileStandingOnSouthExit()
     {
-        e.Character.ChangeRoom(API.Rooms.HillOverAlbion, 220, 190, CharacterDirection.CenterDown);
+        API.Characters.Player.ChangeRoom(API.Rooms.HillOverAlbion, 220, 190, CharacterDirection.CenterDown);
     }
 
-    [HotspotEvent(API.Rooms.FountainName, Hotspots.Fountain, HotspotEvent.Look)]
     public void OnLookFountain()
     {
         userInterfaces.Current.ShowTextBox(Strings.FountainLook);
     }
 
-    [HotspotEvent(API.Rooms.FountainName, Hotspots.Fountain, HotspotEvent.Grab)]
     public void OnGrabFountain()
     {
         userInterfaces.Current.ShowTextBox(Strings.FountainGrab);
     }
 
-    [HotspotEvent(API.Rooms.FountainName, Hotspots.Fountain, HotspotEvent.Talk)]
     public void OnTalkFountain()
     {
         userInterfaces.Current.ShowTextBox(Strings.FountainTalk);

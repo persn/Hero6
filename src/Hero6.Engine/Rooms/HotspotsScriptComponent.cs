@@ -5,11 +5,9 @@
 // </copyright>
 
 using System.Drawing;
-using System.Globalization;
 using LateStartStudio.Hero6.Characters;
 using LateStartStudio.Hero6.Components;
 using LateStartStudio.Hero6.Extensions;
-using LateStartStudio.Hero6.Repositories;
 using LateStartStudio.Hero6.Scripts;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -18,36 +16,25 @@ namespace LateStartStudio.Hero6.Rooms;
 internal class HotspotsScriptComponent : Component, IScriptComponent<HotspotEvent>
 {
     private readonly string source;
-    private readonly IScriptRepository repository;
+    private readonly Dictionary<(HotspotEvent, Color), Func<Task>> events;
     private readonly ICharacterRepository characterRepository;
-    private readonly Dictionary<(HotspotEvent, Color), ScriptMethod> events = new();
 
     private Color[,] buffer;
 
-    public HotspotsScriptComponent(string source, IScriptRepository repository, ICharacterRepository characterRepository)
+    public HotspotsScriptComponent(string source, Dictionary<(HotspotEvent, Color), Func<Task>> events, ICharacterRepository characterRepository)
     {
         this.source = source;
-        this.repository = repository;
+        this.events = events;
         this.characterRepository = characterRepository;
     }
 
-    public bool Invoke(int x, int y, HotspotEvent @event) => Invoke(x, y, @event, s => s.Invoke());
-
-    public override void Initialize()
+    public bool Invoke(int x, int y, HotspotEvent @event)
     {
-        base.Initialize();
-
-        if (Parent is INameable nameable)
-        {
-            foreach (var scriptMethod in repository.GetScriptMethods(nameable.Name))
-            {
-                if (scriptMethod.Attribute is HotspotEventAttribute hotspotAttribute)
-                {
-                    var color = Color.FromArgb(int.Parse(hotspotAttribute.Id.Replace("#", string.Empty), NumberStyles.HexNumber));
-                    events[(hotspotAttribute.Event, color)] = scriptMethod;
-                }
-            }
-        }
+        var pixel = buffer[x, y];
+        var res = events.TryGetValue((@event, pixel), out var scriptMethod);
+        if (res)
+            _ = scriptMethod?.Invoke();
+        return res;
     }
 
     public override void Update(Microsoft.Xna.Framework.GameTime time)
@@ -55,7 +42,7 @@ internal class HotspotsScriptComponent : Component, IScriptComponent<HotspotEven
         base.Update(time);
         var currentRoom = characterRepository.Player.Room;
 
-        foreach (var character in currentRoom.Characters.Cast<Character>())
+        foreach (var character in currentRoom.Characters.Cast<Character>().ToArray())
             StandingOn(character);
     }
 
@@ -84,15 +71,6 @@ internal class HotspotsScriptComponent : Component, IScriptComponent<HotspotEven
 
     private void StandingOn(Character character)
     {
-        Invoke(character.FeetX, character.FeetY, HotspotEvent.StandingOn, s => s.Invoke(new StandingOn(character)));
-    }
-
-    private bool Invoke(int x, int y, HotspotEvent @event, Action<ScriptMethod> doScriptMethod)
-    {
-        var pixel = buffer[x, y];
-        var res = events.TryGetValue((@event, pixel), out var scriptMethod);
-        if (res)
-            doScriptMethod.Invoke(scriptMethod);
-        return res;
+        Invoke(character.FeetX, character.FeetY, HotspotEvent.StandingOn);
     }
 }

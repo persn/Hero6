@@ -11,14 +11,20 @@ using LateStartStudio.Hero6.Scripts;
 
 namespace LateStartStudio.Hero6.Verbs;
 
-internal class VerbHandler : IVerbHandler
+public interface IVerbHandler
 {
-    private readonly ICharacterRepository characterRepository;
+    /// <summary>
+    /// Finds and interact with a spot using input coordinates and the verb.
+    /// </summary>
+    /// <param name="x"></param>
+    /// <param name="y"></param>
+    /// <param name="verb"></param>
+    bool Interact(int x, int y, Verb verb);
+}
 
-    public VerbHandler(ICharacterRepository characterRepository)
-    {
-        this.characterRepository = characterRepository;
-    }
+internal class VerbHandler(ICharacterRepository characterRepository) : IVerbHandler
+{
+    private readonly ICharacterRepository characterRepository = characterRepository;
 
     public bool Interact(int x, int y, Verb verb)
     {

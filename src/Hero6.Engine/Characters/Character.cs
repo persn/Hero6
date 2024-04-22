@@ -32,7 +32,7 @@ internal static class CharacterExtensions
 
 internal class Character : Composite, ICharacter
 {
-    private readonly List<IInventoryItem> inventory = new();
+    private readonly List<IInventoryItem> inventory = [];
 
     private Room room;
     private CharacterAnimation idleAnimation;

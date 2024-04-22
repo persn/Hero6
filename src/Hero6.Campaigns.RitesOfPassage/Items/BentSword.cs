@@ -12,17 +12,20 @@ using LateStartStudio.Hero6.Services.UserInterfaces;
 
 namespace LateStartStudio.Hero6.Campaigns.RitesOfPassage.Items;
 
-public class BentSwordScript : Script
+public class BentSwordScript(IUserInterfaces userInterfaces) : Script
 {
-    private readonly IUserInterfaces userInterfaces;
+    private readonly IUserInterfaces userInterfaces = userInterfaces;
 
     private IItem bentSword;
     private IInventoryItem invBentSword;
 
-    public BentSwordScript(IUserInterfaces userInterfaces)
-    {
-        this.userInterfaces = userInterfaces;
-    }
+    public override void Design(IDesigner designer) => designer
+        .Add<IItemBuilder>("Bent Sword", builder => builder
+            .WithSprite("Campaigns/Rites of Albion/Sprites/Items/Bent Sword")
+            .OnLook(OnLook)
+            .OnGrab(OnGrab)
+            .OnTalk(OnTalk))
+        ;
 
     public override void Initialize()
     {
@@ -31,13 +34,11 @@ public class BentSwordScript : Script
         invBentSword = API.InventoryItems.BentSword;
     }
 
-    [ScriptEvent<ItemEvent>(API.Items.BentSwordName, ItemEvent.Look)]
     public void OnLook()
     {
         userInterfaces.Current.ShowTextBox(Strings.BentSwordLook);
     }
 
-    [ScriptEvent<ItemEvent>(API.Items.BentSwordName, ItemEvent.Grab)]
     public void OnGrab()
     {
         API.Characters.Player.Room.Remove(bentSword);
@@ -45,7 +46,6 @@ public class BentSwordScript : Script
         API.Characters.Player.Add(invBentSword);
     }
 
-    [ScriptEvent<ItemEvent>(API.Items.BentSwordName, ItemEvent.Talk)]
     public void OnTalk()
     {
         userInterfaces.Current.ShowTextBox(Strings.BentSwordTalk);
