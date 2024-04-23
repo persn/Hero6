@@ -4,30 +4,14 @@
 // 'LICENSE.CODE.md', which is a part of this source code package.
 // </copyright>
 
-using LateStartStudio.Hero6.Engine.Extensions;
-using Microsoft.Extensions.Hosting;
+using LateStartStudio.Hero6;
 
-namespace LateStartStudio.Hero6
-{
-    /// <summary>
-    /// The main class.
-    /// </summary>
-    public static class Program
-    {
-        /// <summary>
-        /// The main entry point for the application.
-        /// </summary>
-        [STAThread]
-        public static async Task Main(string[] args)
-        {
-            using IHost host = CreateHostBuilder(args).Build();
-            await host.RunGameAsync();
-        }
+await using var game = Hero6GameBuilder
+    .Create()
+    .ConfigureServices(LateStartStudio.Hero6.Campaigns.RitesOfPassage.Startup.ConfigureServices)
+    .ConfigureServices(LateStartStudio.Hero6.UserInterfaces.SierraVga.Startup.ConfigureServices)
+    .Build();
 
-        public static IHostBuilder CreateHostBuilder(string[] args) => Host
-            .CreateDefaultBuilder(args)
-            .ConfigureHero6Engine()
-            .ConfigureHero6CampaignsRitesOfPassage()
-            .ConfigureHero6UserInterfacesSierraVga();
-    }
-}
+await game
+    ////.Configure()
+    .RunAsync();

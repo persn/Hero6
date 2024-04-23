@@ -11,6 +11,7 @@ using LateStartStudio.Hero6.Items;
 using LateStartStudio.Hero6.Repositories;
 using LateStartStudio.Hero6.Rooms;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 
 namespace LateStartStudio.Hero6.Scripts;
 
@@ -18,13 +19,16 @@ internal class Designer : IDesigner
 {
     private readonly IServiceProvider serviceProvider;
     private readonly IScriptRepository scriptRepository;
+    private readonly ILogger logger;
     private readonly Dictionary<Type, Type> builderMaps;
     private readonly List<IBuilderInternal> builders = [];
 
-    public Designer(IServiceProvider serviceProvider, IScriptRepository scriptRepository)
+    public Designer(IServiceProvider serviceProvider, IScriptRepository scriptRepository, ILogger<Designer> logger)
     {
         this.serviceProvider = serviceProvider;
         this.scriptRepository = scriptRepository;
+        this.logger = logger;
+
         builderMaps = new Dictionary<Type, Type>
         {
             { typeof(IAnimationBuilder), typeof(AnimationBuilder) },
@@ -49,11 +53,16 @@ internal class Designer : IDesigner
 
     internal void Run()
     {
+        var sw = System.Diagnostics.Stopwatch.StartNew();
+
         foreach (var script in scriptRepository.GetAll())
             script.Design(this); // Populate the builders
 
         foreach (var build in builders.OrderBy(b => b is not IAnimationBuilder))
             build.Build(); // Then build
+
+        sw.Stop();
+        logger.LogInformation("Design finished after {time}", sw.Elapsed);
     }
 }
 

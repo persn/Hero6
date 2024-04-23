@@ -20,15 +20,13 @@ namespace LateStartStudio.Hero6.Generators
             var assemblyName = context.Compilation.AssemblyName.Replace(".", string.Empty);
             var source = new StringBuilder(
 $@"using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
 
 namespace LateStartStudio.Hero6
 {{
-    public static class {assemblyName}Generator
+    internal static class {assemblyName}Generator
     {{
-        public static IHostBuilder Configure{assemblyName}(this IHostBuilder hostBuilder) => hostBuilder
-            .ConfigureServices(services =>
-            {{
+        public static void Configure{assemblyName}(this IServiceCollection services)
+        {{
 ");
 
             foreach (var tree in context.Compilation.SyntaxTrees)
@@ -50,22 +48,22 @@ namespace LateStartStudio.Hero6
                     if (group.Key == "LateStartStudio.Hero6.ModuleController.UserInterfaces.UserInterfaceModule")
                     {
                         formattedSource =
-@"                    services.AddSingleton<LateStartStudio.Hero6.ModuleController.UserInterfaces.IUserInterfaceModule, {0}>();";
+@"             services.AddSingleton<LateStartStudio.Hero6.ModuleController.UserInterfaces.IUserInterfaceModule, {0}>();";
                     }
                     else if (group.Key == "LateStartStudio.Hero6.ModuleController.UserInterfaces.Components.WindowModule")
                     {
                         formattedSource =
-@"                    services.AddSingleton<{0}>();";
+@"             services.AddSingleton<{0}>();";
                     }
                     else if (group.Key == "LateStartStudio.Hero6.ModuleController.UserInterfaces.Input.Mouse.CursorModule")
                     {
                         formattedSource =
-@"                    services.AddSingleton<{0}>();";
+@"             services.AddSingleton<{0}>();";
                     }
                     else if (group.Key == "LateStartStudio.Hero6.Scripts.Script")
                     {
                         formattedSource =
-@"                    services.AddSingleton<LateStartStudio.Hero6.Scripts.Script, {0}>();";
+@"             services.AddSingleton<LateStartStudio.Hero6.Scripts.Script, {0}>();";
                     }
                     else
                     {
@@ -80,7 +78,7 @@ namespace LateStartStudio.Hero6
             }
 
             source.Append(
-@"            });
+@"      }
     }
 }
 ");
