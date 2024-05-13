@@ -16,7 +16,7 @@ public class FileLoggerSettings
 {
     private readonly IGameSettings gameSettings;
 
-    public FileLoggerSettings(IGameSettings gameSettings, IUserSettings userSettings)
+    public FileLoggerSettings(IGameSettings gameSettings)
     {
         this.gameSettings = gameSettings;
 

@@ -4,6 +4,7 @@
 // 'LICENSE.CODE.md', which is a part of this source code package.
 // </copyright>
 
+using System.Diagnostics;
 using LateStartStudio.Hero6.Components;
 using LateStartStudio.Hero6.Rooms;
 using LateStartStudio.Hero6.Threading;
@@ -41,19 +42,14 @@ internal interface IMoveableComponent : IComponent
     void Stop();
 }
 
-internal class MoveableComponent : Component, IMoveableComponent
+internal class MoveableComponent(ILogger<MoveableComponent> logger) : Component, IMoveableComponent
 {
-    private readonly ILogger logger;
+    private readonly ILogger logger = logger;
     private readonly Queue<System.Drawing.Point> path = new();
 
     private Character parent;
     private TaskCompletionSource<bool> currentWalkTask;
     private double pixelsToMove;
-
-    public MoveableComponent(ILogger<MoveableComponent> logger)
-    {
-        this.logger = logger;
-    }
 
     public event EventHandlerAsync<EventArgs> IsMovingChanged;
 
@@ -68,6 +64,9 @@ internal class MoveableComponent : Component, IMoveableComponent
         // processing, the logic can encounter unexpected situations, and in worst case crash.
         ForceStop();
 
+        // Moving is handled asynchronously in 2 parts
+        // Part 1: Calculate path
+        var timePathCalculated = Stopwatch.StartNew();
         TaskCompletionSource<bool> walkTask = currentWalkTask = new();
         var from = new System.Drawing.Point(parent.FeetX, parent.FeetY);
         var to = new System.Drawing.Point(x, y);
@@ -100,6 +99,10 @@ internal class MoveableComponent : Component, IMoveableComponent
         if (!pathFound)
             walkTask.SetResult(pathFound);
 
+        timePathCalculated.Stop();
+        logger.LogDebug(@"Path for ""{parent}"" in ""{room}"" was calculated in {time}ms", parent.Name, parent.Room.Name, timePathCalculated.ElapsedMilliseconds);
+
+        // Part 2: Move
         await (IsMovingChanged?.InvokeAsync(this, EventArgs.Empty) ?? Task.CompletedTask);
         var res = await walkTask.Task;
         await (IsMovingChanged?.InvokeAsync(this, EventArgs.Empty) ?? Task.CompletedTask);

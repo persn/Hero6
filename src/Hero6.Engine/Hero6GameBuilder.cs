@@ -90,7 +90,13 @@ public class Hero6GameBuilder
                     Layout = "${message} ${exception:format=tostring}$",
                 });
 
-                loggingBuilder.ClearProviders().AddDebug().AddNLog(loggingConfig);
+                loggingBuilder
+#if DEBUG
+                    .SetMinimumLevel(LogLevel.Debug)
+#endif
+                    .ClearProviders()
+                    .AddDebug()
+                    .AddNLog(loggingConfig);
             })
         ;
     }
