@@ -148,7 +148,8 @@ namespace LateStartStudio.Hero6.MonoGame
             var horScaling = GraphicsDevice.PresentationParameters.BackBufferWidth / gameSettings.NativeWidth;
             var verScaling = GraphicsDevice.PresentationParameters.BackBufferHeight / gameSettings.NativeHeight;
             transform = Matrix.CreateScale(horScaling, verScaling, 1.0f);
-            gameSettings.WindowScale = transform.Scale().ToDotNet();
+            _ = transform.Decompose(out var scale, out _, out _);
+            gameSettings.WindowScale = scale.ToDotNet();
         }
     }
 }
