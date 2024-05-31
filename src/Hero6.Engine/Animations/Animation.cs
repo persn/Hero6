@@ -6,6 +6,7 @@
 
 using LateStartStudio.Hero6.Components;
 using LateStartStudio.Hero6.MonoGame;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -16,6 +17,7 @@ internal class Animation(AnimationData data, MainGame game) : Component, IAnimat
     private readonly AnimationData data = data;
     private readonly MainGame game = game;
 
+    private SpriteBatch spriteBatch;
     private int frame;
     private double elapsed;
     private Rectangle destination;
@@ -26,6 +28,7 @@ internal class Animation(AnimationData data, MainGame game) : Component, IAnimat
 
     public void Load()
     {
+        spriteBatch = Parent.ServiceScope.ServiceProvider.GetRequiredService<SpriteBatch>();
         texture = game.Content.Load<Texture2D>(data.Sprite);
         var position = Parent.Get<IPositionComponent>();
         position.Width = texture.Width / data.Columns;
@@ -62,6 +65,6 @@ internal class Animation(AnimationData data, MainGame game) : Component, IAnimat
 
     public void Draw(GameTime gameTime)
     {
-        game.SpriteBatch.Draw(texture, destination, source, Color.White);
+        spriteBatch.Draw(texture, destination, source, Color.White);
     }
 }

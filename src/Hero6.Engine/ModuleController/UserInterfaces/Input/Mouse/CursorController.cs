@@ -4,6 +4,7 @@
 // 'LICENSE.CODE.md', which is a part of this source code package.
 // </copyright>
 
+using LateStartStudio.Hero6.MonoGame;
 using LateStartStudio.Hero6.Services.UserInterfaces.Input.Mouse;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -47,7 +48,7 @@ namespace LateStartStudio.Hero6.ModuleController.UserInterfaces.Input.Mouse
             Y = mouse.Y;
         }
 
-        public override void Draw(GameTime time) => spriteBatch.Draw(cursor, new Vector2(X, Y), Color.White);
+        public override void Draw(GameTime time) => MainGame.UISpriteBatch.Draw(cursor, new Vector2(X, Y), Color.White);
 
         public bool Equals<T>() => typeof(T) == Module.GetType();
     }

@@ -5,13 +5,12 @@
 // </copyright>
 
 using LateStartStudio.Hero6.MonoGame;
+using LateStartStudio.Hero6.Repositories;
+using Microsoft.Xna.Framework;
 
 namespace LateStartStudio.Hero6.Items;
 
-internal class ItemGameComponent : DrawableEntityBase<Item>
+internal class ItemGameComponent(MainGame game, IRepository<IItem> items, IServiceProvider serviceProvider)
+    : DrawableEntityBase<IItem>(MonoGame.UpdateOrder.Item, MonoGame.DrawOrder.Item, game, items, serviceProvider)
 {
-    public ItemGameComponent(Item entity, MainGame game)
-        : base(entity, MonoGame.UpdateOrder.Item, MonoGame.DrawOrder.Item, game)
-    {
-    }
 }

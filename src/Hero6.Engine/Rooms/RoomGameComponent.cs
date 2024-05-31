@@ -5,13 +5,11 @@
 // </copyright>
 
 using LateStartStudio.Hero6.MonoGame;
+using LateStartStudio.Hero6.Repositories;
 
 namespace LateStartStudio.Hero6.Rooms;
 
-internal class RoomGameComponent : DrawableEntityBase<Room>
+internal class RoomGameComponent(MainGame game, IRepository<IRoom> rooms, IServiceProvider serviceProvider)
+    : DrawableEntityBase<IRoom>(MonoGame.UpdateOrder.Room, MonoGame.DrawOrder.Room, game, rooms, serviceProvider)
 {
-    public RoomGameComponent(Room room, MainGame game)
-        : base(room, MonoGame.UpdateOrder.Room, MonoGame.DrawOrder.Room, game)
-    {
-    }
 }

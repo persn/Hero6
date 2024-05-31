@@ -4,6 +4,7 @@
 // 'LICENSE.CODE.md', which is a part of this source code package.
 // </copyright>
 
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Xna.Framework;
 
 namespace LateStartStudio.Hero6.Components;
@@ -85,6 +86,8 @@ internal class Composite : IComponent
     }
 
     public IEnumerable<IComponent> Components => components;
+
+    internal IServiceScope ServiceScope { get; set; }
 
     public TComponent Get<TComponent>() where TComponent : IComponent
     {

@@ -5,6 +5,7 @@
 // </copyright>
 
 using LateStartStudio.Hero6.MonoGame;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -19,6 +20,7 @@ internal class SpriteRendererComponent : Component, ISpriteRendererComponent, IL
 {
     private readonly MainGame game;
 
+    private SpriteBatch spriteBatch;
     private Texture2D sprite;
     private Vector2 position;
 
@@ -40,6 +42,7 @@ internal class SpriteRendererComponent : Component, ISpriteRendererComponent, IL
 
     public void Load()
     {
+        spriteBatch = Parent.ServiceScope.ServiceProvider.GetRequiredService<SpriteBatch>();
         sprite = game.Content.Load<Texture2D>(Sprite);
 
         var positionComponent = Parent.Get<IPositionComponent>();
@@ -52,6 +55,6 @@ internal class SpriteRendererComponent : Component, ISpriteRendererComponent, IL
 
     public void Draw(GameTime gameTime)
     {
-        game.SpriteBatch.Draw(sprite, position, Color.White);
+        spriteBatch.Draw(sprite, position, Color.White);
     }
 }

@@ -26,6 +26,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using NLog.Config;
 using NLog.Extensions.Logging;
 using NLog.Targets;
@@ -46,8 +47,9 @@ public class Hero6GameBuilder
                 // MonoGame constructs
                 .AddSingleton<MainGame>() // Entry point
                 .AddSingleton(s => s.GetService<MainGame>().Content)
+                .AddSingleton(s => s.GetService<MainGame>().GraphicsDevice)
                 .AddSingleton(s => s.GetService<MainGame>().GraphicsDeviceManager)
-                .AddSingleton(s => s.GetService<MainGame>().SpriteBatch)
+                .AddScoped<SpriteBatch>()
 
                 // .NET wrappers
                 .AddSingleton<IFileWrapper, FileWrapper>()
@@ -198,21 +200,14 @@ public class Hero6Game : IAsyncDisposable
         {
             yield return s.CreateInstance<UpdateSynchronizationGameComponent>();
 
-            foreach (var c in s.GetRequiredService<IRepository<ICharacter>>().GetAll())
-                yield return s.CreateInstance<CharacterGameComponent>(c);
+            yield return s.CreateInstance<CharacterGameComponent>();
+            yield return s.CreateInstance<ItemGameComponent>();
+            yield return s.CreateInstance<RoomGameComponent>();
+            yield return s.CreateInstance<WalkAreasGameComponent>();
+            yield return s.CreateInstance<HotspotsGameComponent>();
 
             foreach (var i in s.GetRequiredService<IRepository<IInventoryItem>>().GetAll())
                 yield return s.CreateInstance<InventoryItemGameComponent>(i);
-
-            foreach (var i in s.GetRequiredService<IRepository<IItem>>().GetAll())
-                yield return s.CreateInstance<ItemGameComponent>(i);
-
-            foreach (var c in s.GetRequiredService<IRepository<IRoom>>().GetAll().Cast<Room>())
-            {
-                yield return s.CreateInstance<RoomGameComponent>(c);
-                yield return s.CreateInstance<WalkAreasGameComponent>(c.WalkAreas);
-                yield return s.CreateInstance<HotspotsGameComponent>(c.Get<IScriptComponent<HotspotEvent>>());
-            }
 
             yield return s.CreateInstance<ScriptsGameComponent>();
         }

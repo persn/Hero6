@@ -5,6 +5,8 @@
 // </copyright>
 
 using LateStartStudio.Hero6.MonoGame;
+using LateStartStudio.Hero6.Repositories;
+using LateStartStudio.Hero6.Scripts;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -12,17 +14,24 @@ namespace LateStartStudio.Hero6.Rooms;
 
 internal class HotspotsGameComponent : DrawableGameComponent
 {
-    private readonly HotspotsScriptComponent hotspots;
+    private readonly HotspotsScriptComponent[] hotspots;
 
-    public HotspotsGameComponent(HotspotsScriptComponent hotspots, MainGame game) : base(game)
+    public HotspotsGameComponent(IRepository<IRoom> rooms, MainGame game) : base(game)
     {
-        this.hotspots = hotspots;
+        hotspots = rooms
+            .GetAll()
+            .Cast<Room>()
+            .Select(r => r.Get<IScriptComponent<HotspotEvent>>())
+            .Cast<HotspotsScriptComponent>()
+            .ToArray();
         Visible = false; // We just want to load content, we have no drawing of Hotspots.. Yet
     }
 
     protected override void LoadContent()
     {
         base.LoadContent();
-        hotspots.Load(Game.Content.Load<Texture2D>);
+
+        foreach (var hotspot in hotspots)
+            hotspot.Load(Game.Content.Load<Texture2D>);
     }
 }

@@ -5,23 +5,26 @@
 // </copyright>
 
 using LateStartStudio.Hero6.MonoGame;
+using LateStartStudio.Hero6.Repositories;
 using Microsoft.Xna.Framework;
 
 namespace LateStartStudio.Hero6.Rooms;
 
 internal class WalkAreasGameComponent : DrawableGameComponent
 {
-    private readonly WalkAreas walkAreas;
+    private readonly WalkAreas[] walkAreas;
 
-    public WalkAreasGameComponent(WalkAreas walkAreas, MainGame game) : base(game)
+    public WalkAreasGameComponent(IRepository<IRoom> rooms, MainGame game) : base(game)
     {
-        this.walkAreas = walkAreas;
+        this.walkAreas = rooms.GetAll().Cast<Room>().Select(r => r.WalkAreas).ToArray();
         Visible = false; // We just want to load content, we have no drawing of Walk Areas.. Yet
     }
 
     protected override void LoadContent()
     {
         base.LoadContent();
-        walkAreas.Load(Game.Content.Load<List<WalkArea>>);
+
+        foreach (var walkArea in walkAreas)
+            walkArea.Load(Game.Content.Load<List<WalkArea>>);
     }
 }

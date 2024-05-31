@@ -4,6 +4,7 @@
 // 'LICENSE.CODE.md', which is a part of this source code package.
 // </copyright>
 
+using LateStartStudio.Hero6.MonoGame;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -58,7 +59,7 @@ namespace LateStartStudio.Hero6.ModuleController.UserInterfaces.Components
         {
             if (IsVisible)
             {
-                spriteBatch.Draw(image, position, Color.White);
+                MainGame.UISpriteBatch.Draw(image, position, Color.White);
             }
         }
     }

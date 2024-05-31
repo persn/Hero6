@@ -6,6 +6,7 @@
 
 using System.Diagnostics;
 using LateStartStudio.Hero6.Extensions;
+using LateStartStudio.Hero6.ModuleController;
 using LateStartStudio.Hero6.Services.Settings;
 using LateStartStudio.Hero6.Services.UserInterfaces;
 using Microsoft.Extensions.Logging;
@@ -22,8 +23,6 @@ namespace LateStartStudio.Hero6.MonoGame
         private readonly ILogger logger;
         private readonly IGameSettings gameSettings;
         private readonly MonoGameUserInterfaces ui;
-
-        private Matrix transform = Matrix.Identity;
 
         public MainGame(
             ILogger<MainGame> logger,
@@ -42,8 +41,6 @@ namespace LateStartStudio.Hero6.MonoGame
             GraphicsDeviceManager = new GraphicsDeviceManager(this);
             GraphicsDeviceManager.DeviceCreated += (s, a) =>
             {
-                SpriteBatch = new SpriteBatch(GraphicsDevice);
-
                 GraphicsDeviceManager.PreferredBackBufferWidth = userSettings.WindowWidth;
                 GraphicsDeviceManager.PreferredBackBufferHeight = userSettings.WindowHeight;
                 GraphicsDeviceManager.IsFullScreen = userSettings.IsFullScreen;
@@ -60,9 +57,11 @@ namespace LateStartStudio.Hero6.MonoGame
             };
         }
 
+        public static SpriteBatch UISpriteBatch { get; private set; }
+
         public GraphicsDeviceManager GraphicsDeviceManager { get; private set; }
 
-        public SpriteBatch SpriteBatch { get; private set; }
+        public Matrix TransformMatrix { get; private set; } = Matrix.Identity;
 
         /// <summary>
         /// Allows the game to perform any initialization it needs to before starting to run.
@@ -93,6 +92,7 @@ namespace LateStartStudio.Hero6.MonoGame
             logger.LogInformation("Loading game content.");
             var sw = Stopwatch.StartNew();
 
+            UISpriteBatch = new SpriteBatch(GraphicsDevice);
             ui.Load();
             base.LoadContent();
 
@@ -137,18 +137,19 @@ namespace LateStartStudio.Hero6.MonoGame
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
 
-            SpriteBatch.Begin(SpriteSortMode.Deferred, transformMatrix: transform);
             base.Draw(time);
+
+            UISpriteBatch.Begin(SpriteSortMode.Deferred, transformMatrix: TransformMatrix);
             ui.Draw(time);
-            SpriteBatch.End();
+            UISpriteBatch.End();
         }
 
         private void UpdateScale()
         {
             var horScaling = GraphicsDevice.PresentationParameters.BackBufferWidth / gameSettings.NativeWidth;
             var verScaling = GraphicsDevice.PresentationParameters.BackBufferHeight / gameSettings.NativeHeight;
-            transform = Matrix.CreateScale(horScaling, verScaling, 1.0f);
-            _ = transform.Decompose(out var scale, out _, out _);
+            TransformMatrix = Matrix.CreateScale(horScaling, verScaling, 1.0f);
+            _ = TransformMatrix.Decompose(out var scale, out _, out _);
             gameSettings.WindowScale = scale.ToDotNet();
         }
     }

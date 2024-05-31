@@ -5,6 +5,7 @@
 // </copyright>
 
 using LateStartStudio.Hero6.Extensions;
+using LateStartStudio.Hero6.MonoGame;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -76,7 +77,7 @@ namespace LateStartStudio.Hero6.ModuleController.UserInterfaces.Components
         {
             if (IsVisible)
             {
-                spriteBatch.DrawString(font, Module.Text, position, Module.Foreground.ToMonoGame());
+                MainGame.UISpriteBatch.DrawString(font, Module.Text, position, Module.Foreground.ToMonoGame());
             }
         }
     }

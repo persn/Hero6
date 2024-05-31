@@ -5,6 +5,7 @@
 // </copyright>
 
 using LateStartStudio.Hero6.Extensions;
+using LateStartStudio.Hero6.MonoGame;
 using LateStartStudio.Hero6.Services.ControllerRepository;
 using LateStartStudio.Hero6.Services.Settings;
 using Microsoft.Xna.Framework;
@@ -17,7 +18,6 @@ namespace LateStartStudio.Hero6.ModuleController.UserInterfaces.Components
         private readonly IServiceProvider services;
         private readonly IGameSettings gameSettings;
         private readonly IControllerRepository controllerRepository;
-        private readonly SpriteBatch spriteBatch;
         private readonly GraphicsDeviceManager graphicsDeviceManager;
 
         private Texture2D background;
@@ -28,13 +28,11 @@ namespace LateStartStudio.Hero6.ModuleController.UserInterfaces.Components
             IServiceProvider services,
             IGameSettings gameSettings,
             IControllerRepository controllerRepository,
-            SpriteBatch spriteBatch,
             GraphicsDeviceManager graphicsDeviceManager) : base(module, services)
         {
             this.services = services;
             this.gameSettings = gameSettings;
             this.controllerRepository = controllerRepository;
-            this.spriteBatch = spriteBatch;
             this.graphicsDeviceManager = graphicsDeviceManager;
         }
 
@@ -158,7 +156,7 @@ namespace LateStartStudio.Hero6.ModuleController.UserInterfaces.Components
         {
             if (IsVisible)
             {
-                spriteBatch.Draw(background, destination, Module.Background.ToMonoGame());
+                MainGame.UISpriteBatch.Draw(background, destination, Module.Background.ToMonoGame());
                 ChildToController.ToXnaGameLoop().Draw(time);
             }
         }
