@@ -55,7 +55,7 @@ internal class Designer : IDesigner
     {
         var sw = System.Diagnostics.Stopwatch.StartNew();
 
-        foreach (var script in scriptRepository.GetAll())
+        foreach (var script in scriptRepository)
             script.Design(this); // Populate the builders
 
         foreach (var build in builders.OrderBy(b => b is not IAnimationBuilder))

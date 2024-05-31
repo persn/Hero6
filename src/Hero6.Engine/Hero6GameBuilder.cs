@@ -206,7 +206,7 @@ public class Hero6Game : IAsyncDisposable
             yield return s.CreateInstance<WalkAreasGameComponent>();
             yield return s.CreateInstance<HotspotsGameComponent>();
 
-            foreach (var i in s.GetRequiredService<IRepository<IInventoryItem>>().GetAll())
+            foreach (var i in s.GetRequiredService<IRepository<IInventoryItem>>())
                 yield return s.CreateInstance<InventoryItemGameComponent>(i);
 
             yield return s.CreateInstance<ScriptsGameComponent>();

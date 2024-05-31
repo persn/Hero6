@@ -4,6 +4,8 @@
 // 'LICENSE.CODE.md', which is a part of this source code package.
 // </copyright>
 
+using System.Collections;
+
 namespace LateStartStudio.Hero6.Repositories;
 
 internal class Repository<T> : IRepository<T> where T : INameable
@@ -15,10 +17,7 @@ internal class Repository<T> : IRepository<T> where T : INameable
         AddRange(items);
     }
 
-    public T Get(string name)
-    {
-        return repository[name];
-    }
+    public T this[string name] => repository[name];
 
     public IEnumerable<T> GetAll() => repository.Values;
 
@@ -33,4 +32,8 @@ internal class Repository<T> : IRepository<T> where T : INameable
     }
 
     public void Remove(T item) => repository.Remove(item.Name);
+
+    public IEnumerator<T> GetEnumerator() => repository.Values.GetEnumerator();
+
+    IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 }

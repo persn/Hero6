@@ -6,13 +6,9 @@
 
 namespace LateStartStudio.Hero6.Repositories;
 
-public interface IRepository<T> where T : INameable
+public interface IRepository<T> : IEnumerable<T> where T : INameable
 {
-    T this[string name] => Get(name);
-
-    T Get(string name);
-
-    IEnumerable<T> GetAll();
+    T this[string name] { get; }
 
     void Add(T item);
 

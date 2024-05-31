@@ -19,7 +19,6 @@ internal class HotspotsGameComponent : DrawableGameComponent
     public HotspotsGameComponent(IRepository<IRoom> rooms, MainGame game) : base(game)
     {
         hotspots = rooms
-            .GetAll()
             .Cast<Room>()
             .Select(r => r.Get<IScriptComponent<HotspotEvent>>())
             .Cast<HotspotsScriptComponent>()

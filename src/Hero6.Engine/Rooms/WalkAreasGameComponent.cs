@@ -16,7 +16,7 @@ internal class WalkAreasGameComponent : DrawableGameComponent
 
     public WalkAreasGameComponent(IRepository<IRoom> rooms, MainGame game) : base(game)
     {
-        this.walkAreas = rooms.GetAll().Cast<Room>().Select(r => r.WalkAreas).ToArray();
+        walkAreas = rooms.Cast<Room>().Select(r => r.WalkAreas).ToArray();
         Visible = false; // We just want to load content, we have no drawing of Walk Areas.. Yet
     }
 

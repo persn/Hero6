@@ -25,7 +25,7 @@ internal class DrawableEntityBase<T> : DrawableGameComponent
         UpdateOrder = (int)updateOrder;
         DrawOrder = (int)drawOrder;
         Game = game;
-        this.entities = entities.GetAll().Cast<Composite>().ToArray();
+        this.entities = entities.Cast<Composite>().ToArray();
 
         serviceScope = serviceProvider.CreateScope();
         foreach (var entity in this.entities)
