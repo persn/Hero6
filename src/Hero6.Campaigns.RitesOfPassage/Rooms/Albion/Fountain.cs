@@ -33,12 +33,12 @@ public class FountainScript(IUserInterfaces userInterfaces) : Script
     {
         base.Initialize();
 
-        API.Characters.Llewella.ChangeRoom(API.Rooms.Fountain, 200, 150);
+        API.Characters.Llewella().ChangeRoom(API.Rooms.Fountain(), 200, 150);
     }
 
     public void OnWhileStandingOnSouthExit()
     {
-        API.Characters.Player.ChangeRoom(API.Rooms.HillOverAlbion, 220, 190, CharacterDirection.CenterDown);
+        API.Characters.Player.ChangeRoom(API.Rooms.HillOverAlbion(), 220, 190, CharacterDirection.CenterDown);
     }
 
     public void OnLookFountain()

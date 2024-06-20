@@ -19,6 +19,8 @@ namespace LateStartStudio.Hero6.Scripts;
 /// </remarks>
 public abstract class Script : INameable
 {
+    public static IScriptAPI API { get; internal set; }
+
     public string Name => GetType().FullName;
 
     public virtual void Design(IDesigner builder)

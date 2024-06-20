@@ -1,48 +1,40 @@
-﻿// <copyright file="APIGenerator.cs" company="Late Start Studio">
+﻿// <copyright file="ScriptAPIGenerator.cs" company="Late Start Studio">
 // Copyright (C) Late Start Studio
 // This file is subject to the terms and conditions of the MIT license specified in the file
 // 'LICENSE.CODE.md', which is a part of this source code package.
 // </copyright>
 
-using System;
 using System.Linq;
 using System.Text;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
-using Microsoft.CodeAnalysis.Text;
 
 namespace LateStartStudio.Hero6.Generators
 {
     [Generator]
-    public class APIGenerator : IIncrementalGenerator
+    public class ScriptAPIGenerator : IIncrementalGenerator
     {
         public void Initialize(IncrementalGeneratorInitializationContext context)
         {
             GenerateEntityAPI(context, "Animation");
-            GenerateEntityAPI(context, "CharacterAnimation", "Animation");
-            GenerateEntityAPI(context, "Character", sb =>
-            {
-                sb.AppendLine(
-$@"     public static ICharacter Player => GlobalServiceProvider.Instance.GetService<ICharacterRepository>().Player;");
-            });
+            GenerateEntityAPI(context, "CharacterAnimation", parentNamespace: "Animations");
+            GenerateEntityAPI(context, "Character", repositoryOverride: true);
             GenerateEntityAPI(context, "InventoryItem");
             GenerateEntityAPI(context, "Item");
             GenerateEntityAPI(context, "Room");
-
-            context.RegisterPostInitializationOutput(callback =>
-            {
-                callback.AddSource($"GlobalUsings.API.g.cs", SourceText.From("global using LateStartStudio.Hero6.API;", Encoding.UTF8));
-            });
         }
 
-        private void GenerateEntityAPI(IncrementalGeneratorInitializationContext context, string entity, Action<StringBuilder> add = null)
-            => GenerateEntityAPI(context, entity, entity, add);
-
-        private void GenerateEntityAPI(IncrementalGeneratorInitializationContext context, string entity, string namespaceOverride, Action<StringBuilder> add = null)
+        private void GenerateEntityAPI(IncrementalGeneratorInitializationContext context, string entity, string parentNamespace = null, bool repositoryOverride = false)
         {
             ////if (!System.Diagnostics.Debugger.IsAttached)
             ////    System.Diagnostics.Debugger.Launch();
+
+            if (string.IsNullOrEmpty(parentNamespace))
+                parentNamespace = $"{entity}s";
+
+            var typeName = $"LateStartStudio.Hero6.{parentNamespace}.I{entity}";
+            var repository = repositoryOverride ? $"LateStartStudio.Hero6.{entity}s.I{entity}Repository" : $"LateStartStudio.Hero6.Repositories.IRepository<{typeName}>";
 
             var builders = context.SyntaxProvider.CreateSyntaxProvider((node, cancellationToken) =>
             {
@@ -71,12 +63,7 @@ $@"     public static ICharacter Player => GlobalServiceProvider.Instance.GetSer
             {
                 var sb = new StringBuilder();
                 sb.AppendLine(
-$@"using Microsoft.Extensions.DependencyInjection;
-using LateStartStudio.Hero6.{namespaceOverride}s;
-using LateStartStudio.Hero6.DependencyInjection;
-using LateStartStudio.Hero6.Repositories;
-
-namespace LateStartStudio.Hero6.API;
+$@"namespace LateStartStudio.Hero6.Scripts;
 
 public static class {entity}s
 {{");
@@ -85,16 +72,12 @@ public static class {entity}s
                 {
                     var name = m.invocation.ArgumentList.Arguments.First().ToString().Replace("\"", string.Empty);
 
-                    sb.AppendLine($@"     public static I{entity} {name.Replace(" ", string.Empty)} => {entity}Repository[""{name}""];");
+                    sb.AppendLine($@"     public static {typeName} {name.Replace(" ", string.Empty)}(this {repository} repository) => repository[""{name}""];");
                 }
 
-                sb.AppendLine(
-$@"     private static IRepository<I{entity}> {entity}Repository => GlobalServiceProvider.Instance.GetService<IRepository<I{entity}>>();");
-
-                add?.Invoke(sb);
                 sb.AppendLine($"}}");
 
-                spc.AddSource($"{entity}sAPI.g.cs", sb.ToString());
+                spc.AddSource($"{entity}sScriptAPI.g.cs", sb.ToString());
             });
         }
     }

@@ -5,7 +5,6 @@
 // </copyright>
 
 using LateStartStudio.Hero6.InventoryItems;
-using LateStartStudio.Hero6.Scripts;
 
 namespace LateStartStudio.Hero6.Campaigns.RitesOfPassage.InventoryItems;
 

@@ -7,7 +7,6 @@
 using LateStartStudio.Hero6.InventoryItems;
 using LateStartStudio.Hero6.Items;
 using LateStartStudio.Hero6.Localization;
-using LateStartStudio.Hero6.Scripts;
 using LateStartStudio.Hero6.Services.UserInterfaces;
 
 namespace LateStartStudio.Hero6.Campaigns.RitesOfPassage.Items;
@@ -30,8 +29,8 @@ public class BentSwordScript(IUserInterfaces userInterfaces) : Script
     public override void Initialize()
     {
         base.Initialize();
-        bentSword = API.Items.BentSword;
-        invBentSword = API.InventoryItems.BentSword;
+        bentSword = API.Items.BentSword();
+        invBentSword = API.InventoryItems.BentSword();
     }
 
     public void OnLook()

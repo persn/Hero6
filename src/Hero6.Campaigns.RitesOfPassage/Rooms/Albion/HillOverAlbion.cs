@@ -7,7 +7,6 @@
 using LateStartStudio.Hero6.Characters;
 using LateStartStudio.Hero6.Localization;
 using LateStartStudio.Hero6.Rooms;
-using LateStartStudio.Hero6.Scripts;
 using LateStartStudio.Hero6.Services.UserInterfaces;
 
 namespace LateStartStudio.Hero6.Campaigns.RitesOfPassage.Rooms.Albion;
@@ -33,11 +32,11 @@ public class HillOverAlbionScript(IUserInterfaces userInterfaces) : Script
     {
         base.Initialize();
 
-        var room = API.Rooms.HillOverAlbion;
+        var room = API.Rooms.HillOverAlbion();
 
-        API.Characters.Hero.ChangeRoom(room, 230, 200);
+        API.Characters.Hero().ChangeRoom(room, 230, 200);
 
-        var bentSword = API.Items.BentSword;
+        var bentSword = API.Items.BentSword();
         bentSword.X = 150;
         bentSword.Y = 170;
         bentSword.IsVisible = true;
@@ -46,7 +45,7 @@ public class HillOverAlbionScript(IUserInterfaces userInterfaces) : Script
 
     public void OnWhileStandingInNorthExit()
     {
-        API.Characters.Player.ChangeRoom(API.Rooms.Fountain, 100, 200, CharacterDirection.CenterUp);
+        API.Characters.Player.ChangeRoom(API.Rooms.Fountain(), 100, 200, CharacterDirection.CenterUp);
     }
 
     public void OnLookAlbionSign()

@@ -6,7 +6,6 @@
 
 using LateStartStudio.Hero6.Characters;
 using LateStartStudio.Hero6.Localization;
-using LateStartStudio.Hero6.Scripts;
 using LateStartStudio.Hero6.Services.UserInterfaces;
 
 namespace LateStartStudio.Hero6.Campaigns.RitesOfPassage.Characters;

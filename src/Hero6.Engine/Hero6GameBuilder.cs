@@ -144,7 +144,7 @@ public class Hero6Game : IAsyncDisposable
         try
         {
 #if DESKTOP
-            var serviceProvider = GlobalServiceProvider.Instance = host.Services;
+            var serviceProvider = host.Services;
             var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
 
             await host.StartAsync(cts.Token);
@@ -154,7 +154,7 @@ public class Hero6Game : IAsyncDisposable
 
             // Run the "design" phase of the game and populate the repositories with data
             serviceProvider.CreateInstance<Designer>().Run();
-
+            Script.API = serviceProvider.CreateInstance<ScriptAPI>();
             RunGame(serviceProvider, cts);
 
             await host.StopAsync(cts.Token);

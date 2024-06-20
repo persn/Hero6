@@ -13,10 +13,13 @@
     <ProjectReference Include="..\Hero6.Engine\Hero6.Engine.csproj" />
     <ProjectReference Include="..\Hero6.Localization\Hero6.Localization.csproj" />
   </ItemGroup>
-  <Target Name="SkipSourceGeneratedFiles" BeforeTargets="CoreCompile">
-    <!-- Roslyn is not able to update generated code in the IDE properly when we change the generator code so we use this hack -->
+  <ItemGroup>
+    <Using Include="LateStartStudio.Hero6.Scripts" />
+  </ItemGroup>
+<!--  <Target Name="SkipSourceGeneratedFiles" BeforeTargets="CoreCompile">
+    --><!-- Roslyn is not able to update generated code in the IDE properly when we change the generator code so we use this hack --><!--
     <ItemGroup>
       <Compile Remove="Generated/**/*" />
     </ItemGroup>
-  </Target>
+  </Target>-->
 </Project>

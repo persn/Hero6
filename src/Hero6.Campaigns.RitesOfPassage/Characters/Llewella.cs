@@ -7,7 +7,6 @@
 using LateStartStudio.Hero6.Characters;
 using LateStartStudio.Hero6.InventoryItems;
 using LateStartStudio.Hero6.Localization;
-using LateStartStudio.Hero6.Scripts;
 using LateStartStudio.Hero6.Services.UserInterfaces;
 
 namespace LateStartStudio.Hero6.Campaigns.RitesOfPassage.Characters;
@@ -30,8 +29,8 @@ public class LlewellaScript(IUserInterfaces userInterfaces) : Script
     public override void Initialize()
     {
         base.Initialize();
-        llewella = API.Characters.Llewella;
-        bentSword = API.InventoryItems.BentSword;
+        llewella = API.Characters.Llewella();
+        bentSword = API.InventoryItems.BentSword();
     }
 
     public void OnLook()
