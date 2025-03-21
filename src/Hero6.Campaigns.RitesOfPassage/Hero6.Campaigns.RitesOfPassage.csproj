@@ -3,9 +3,6 @@
   <PropertyGroup>
     <RootNamespace>LateStartStudio.Hero6.Campaigns.RitesOfPassage</RootNamespace>
     <Version>1.0.0</Version>
-    <!-- Roslyn is not able to update generated code in the IDE properly when we change the generator code so we use this hack -->
-    <!--<EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>
-    <CompilerGeneratedFilesOutputPath>$(ProjectDir)Generated</CompilerGeneratedFilesOutputPath>-->
   </PropertyGroup>
   <ItemGroup>
     <ProjectReference Include="..\Hero6.Core\Hero6.Core.csproj" />
@@ -16,10 +13,4 @@
   <ItemGroup>
     <Using Include="LateStartStudio.Hero6.Scripts" />
   </ItemGroup>
-<!--  <Target Name="SkipSourceGeneratedFiles" BeforeTargets="CoreCompile">
-    --><!-- Roslyn is not able to update generated code in the IDE properly when we change the generator code so we use this hack --><!--
-    <ItemGroup>
-      <Compile Remove="Generated/**/*" />
-    </ItemGroup>
-  </Target>-->
 </Project>

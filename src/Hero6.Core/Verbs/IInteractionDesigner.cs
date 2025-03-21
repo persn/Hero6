@@ -1,15 +1,12 @@
-﻿// <copyright file="IInteractionBuilder.cs" company="Late Start Studio">
+﻿// <copyright file="IInteractionDesigner.cs" company="Late Start Studio">
 // Copyright (C) Late Start Studio
 // This file is subject to the terms and conditions of the MIT license specified in the file
 // 'LICENSE.CODE.md', which is a part of this source code package.
 // </copyright>
 
-using LateStartStudio.Hero6.Scripts;
-
 namespace LateStartStudio.Hero6.Verbs;
 
-public interface IInteractionBuilder<T>
-    where T : IBuilder
+public interface IInteractionDesigner<T>
 {
     T OnLook(Action interaction) => OnLook(interaction.AsTask);
 

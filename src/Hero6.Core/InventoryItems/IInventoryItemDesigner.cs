@@ -1,4 +1,4 @@
-﻿// <copyright file="IInventoryItemBuilder.cs" company="Late Start Studio">
+﻿// <copyright file="IInventoryItemDesigner.cs" company="Late Start Studio">
 // Copyright (C) Late Start Studio
 // This file is subject to the terms and conditions of the MIT license specified in the file
 // 'LICENSE.CODE.md', which is a part of this source code package.
@@ -8,6 +8,6 @@ using LateStartStudio.Hero6.Scripts;
 
 namespace LateStartStudio.Hero6.InventoryItems;
 
-public interface IInventoryItemBuilder : IBuilder
+public interface IInventoryItemDesigner : IDesigner
 {
 }

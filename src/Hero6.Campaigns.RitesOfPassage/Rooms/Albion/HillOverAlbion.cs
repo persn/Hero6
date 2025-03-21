@@ -16,16 +16,16 @@ public class HillOverAlbionScript(IUserInterfaces userInterfaces) : Script
     private readonly IUserInterfaces userInterfaces = userInterfaces;
 
     public override void Design(IDesigner designer) => designer
-        .Add<IRoomBuilder>("Hill Over Albion", builder => builder
-            .WithBackground("Campaigns/Rites of Albion/Rooms/Albion/Hill Over Albion/Background")
-            .WithWalkAreas("Campaigns/Rites of Albion/Rooms/Albion/Hill Over Albion/WalkAreas")
-            .WithHotspots("Campaigns/Rites of Albion/Rooms/Albion/Hill Over Albion/Hotspots", builder => builder
-                .For(Hotspots.NorthExit, builder => builder
-                    .OnStandingOn(OnWhileStandingInNorthExit))
-                .For(Hotspots.AlbionSign, builder => builder
-                    .OnLook(OnLookAlbionSign)
-                    .OnGrab(OnGrabAlbionSign)
-                    .OnTalk(OnTalkAlbionSign))))
+        .Add<IRoomDesigner>("Hill Over Albion")
+        .WithBackground("Campaigns/Rites of Albion/Rooms/Albion/Hill Over Albion/Background")
+        .WithWalkAreas("Campaigns/Rites of Albion/Rooms/Albion/Hill Over Albion/WalkAreas")
+        .WithHotspots("Campaigns/Rites of Albion/Rooms/Albion/Hill Over Albion/Hotspots", designer => designer
+            .For(Hotspots.NorthExit, hotspotDesigner => hotspotDesigner
+                .OnStandingOn(OnWhileStandingInNorthExit))
+            .For(Hotspots.AlbionSign, hotspotDesigner => hotspotDesigner
+                .OnLook(OnLookAlbionSign)
+                .OnGrab(OnGrabAlbionSign)
+                .OnTalk(OnTalkAlbionSign)))
         ;
 
     public override void Initialize()

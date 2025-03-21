@@ -5,21 +5,23 @@
 // </copyright>
 
 using System.Collections;
+using LateStartStudio.Hero6.Scripts;
 
 namespace LateStartStudio.Hero6.Repositories;
 
 internal class Repository<T> : IRepository<T> where T : INameable
 {
-    private readonly Dictionary<string, T> repository = [];
+    private readonly Dictionary<string, T> repository;
 
-    public Repository(IEnumerable<T> items)
+    public Repository(Designer designer)
     {
-        AddRange(items);
+        if (designer is not IBuilder<T> builder)
+            throw new InvalidOperationException($@"Builder for type ""{typeof(T).Name}"" has not been registered.");
+
+        repository = new Dictionary<string, T>(builder.Build().Select(t => new KeyValuePair<string, T>(t.Name, t)));
     }
 
     public T this[string name] => repository[name];
-
-    public IEnumerable<T> GetAll() => repository.Values;
 
     public void Add(T item) => repository.Add(item.Name, item);
 
@@ -30,8 +32,6 @@ internal class Repository<T> : IRepository<T> where T : INameable
             Add(item);
         }
     }
-
-    public void Remove(T item) => repository.Remove(item.Name);
 
     public IEnumerator<T> GetEnumerator() => repository.Values.GetEnumerator();
 

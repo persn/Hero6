@@ -1,4 +1,4 @@
-﻿// <copyright file="IItemBuilder.cs" company="Late Start Studio">
+﻿// <copyright file="IItemDesigner.cs" company="Late Start Studio">
 // Copyright (C) Late Start Studio
 // This file is subject to the terms and conditions of the MIT license specified in the file
 // 'LICENSE.CODE.md', which is a part of this source code package.
@@ -9,7 +9,7 @@ using LateStartStudio.Hero6.Verbs;
 
 namespace LateStartStudio.Hero6.Items;
 
-public interface IItemBuilder : IBuilder, IInteractionBuilder<IItemBuilder>
+public interface IItemDesigner : IDesigner, IInteractionDesigner<IItemDesigner>
 {
-    IItemBuilder WithSprite(string sprite);
+    IItemDesigner WithSprite(string sprite);
 }

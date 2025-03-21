@@ -5,15 +5,16 @@
 // </copyright>
 
 using LateStartStudio.Hero6.MonoGame;
+using LateStartStudio.Hero6.Repositories;
 using Microsoft.Xna.Framework;
 
 namespace LateStartStudio.Hero6.Scripts;
 
 internal class ScriptsGameComponent : GameComponent
 {
-    private readonly IScriptRepository scriptRepository;
+    private readonly IRepository<Script> scriptRepository;
 
-    public ScriptsGameComponent(MainGame game, IScriptRepository scriptRepository) : base(game)
+    public ScriptsGameComponent(MainGame game, IRepository<Script> scriptRepository) : base(game)
     {
         UpdateOrder = (int)MonoGame.UpdateOrder.Scripts;
 

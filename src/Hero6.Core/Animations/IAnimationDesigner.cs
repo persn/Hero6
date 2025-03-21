@@ -1,4 +1,4 @@
-﻿// <copyright file="IAnimationBuilder.cs" company="Late Start Studio">
+﻿// <copyright file="IAnimationDesigner.cs" company="Late Start Studio">
 // Copyright (C) Late Start Studio
 // This file is subject to the terms and conditions of the MIT license specified in the file
 // 'LICENSE.CODE.md', which is a part of this source code package.
@@ -8,11 +8,11 @@ using LateStartStudio.Hero6.Scripts;
 
 namespace LateStartStudio.Hero6.Animations;
 
-public interface IAnimationBuilder : IBuilder
+public interface IAnimationDesigner : IDesigner
 {
-    IAnimationBuilder WithSprite(string sprite);
+    IAnimationDesigner WithSprite(string sprite);
 
-    IAnimationBuilder WithColumns(int columns);
+    IAnimationDesigner WithColumns(int columns);
 
-    IAnimationBuilder WithRows(int rows);
+    IAnimationDesigner WithRows(int rows);
 }

@@ -23,7 +23,7 @@ public abstract class Script : INameable
 
     public string Name => GetType().FullName;
 
-    public virtual void Design(IDesigner builder)
+    public virtual void Design(IDesigner designer)
     {
         // Intentionally left empty
     }

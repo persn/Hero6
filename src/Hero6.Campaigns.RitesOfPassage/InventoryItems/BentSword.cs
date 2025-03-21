@@ -11,6 +11,6 @@ namespace LateStartStudio.Hero6.Campaigns.RitesOfPassage.InventoryItems;
 internal class BentSwordScript : Script
 {
     public override void Design(IDesigner designer) => designer
-        .Add<IInventoryItemBuilder>("Bent Sword", null)
+        .Add<IInventoryItemDesigner>("Bent Sword")
         ;
 }

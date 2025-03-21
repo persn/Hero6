@@ -19,11 +19,11 @@ public class LlewellaScript(IUserInterfaces userInterfaces) : Script
     private IInventoryItem bentSword;
 
     public override void Design(IDesigner designer) => designer
-        .Add<ICharacterBuilder>("Llewella", builder => builder
-            .WithIdleAnimation("Llewella Idle")
-            .OnLook(OnLook)
-            .OnGrab(OnGrab)
-            .OnTalk(OnTalk))
+        .Add<ICharacterDesigner>("Llewella")
+        .WithIdleAnimation("Llewella Idle")
+        .OnLook(OnLook)
+        .OnGrab(OnGrab)
+        .OnTalk(OnTalk)
         ;
 
     public override void Initialize()

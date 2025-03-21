@@ -74,10 +74,9 @@ public class Hero6GameBuilder
 
                 // Repositories
                 .AddSingleton<IControllerRepository, ControllerRepositoryProvider>()
+                .AddSingleton<Designer>()
                 .AddSingleton(typeof(IRepository<>), typeof(Repository<>))
-                .AddSingleton<ICharacterRepository, CharacterRepository>()
-                .AddSingleton<IRepository<ICharacter>>(s => s.GetRequiredService<ICharacterRepository>())
-                .AddSingleton<IScriptRepository, ScriptRepository>())
+                .AddSingleton<ICharacterRepository, CharacterRepository>())
 
             .ConfigureLogging(loggingBuilder =>
             {
@@ -153,7 +152,7 @@ public class Hero6Game : IAsyncDisposable
                 configure(serviceProvider);
 
             // Run the "design" phase of the game and populate the repositories with data
-            serviceProvider.CreateInstance<Designer>().Run();
+            serviceProvider.GetService<Designer>().Design();
             Script.API = serviceProvider.CreateInstance<ScriptAPI>();
             RunGame(serviceProvider, cts);
 

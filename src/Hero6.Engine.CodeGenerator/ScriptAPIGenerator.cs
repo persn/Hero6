@@ -40,7 +40,7 @@ namespace LateStartStudio.Hero6.Generators
             {
                 if (node is InvocationExpressionSyntax invocation && invocation.Expression is MemberAccessExpressionSyntax memberAccess)
                 {
-                    return invocation.ArgumentList.Arguments.Any() && memberAccess.Name.ToString().StartsWith($"Add<I{entity}Builder>");
+                    return invocation.ArgumentList.Arguments.Any() && memberAccess.Name.ToString().StartsWith($"Add<I{entity}Designer>");
                 }
 
                 return false;

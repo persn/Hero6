@@ -7,7 +7,6 @@
 using LateStartStudio.Hero6.Characters;
 using LateStartStudio.Hero6.Localization;
 using LateStartStudio.Hero6.Rooms;
-using LateStartStudio.Hero6.Scripts;
 using LateStartStudio.Hero6.Services.UserInterfaces;
 
 namespace LateStartStudio.Hero6.Campaigns.RitesOfPassage.Rooms.Albion;
@@ -17,16 +16,16 @@ public class FountainScript(IUserInterfaces userInterfaces) : Script
     private readonly IUserInterfaces userInterfaces = userInterfaces;
 
     public override void Design(IDesigner designer) => designer
-        .Add<IRoomBuilder>("Fountain", builder => builder
-            .WithBackground("Campaigns/Rites of Albion/Rooms/Albion/Fountain/Background")
-            .WithWalkAreas("Campaigns/Rites of Albion/Rooms/Albion/Fountain/WalkAreas")
-            .WithHotspots("Campaigns/Rites of Albion/Rooms/Albion/Fountain/Hotspots", builder => builder
-                .For(Hotspots.SouthExit, builder => builder
-                    .OnStandingOn(OnWhileStandingOnSouthExit))
-                .For(Hotspots.Fountain, builder => builder
-                    .OnLook(OnLookFountain)
-                    .OnGrab(OnGrabFountain)
-                    .OnTalk(OnTalkFountain))))
+        .Add<IRoomDesigner>("Fountain")
+        .WithBackground("Campaigns/Rites of Albion/Rooms/Albion/Fountain/Background")
+        .WithWalkAreas("Campaigns/Rites of Albion/Rooms/Albion/Fountain/WalkAreas")
+        .WithHotspots("Campaigns/Rites of Albion/Rooms/Albion/Fountain/Hotspots", designer => designer
+            .For(Hotspots.SouthExit, hotspotDesigner => hotspotDesigner
+                .OnStandingOn(OnWhileStandingOnSouthExit))
+            .For(Hotspots.Fountain, hotspotDesigner => hotspotDesigner
+                .OnLook(OnLookFountain)
+                .OnGrab(OnGrabFountain)
+                .OnTalk(OnTalkFountain)))
         ;
 
     public override void Initialize()

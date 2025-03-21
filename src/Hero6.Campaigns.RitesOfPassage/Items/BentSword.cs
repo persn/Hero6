@@ -19,11 +19,11 @@ public class BentSwordScript(IUserInterfaces userInterfaces) : Script
     private IInventoryItem invBentSword;
 
     public override void Design(IDesigner designer) => designer
-        .Add<IItemBuilder>("Bent Sword", builder => builder
-            .WithSprite("Campaigns/Rites of Albion/Sprites/Items/Bent Sword")
-            .OnLook(OnLook)
-            .OnGrab(OnGrab)
-            .OnTalk(OnTalk))
+        .Add<IItemDesigner>("Bent Sword")
+        .WithSprite("Campaigns/Rites of Albion/Sprites/Items/Bent Sword")
+        .OnLook(OnLook)
+        .OnGrab(OnGrab)
+        .OnTalk(OnTalk)
         ;
 
     public override void Initialize()

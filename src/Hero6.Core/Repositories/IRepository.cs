@@ -15,6 +15,4 @@ public interface IRepository<T> : IEnumerable<T> where T : INameable
     void AddRange(params T[] items) => AddRange(items.AsEnumerable());
 
     void AddRange(IEnumerable<T> items);
-
-    void Remove(T item);
 }

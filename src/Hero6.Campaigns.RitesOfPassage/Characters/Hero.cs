@@ -15,12 +15,12 @@ public class HeroScript(IUserInterfaces userInterfaces) : Script
     private readonly IUserInterfaces userInterfaces = userInterfaces;
 
     public override void Design(IDesigner designer) => designer
-        .Add<ICharacterBuilder>("Hero", builder => builder
-            .WithIdleAnimation("Hero Idle")
-            .WithMoveAnimation("Hero Walk")
-            .OnLook(OnLook)
-            .OnGrab(OnGrab)
-            .OnTalk(OnTalk))
+        .Add<ICharacterDesigner>("Hero")
+        .WithIdleAnimation("Hero Idle")
+        .WithMoveAnimation("Hero Walk")
+        .OnLook(OnLook)
+        .OnGrab(OnGrab)
+        .OnTalk(OnTalk)
         ;
 
     public void OnLook()
