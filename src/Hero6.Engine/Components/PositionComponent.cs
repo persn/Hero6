@@ -119,3 +119,56 @@ internal class SystemDrawingPositionComponent : Component, IPositionComponent
         }
     }
 }
+
+internal class MousePositionComponent(IMouse mouse) : Component, IPositionComponent
+{
+    private readonly IMouse mouse = mouse;
+
+    private Size size;
+
+    public event EventHandler PositionChanged
+    {
+        add => mouse.Move += value.Invoke;
+        remove => mouse.Move -= value.Invoke;
+    }
+
+    public event EventHandler SizeChanged;
+
+    public int X
+    {
+        get => mouse.X;
+        set => mouse.X = value;
+    }
+
+    public int Y
+    {
+        get => mouse.Y;
+        set => mouse.Y = value;
+    }
+
+    public int Width
+    {
+        get => size.Width;
+        set
+        {
+            if (size.Width != value)
+            {
+                size = new(value, size.Height);
+                SizeChanged?.Invoke(this, EventArgs.Empty);
+            }
+        }
+    }
+
+    public int Height
+    {
+        get => size.Height;
+        set
+        {
+            if (size.Height != value)
+            {
+                size = new(size.Width, value);
+                SizeChanged?.Invoke(this, EventArgs.Empty);
+            }
+        }
+    }
+}

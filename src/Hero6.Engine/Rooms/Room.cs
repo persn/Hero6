@@ -4,11 +4,6 @@
 // 'LICENSE.CODE.md', which is a part of this source code package.
 // </copyright>
 
-using LateStartStudio.Hero6.Characters;
-using LateStartStudio.Hero6.Components;
-using LateStartStudio.Hero6.Items;
-using LateStartStudio.Hero6.Scripts;
-
 namespace LateStartStudio.Hero6.Rooms;
 
 internal class Room : Composite, IRoom
@@ -33,7 +28,7 @@ internal class Room : Composite, IRoom
         WalkAreas = new WalkAreas(data.WalkAreasMask);
     }
 
-    public string Name { get; }
+    public override string Name { get; }
 
     public bool IsVisible
     {

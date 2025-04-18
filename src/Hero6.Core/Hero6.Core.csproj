@@ -8,4 +8,15 @@
     <InternalsVisibleTo Include="Hero6.Engine" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="LateStartStudio.Hero6.Animations" />
+    <Using Include="LateStartStudio.Hero6.Characters" />
+    <Using Include="LateStartStudio.Hero6.Scripts" />
+    <Using Include="LateStartStudio.Hero6.Util" />
+  </ItemGroup>
+
 </Project>

@@ -6,14 +6,11 @@
 
 using LateStartStudio.Hero6.Characters;
 using LateStartStudio.Hero6.Localization;
-using LateStartStudio.Hero6.Services.UserInterfaces;
 
 namespace LateStartStudio.Hero6.Campaigns.RitesOfPassage.Characters;
 
-public class HeroScript(IUserInterfaces userInterfaces) : Script
+public class HeroScript() : Script
 {
-    private readonly IUserInterfaces userInterfaces = userInterfaces;
-
     public override void Design(IDesigner designer) => designer
         .Add<ICharacterDesigner>("Hero")
         .WithIdleAnimation("Hero Idle")
@@ -25,16 +22,16 @@ public class HeroScript(IUserInterfaces userInterfaces) : Script
 
     public void OnLook()
     {
-        userInterfaces.Current.ShowTextBox(Strings.HeroLook);
+        API.ShowMessage(Strings.HeroLook);
     }
 
     public void OnGrab()
     {
-        userInterfaces.Current.ShowTextBox(Strings.HeroGrab);
+        API.ShowMessage(Strings.HeroGrab);
     }
 
     public void OnTalk()
     {
-        userInterfaces.Current.ShowTextBox(Strings.HeroTalk);
+        API.ShowMessage(Strings.HeroTalk);
     }
 }

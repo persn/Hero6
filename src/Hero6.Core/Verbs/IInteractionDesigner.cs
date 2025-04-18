@@ -20,12 +20,3 @@ public interface IInteractionDesigner<T>
 
     T OnTalk(Func<Task> interaction);
 }
-
-internal static class DelegateExtensions
-{
-    internal static Task AsTask(this Action action)
-    {
-        action();
-        return Task.CompletedTask;
-    }
-}

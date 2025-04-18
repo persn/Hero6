@@ -4,30 +4,18 @@
 // 'LICENSE.CODE.md', which is a part of this source code package.
 // </copyright>
 
-using LateStartStudio.Hero6.Characters;
-using LateStartStudio.Hero6.Items;
-using LateStartStudio.Hero6.Rooms;
-using LateStartStudio.Hero6.Scripts;
-
 namespace LateStartStudio.Hero6.Verbs;
 
-public interface IVerbHandler
-{
-    /// <summary>
-    /// Finds and interact with a spot using input coordinates and the verb.
-    /// </summary>
-    /// <param name="x"></param>
-    /// <param name="y"></param>
-    /// <param name="verb"></param>
-    bool Interact(int x, int y, Verb verb);
-}
-
-internal class VerbHandler(ICharacterRepository characterRepository) : IVerbHandler
+internal class VerbHandler(ICharacterRepository characterRepository, IGameSettings gameSettings) : IVerbHandler
 {
     private readonly ICharacterRepository characterRepository = characterRepository;
+    private readonly IGameSettings gameSettings = gameSettings;
 
     public bool Interact(int x, int y, Verb verb)
     {
+        if (gameSettings.IsPaused)
+            return false;
+
         if (verb == Verb.Move)
         {
             _ = characterRepository.Player.WalkAsync(x, y);

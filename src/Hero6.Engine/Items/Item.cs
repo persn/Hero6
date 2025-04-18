@@ -4,10 +4,6 @@
 // 'LICENSE.CODE.md', which is a part of this source code package.
 // </copyright>
 
-using LateStartStudio.Hero6.Components;
-using LateStartStudio.Hero6.Scripts;
-using LateStartStudio.Hero6.Verbs;
-
 namespace LateStartStudio.Hero6.Items;
 
 internal class Item : Composite, IItem
@@ -24,7 +20,7 @@ internal class Item : Composite, IItem
         Sprite = data.Sprite;
     }
 
-    public string Name { get; }
+    public override string Name { get; }
 
     public int X
     {

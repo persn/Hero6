@@ -17,13 +17,17 @@ internal interface IScriptComponent<TEvent> : IComponent where TEvent : Enum
     bool Invoke(int x, int y, TEvent @event);
 }
 
-internal class ScriptComponent<TEvent>(Dictionary<TEvent, Func<Task>> events) : Component, IScriptComponent<TEvent>
+internal class ScriptComponent<TEvent>(Dictionary<TEvent, Func<Task>> events, ILogger<ScriptComponent<TEvent>> logger) : Component, IScriptComponent<TEvent>
     where TEvent : Enum
 {
+    private readonly Dictionary<TEvent, Func<Task>> events = events;
+    private readonly ILogger logger = logger;
+
     public bool Invoke(int x, int y, TEvent @event)
     {
         if (Parent.Get<IPositionComponent>().Intersects(x, y) && events.TryGetValue(@event, out var scriptMethod))
         {
+            logger.LogDebug(@"""{event}"" interaction for ""{name}"" at [X:{x}, Y:{y}]", @event, Parent.Name, x, y);
             _ = scriptMethod?.Invoke();
             return true;
         }

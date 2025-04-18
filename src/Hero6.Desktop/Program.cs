@@ -9,7 +9,6 @@ using LateStartStudio.Hero6;
 await using var game = Hero6GameBuilder
     .Create()
     .ConfigureServices(LateStartStudio.Hero6.Campaigns.RitesOfPassage.Startup.ConfigureServices)
-    .ConfigureServices(LateStartStudio.Hero6.UserInterfaces.SierraVga.Startup.ConfigureServices)
     .Build();
 
 await game

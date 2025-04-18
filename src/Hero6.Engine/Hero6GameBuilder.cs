@@ -4,24 +4,11 @@
 // 'LICENSE.CODE.md', which is a part of this source code package.
 // </copyright>
 
-using LateStartStudio.Hero6.Characters;
-using LateStartStudio.Hero6.Extensions;
-using LateStartStudio.Hero6.InventoryItems;
-using LateStartStudio.Hero6.Items;
 using LateStartStudio.Hero6.Logging;
-using LateStartStudio.Hero6.ModuleController.UserInterfaces;
 using LateStartStudio.Hero6.MonoGame;
-using LateStartStudio.Hero6.Repositories;
-using LateStartStudio.Hero6.Rooms;
-using LateStartStudio.Hero6.Scripts;
-using LateStartStudio.Hero6.Services.ControllerRepository;
 using LateStartStudio.Hero6.Services.DotNetWrappers;
 using LateStartStudio.Hero6.Services.PlatformInfo;
-using LateStartStudio.Hero6.Services.Settings;
-using LateStartStudio.Hero6.Services.UserInterfaces;
-using LateStartStudio.Hero6.Services.UserInterfaces.Input.Mouse;
 using LateStartStudio.Hero6.Threading;
-using LateStartStudio.Hero6.Verbs;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -56,9 +43,6 @@ public class Hero6GameBuilder
                 .AddSingleton<IDirectoryWrapper, DirectoryWrapper>()
 
                 // Hero6 services
-                .AddSingleton<MonoGameUserInterfaces>()
-                .AddSingleton<IUserInterfaces>(s => s.GetService<MonoGameUserInterfaces>())
-
                 .AddSingleton<IMouseCore, MouseCore>()
                 .AddSingleton<IMouse, Mouse>()
 
@@ -73,11 +57,18 @@ public class Hero6GameBuilder
                 .AddHostedService<FileLoggerHostedService>()
 
                 // Repositories
-                .AddSingleton<IControllerRepository, ControllerRepositoryProvider>()
                 .AddSingleton<Designer>()
                 .AddSingleton(typeof(IRepository<>), typeof(Repository<>))
-                .AddSingleton<ICharacterRepository, CharacterRepository>())
+                .AddSingleton<ICharacterRepository, CharacterRepository>()
 
+                // Engine scripts
+                .AddSingleton<Script, TextBoxScript>())
+
+            .UseDefaultServiceProvider(serviceProviderOptions =>
+            {
+                serviceProviderOptions.ValidateOnBuild = true;
+                serviceProviderOptions.ValidateScopes = true;
+            })
             .ConfigureLogging(loggingBuilder =>
             {
                 // Microsoft.Extensions.Logging doesn't support file logging out of the box so we need a 3rd party
@@ -140,10 +131,11 @@ public class Hero6Game : IAsyncDisposable
 
     public async Task RunAsync(CancellationToken cancellationToken = default)
     {
+        var serviceProvider = host.Services;
+
         try
         {
 #if DESKTOP
-            var serviceProvider = host.Services;
             var cts = CancellationTokenSource.CreateLinkedTokenSource(cancellationToken);
 
             await host.StartAsync(cts.Token);
@@ -161,9 +153,9 @@ public class Hero6Game : IAsyncDisposable
         }
 #if !DEBUG
             catch (System.Exception e)
-            {
-                var logger = services.GetService<Microsoft.Extensions.Logging.ILogger<Game>>();
-                var fileLoggerSettings = services.GetService<FileLoggerSettings>();
+        {
+                var logger = serviceProvider.GetService<Microsoft.Extensions.Logging.ILogger<Game>>();
+                var fileLoggerSettings = serviceProvider.GetService<FileLoggerSettings>();
 
                 logger.LogError(e, "Hero6 has crashed, logging stack trace.");
                 fileLoggerSettings.WillDeleteLogOnDispose = false;
@@ -187,11 +179,6 @@ public class Hero6Game : IAsyncDisposable
             foreach (var component in CreateGameComponents(serviceProvider))
                 game.Components.Add(component);
 
-            // TODO Refactor user interfaces to be setup with Builder Wrapper over a 3rd party framework
-            var ui = serviceProvider.GetService<MonoGameUserInterfaces>();
-            var userInterfaceModules = serviceProvider.GetServices<IUserInterfaceModule>();
-            userInterfaceModules.ForEach(m => ui.Add(m));
-
             game.Run();
         }
 
@@ -207,6 +194,9 @@ public class Hero6Game : IAsyncDisposable
 
             foreach (var i in s.GetRequiredService<IRepository<IInventoryItem>>())
                 yield return s.CreateInstance<InventoryItemGameComponent>(i);
+
+            yield return s.CreateInstance<MouseGameComponent>();
+            yield return s.CreateInstance<GumGameComponent>();
 
             yield return s.CreateInstance<ScriptsGameComponent>();
         }

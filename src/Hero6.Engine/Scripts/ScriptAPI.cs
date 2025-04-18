@@ -19,8 +19,13 @@ internal class ScriptAPI(
     IRepository<ICharacterAnimation> characterAnimations,
     IRepository<IInventoryItem> inventoryItems,
     IRepository<IItem> items,
-    IRepository<IRoom> rooms) : IScriptAPI
+    IRepository<IRoom> rooms,
+    IRepository<ICursor> cursors,
+    IRepository<IWindow> windows,
+    IRepository<Script> scripts) : IScriptAPI
 {
+    private readonly IRepository<Script> scripts = scripts;
+
     public IRepository<IAnimation> Animations { get; } = animations;
 
     public IRepository<ICharacterAnimation> CharacterAnimations { get; } = characterAnimations;
@@ -32,4 +37,14 @@ internal class ScriptAPI(
     public IRepository<IItem> Items { get; } = items;
 
     public IRepository<IRoom> Rooms { get; } = rooms;
+
+    public IRepository<ICursor> Cursors { get; } = cursors;
+
+    public IRepository<IWindow> Windows { get; } = windows;
+
+    public void ShowMessage(string message)
+    {
+        var textBoxScript = (TextBoxScript)scripts[typeof(TextBoxScript).FullName];
+        textBoxScript.Show(message);
+    }
 }

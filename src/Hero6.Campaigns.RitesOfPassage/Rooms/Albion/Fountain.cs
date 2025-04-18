@@ -7,14 +7,11 @@
 using LateStartStudio.Hero6.Characters;
 using LateStartStudio.Hero6.Localization;
 using LateStartStudio.Hero6.Rooms;
-using LateStartStudio.Hero6.Services.UserInterfaces;
 
 namespace LateStartStudio.Hero6.Campaigns.RitesOfPassage.Rooms.Albion;
 
-public class FountainScript(IUserInterfaces userInterfaces) : Script
+public class FountainScript() : Script
 {
-    private readonly IUserInterfaces userInterfaces = userInterfaces;
-
     public override void Design(IDesigner designer) => designer
         .Add<IRoomDesigner>("Fountain")
         .WithBackground("Campaigns/Rites of Albion/Rooms/Albion/Fountain/Background")
@@ -42,17 +39,17 @@ public class FountainScript(IUserInterfaces userInterfaces) : Script
 
     public void OnLookFountain()
     {
-        userInterfaces.Current.ShowTextBox(Strings.FountainLook);
+        API.ShowMessage(Strings.FountainLook);
     }
 
     public void OnGrabFountain()
     {
-        userInterfaces.Current.ShowTextBox(Strings.FountainGrab);
+        API.ShowMessage(Strings.FountainGrab);
     }
 
     public void OnTalkFountain()
     {
-        userInterfaces.Current.ShowTextBox(Strings.FountainTalk);
+        API.ShowMessage(Strings.FountainTalk);
     }
 
     internal class Hotspots

@@ -27,13 +27,13 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="MonoGame.Content.Builder.Task" />
+    <PackageReference Include="MonoGame.Framework.Content.Pipeline" />
     <PackageReference Include="MonoGame.Framework.DesktopGL" />
     <PackageReference Include="OptimizedPriorityQueue" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Hero6.Campaigns.RitesOfPassage\Hero6.Campaigns.RitesOfPassage.csproj" />
     <ProjectReference Include="..\Hero6.Engine\Hero6.Engine.csproj" />
-    <ProjectReference Include="..\Hero6.UserInterfaces.SierraVga\Hero6.UserInterfaces.SierraVga.csproj" />
     <ProjectReference Include="..\Search\Search.csproj" />
   </ItemGroup>
   <Import Project="..\Hero6\Hero6.projitems" Label="Shared" />

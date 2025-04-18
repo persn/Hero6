@@ -16,7 +16,7 @@ internal class ScriptsGameComponent : GameComponent
 
     public ScriptsGameComponent(MainGame game, IRepository<Script> scriptRepository) : base(game)
     {
-        UpdateOrder = (int)MonoGame.UpdateOrder.Scripts;
+        UpdateOrder = (int)MonoGame.UpdateOrder.Script;
 
         this.scriptRepository = scriptRepository;
     }

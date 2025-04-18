@@ -10,6 +10,7 @@ using LateStartStudio.Hero6.InventoryItems;
 using LateStartStudio.Hero6.Items;
 using LateStartStudio.Hero6.Repositories;
 using LateStartStudio.Hero6.Rooms;
+using LateStartStudio.Hero6.UserInterfaces;
 
 namespace LateStartStudio.Hero6.Scripts;
 
@@ -26,4 +27,10 @@ public interface IScriptAPI
     IRepository<IItem> Items { get; }
 
     IRepository<IRoom> Rooms { get; }
+
+    IRepository<ICursor> Cursors { get; }
+
+    IRepository<IWindow> Windows { get; }
+
+    void ShowMessage(string message);
 }

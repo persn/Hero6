@@ -5,11 +5,18 @@
 // </copyright>
 
 using LateStartStudio.Hero6.MonoGame;
-using LateStartStudio.Hero6.Repositories;
+using Microsoft.Xna.Framework;
 
 namespace LateStartStudio.Hero6.Rooms;
 
-internal class RoomGameComponent(MainGame game, IRepository<IRoom> rooms, IServiceProvider serviceProvider)
+internal class RoomGameComponent(MainGame game, IRepository<IRoom> rooms, IServiceProvider serviceProvider, IGameSettings gameSettings)
     : DrawableEntityBase<IRoom>(MonoGame.UpdateOrder.Room, MonoGame.DrawOrder.Room, game, rooms, serviceProvider)
 {
+    private readonly IGameSettings gameSettings = gameSettings;
+
+    public override void Update(GameTime gameTime)
+    {
+        if (!gameSettings.IsPaused)
+            base.Update(gameTime);
+    }
 }

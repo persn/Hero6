@@ -4,16 +4,9 @@
 // 'LICENSE.CODE.md', which is a part of this source code package.
 // </copyright>
 
-using LateStartStudio.Hero6.Animations;
 using LateStartStudio.Hero6.Components;
 using LateStartStudio.Hero6.Extensions;
-using LateStartStudio.Hero6.InventoryItems;
-using LateStartStudio.Hero6.Items;
-using LateStartStudio.Hero6.Repositories;
-using LateStartStudio.Hero6.Rooms;
-using LateStartStudio.Hero6.Scripts;
 using LateStartStudio.Hero6.Threading;
-using LateStartStudio.Hero6.Verbs;
 using Microsoft.Xna.Framework;
 
 namespace LateStartStudio.Hero6.Characters;
@@ -63,7 +56,7 @@ internal class Character : Composite, ICharacter
         }
     }
 
-    public string Name { get; }
+    public override string Name { get; }
 
     public int X
     {
@@ -251,10 +244,10 @@ internal class Character : Composite, ICharacter
         }
     }
 
-    private async Task OnIsMovingChanged(object sender, EventArgs e)
+    private Task OnIsMovingChanged(object sender, EventArgs e)
     {
         UpdateSynchronizationContext.Instance.Post(ToggleAnimationVisibility);
-        await Task.CompletedTask;
+        return Task.CompletedTask;
     }
 
     private void ToggleAnimationVisibility()

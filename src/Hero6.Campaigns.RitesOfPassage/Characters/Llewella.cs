@@ -7,14 +7,11 @@
 using LateStartStudio.Hero6.Characters;
 using LateStartStudio.Hero6.InventoryItems;
 using LateStartStudio.Hero6.Localization;
-using LateStartStudio.Hero6.Services.UserInterfaces;
 
 namespace LateStartStudio.Hero6.Campaigns.RitesOfPassage.Characters;
 
-public class LlewellaScript(IUserInterfaces userInterfaces) : Script
+public class LlewellaScript : Script
 {
-    private readonly IUserInterfaces userInterfaces = userInterfaces;
-
     private ICharacter llewella;
     private IInventoryItem bentSword;
 
@@ -35,29 +32,29 @@ public class LlewellaScript(IUserInterfaces userInterfaces) : Script
 
     public void OnLook()
     {
-        userInterfaces.Current.ShowTextBox(Strings.LlewellaLook);
+        API.ShowMessage(Strings.LlewellaLook);
     }
 
     public void OnGrab()
     {
-        userInterfaces.Current.ShowTextBox(Strings.LlewellaGrab);
+        API.ShowMessage(Strings.LlewellaGrab);
     }
 
     public void OnTalk()
     {
         if (llewella.Has(bentSword))
         {
-            userInterfaces.Current.ShowTextBox(Strings.LlewellaTalk3);
+            API.ShowMessage(Strings.LlewellaTalk3);
         }
         else if (API.Characters.Player.Has(bentSword))
         {
-            userInterfaces.Current.ShowTextBox(Strings.LlewellaTalk1);
+            API.ShowMessage(Strings.LlewellaTalk1);
             llewella.Add(bentSword);
             API.Characters.Player.Remove(bentSword);
         }
         else
         {
-            userInterfaces.Current.ShowTextBox(Strings.LlewellaTalk2);
+            API.ShowMessage(Strings.LlewellaTalk2);
         }
     }
 }

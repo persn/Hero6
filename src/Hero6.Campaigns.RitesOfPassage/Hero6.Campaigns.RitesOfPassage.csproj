@@ -7,10 +7,11 @@
   <ItemGroup>
     <ProjectReference Include="..\Hero6.Core\Hero6.Core.csproj" />
     <ProjectReference Include="..\Hero6.Engine.CodeGenerator\Hero6.Engine.CodeGenerator.csproj" OutputItemType="Analyzer" ReferenceOutputAssembly="false" />
-    <ProjectReference Include="..\Hero6.Engine\Hero6.Engine.csproj" />
     <ProjectReference Include="..\Hero6.Localization\Hero6.Localization.csproj" />
   </ItemGroup>
   <ItemGroup>
     <Using Include="LateStartStudio.Hero6.Scripts" />
+    <Using Include="LateStartStudio.Hero6.Settings" />
+    <Using Include="LateStartStudio.Hero6.UserInterfaces" />
   </ItemGroup>
 </Project>

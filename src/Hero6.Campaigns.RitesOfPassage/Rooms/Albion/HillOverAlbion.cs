@@ -7,14 +7,11 @@
 using LateStartStudio.Hero6.Characters;
 using LateStartStudio.Hero6.Localization;
 using LateStartStudio.Hero6.Rooms;
-using LateStartStudio.Hero6.Services.UserInterfaces;
 
 namespace LateStartStudio.Hero6.Campaigns.RitesOfPassage.Rooms.Albion;
 
-public class HillOverAlbionScript(IUserInterfaces userInterfaces) : Script
+public class HillOverAlbionScript() : Script
 {
-    private readonly IUserInterfaces userInterfaces = userInterfaces;
-
     public override void Design(IDesigner designer) => designer
         .Add<IRoomDesigner>("Hill Over Albion")
         .WithBackground("Campaigns/Rites of Albion/Rooms/Albion/Hill Over Albion/Background")
@@ -50,17 +47,17 @@ public class HillOverAlbionScript(IUserInterfaces userInterfaces) : Script
 
     public void OnLookAlbionSign()
     {
-        userInterfaces.Current.ShowTextBox(Strings.AlbionSignLook);
+        API.ShowMessage(Strings.AlbionSignLook);
     }
 
     public void OnGrabAlbionSign()
     {
-        userInterfaces.Current.ShowTextBox(Strings.AlbionSignGrab);
+        API.ShowMessage(Strings.AlbionSignGrab);
     }
 
     public void OnTalkAlbionSign()
     {
-        userInterfaces.Current.ShowTextBox(Strings.AlbionSignTalk);
+        API.ShowMessage(Strings.AlbionSignTalk);
     }
 
     internal class Hotspots

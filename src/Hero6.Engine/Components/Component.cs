@@ -56,9 +56,9 @@ internal class Component : IComponent
     }
 }
 
-internal class Composite : IComponent
+internal abstract class Composite : IComponent, INameable
 {
-    private readonly List<Component> components = new();
+    private readonly List<Component> components = [];
 
     private bool enabled = false;
 
@@ -86,6 +86,8 @@ internal class Composite : IComponent
     }
 
     public IEnumerable<IComponent> Components => components;
+
+    public abstract string Name { get; }
 
     internal IServiceScope ServiceScope { get; set; }
 

@@ -14,10 +14,12 @@ namespace LateStartStudio.Hero6.Rooms;
 
 internal class HotspotsGameComponent : DrawableGameComponent
 {
+    private readonly IGameSettings gameSettings;
     private readonly HotspotsScriptComponent[] hotspots;
 
-    public HotspotsGameComponent(IRepository<IRoom> rooms, MainGame game) : base(game)
+    public HotspotsGameComponent(IGameSettings gameSettings, IRepository<IRoom> rooms, MainGame game) : base(game)
     {
+        this.gameSettings = gameSettings;
         hotspots = rooms
             .Cast<Room>()
             .Select(r => r.Get<IScriptComponent<HotspotEvent>>())

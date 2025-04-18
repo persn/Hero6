@@ -9,19 +9,18 @@ using Microsoft.Xna.Framework;
 
 namespace LateStartStudio.Hero6.InventoryItems;
 
-internal class InventoryItemGameComponent : DrawableGameComponent
+internal class InventoryItemGameComponent(InventoryItem inventoryItem, IGameSettings gameSettings, MainGame game) : DrawableGameComponent(game)
 {
-    private readonly InventoryItem inventoryItem;
-
-    public InventoryItemGameComponent(InventoryItem inventoryItem, MainGame game) : base(game)
-    {
-        this.inventoryItem = inventoryItem;
-    }
+    private readonly InventoryItem inventoryItem = inventoryItem;
+    private readonly IGameSettings gameSettings = gameSettings;
 
     public override void Update(GameTime gameTime)
     {
-        base.Update(gameTime);
-        inventoryItem.Update(gameTime);
+        if (!gameSettings.IsPaused)
+        {
+            base.Update(gameTime);
+            inventoryItem.Update(gameTime);
+        }
     }
 
     public override void Initialize()

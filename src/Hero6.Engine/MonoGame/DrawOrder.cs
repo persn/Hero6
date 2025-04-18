@@ -11,4 +11,6 @@ internal enum DrawOrder
     Room,
     Character = Room + 1,
     Item = Character + 1,
+    UserInterface = Cursor - 1,
+    Cursor = int.MaxValue, // Always draw the cursor at top
 }

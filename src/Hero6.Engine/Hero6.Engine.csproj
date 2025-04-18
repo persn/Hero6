@@ -13,6 +13,7 @@
     <DefineConstants>TRACE;DEBUG;DESKTOP;MONOGAME</DefineConstants>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="Gum.MonoGame" />
     <PackageReference Include="Microsoft.Extensions.Hosting" />
     <PackageReference Include="Microsoft.Extensions.Logging.Debug" />
     <PackageReference Include="MonoGame.Framework.Content.Pipeline" />
@@ -26,7 +27,20 @@
     <ProjectReference Include="..\Search\Search.csproj" />
   </ItemGroup>
   <ItemGroup>
+    <Using Include="Microsoft.Extensions.DependencyInjection" />
+    <Using Include="Microsoft.Extensions.Logging" />
+    <Using Include="LateStartStudio.Hero6.Animations" />
+    <Using Include="LateStartStudio.Hero6.Characters" />
+    <Using Include="LateStartStudio.Hero6.Components" />
     <Using Include="LateStartStudio.Hero6.DependencyInjection" />
+    <Using Include="LateStartStudio.Hero6.InventoryItems" />
+    <Using Include="LateStartStudio.Hero6.Items" />
+    <Using Include="LateStartStudio.Hero6.Repositories" />
+    <Using Include="LateStartStudio.Hero6.Rooms" />
+    <Using Include="LateStartStudio.Hero6.Scripts" />
+    <Using Include="LateStartStudio.Hero6.Settings" />
+    <Using Include="LateStartStudio.Hero6.UserInterfaces" />
+    <Using Include="LateStartStudio.Hero6.Verbs" />
   </ItemGroup>
   <ItemGroup>
     <TrimmerRootAssembly Include="Microsoft.Xna.Framework.Content.ContentTypeReader" Visible="false" />

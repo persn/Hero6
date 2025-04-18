@@ -12,5 +12,7 @@ internal enum UpdateOrder
     Room = Base + 1,
     Character = Room + 1,
     Item = Character + 1,
-    Scripts = Item + 1,
+    Script = Item + 1,
+    UserInterface = Cursor - 1,
+    Cursor = int.MaxValue,
 }

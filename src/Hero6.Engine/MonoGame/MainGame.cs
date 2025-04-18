@@ -6,9 +6,7 @@
 
 using System.Diagnostics;
 using LateStartStudio.Hero6.Extensions;
-using LateStartStudio.Hero6.ModuleController;
-using LateStartStudio.Hero6.Services.Settings;
-using LateStartStudio.Hero6.Services.UserInterfaces;
+using LateStartStudio.Hero6.Settings;
 using Microsoft.Extensions.Logging;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -22,19 +20,16 @@ namespace LateStartStudio.Hero6.MonoGame
     {
         private readonly ILogger logger;
         private readonly IGameSettings gameSettings;
-        private readonly MonoGameUserInterfaces ui;
 
         public MainGame(
             ILogger<MainGame> logger,
             IGameSettings gameSettings,
-            IUserSettings userSettings,
-            MonoGameUserInterfaces ui)
+            IUserSettings userSettings)
         {
             Thread.CurrentThread.Name = "Hero6 Engine Main Thread";
 
             this.logger = logger;
             this.gameSettings = gameSettings;
-            this.ui = ui;
 
             Content.RootDirectory = "Content";
             Window.Title = "Hero6";
@@ -75,8 +70,6 @@ namespace LateStartStudio.Hero6.MonoGame
             var sw = Stopwatch.StartNew();
 
             UpdateScale();
-            ui.Initialize();
-
             base.Initialize();
 
             sw.Stop();
@@ -93,7 +86,6 @@ namespace LateStartStudio.Hero6.MonoGame
             var sw = Stopwatch.StartNew();
 
             UISpriteBatch = new SpriteBatch(GraphicsDevice);
-            ui.Load();
             base.LoadContent();
 
             sw.Stop();
@@ -110,23 +102,10 @@ namespace LateStartStudio.Hero6.MonoGame
             var sw = Stopwatch.StartNew();
 
             Content.Unload();
-            ui.Unload();
             base.UnloadContent();
 
             sw.Stop();
             logger.LogInformation($"Game content unloaded after {sw.Elapsed}.");
-        }
-
-        /// <summary>
-        /// Allows the game to run logic such as updating the world,
-        /// checking for collisions, gathering input, and playing audio.
-        /// </summary>
-        /// <param name="time">Provides a snapshot of timing values.</param>
-        protected override void Update(GameTime time)
-        {
-            ui.Update(time);
-
-            base.Update(time);
         }
 
         /// <summary>
@@ -136,12 +115,7 @@ namespace LateStartStudio.Hero6.MonoGame
         protected override void Draw(GameTime time)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-
             base.Draw(time);
-
-            UISpriteBatch.Begin(SpriteSortMode.Deferred, transformMatrix: TransformMatrix);
-            ui.Draw(time);
-            UISpriteBatch.End();
         }
 
         private void UpdateScale()

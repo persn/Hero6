@@ -4,16 +4,9 @@
 // 'LICENSE.CODE.md', which is a part of this source code package.
 // </copyright>
 
-using LateStartStudio.Hero6.Components;
-
 namespace LateStartStudio.Hero6.InventoryItems;
 
-internal class InventoryItem : Composite, IInventoryItem
+internal class InventoryItem(InventoryItemData data) : Composite, IInventoryItem
 {
-    public InventoryItem(InventoryItemData data)
-    {
-        Name = data.Name;
-    }
-
-    public string Name { get; }
+    public override string Name { get; } = data.Name;
 }

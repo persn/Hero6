@@ -10,8 +10,8 @@
 
 #-------------------------------- References --------------------------------#
 
-/reference:..\Hero6.Engine\bin\Debug\net6.0\Hero6.Engine.dll
-/reference:..\Hero6.Engine\bin\Release\net6.0\Hero6.Engine.dll
+/reference:..\Hero6.Engine\bin\Debug\net8.0\Hero6.Engine.dll
+/reference:..\Hero6.Engine\bin\Release\net8.0\Hero6.Engine.dll
 
 #---------------------------------- Content ---------------------------------#
 

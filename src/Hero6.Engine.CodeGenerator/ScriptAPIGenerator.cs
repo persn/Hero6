@@ -17,12 +17,17 @@ namespace LateStartStudio.Hero6.Generators
     {
         public void Initialize(IncrementalGeneratorInitializationContext context)
         {
+            // Game Entities
             GenerateEntityAPI(context, "Animation");
             GenerateEntityAPI(context, "CharacterAnimation", parentNamespace: "Animations");
             GenerateEntityAPI(context, "Character", repositoryOverride: true);
             GenerateEntityAPI(context, "InventoryItem");
             GenerateEntityAPI(context, "Item");
             GenerateEntityAPI(context, "Room");
+
+            // User Interfaces
+            GenerateEntityAPI(context, "Cursor", parentNamespace: "UserInterfaces");
+            GenerateEntityAPI(context, "Window", parentNamespace: "UserInterfaces");
         }
 
         private void GenerateEntityAPI(IncrementalGeneratorInitializationContext context, string entity, string parentNamespace = null, bool repositoryOverride = false)

@@ -11,19 +11,19 @@ namespace LateStartStudio.Hero6.Repositories;
 
 internal class Repository<T> : IRepository<T> where T : INameable
 {
-    private readonly Dictionary<string, T> repository;
+    private readonly Lazy<Dictionary<string, T>> repository;
 
     public Repository(Designer designer)
     {
         if (designer is not IBuilder<T> builder)
             throw new InvalidOperationException($@"Builder for type ""{typeof(T).Name}"" has not been registered.");
 
-        repository = new Dictionary<string, T>(builder.Build().Select(t => new KeyValuePair<string, T>(t.Name, t)));
+        repository = new Lazy<Dictionary<string, T>>(() => new Dictionary<string, T>(builder.Build().Select(t => new KeyValuePair<string, T>(t.Name, t))));
     }
 
-    public T this[string name] => repository[name];
+    public T this[string name] => repository.Value[name];
 
-    public void Add(T item) => repository.Add(item.Name, item);
+    public void Add(T item) => repository.Value.Add(item.Name, item);
 
     public void AddRange(IEnumerable<T> items)
     {
@@ -33,7 +33,7 @@ internal class Repository<T> : IRepository<T> where T : INameable
         }
     }
 
-    public IEnumerator<T> GetEnumerator() => repository.Values.GetEnumerator();
+    public IEnumerator<T> GetEnumerator() => repository.Value.Values.GetEnumerator();
 
     IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 }

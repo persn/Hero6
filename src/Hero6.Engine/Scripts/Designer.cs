@@ -6,16 +6,6 @@
 
 using System.Drawing;
 using System.Globalization;
-using LateStartStudio.Hero6.Animations;
-using LateStartStudio.Hero6.Characters;
-using LateStartStudio.Hero6.Components;
-using LateStartStudio.Hero6.InventoryItems;
-using LateStartStudio.Hero6.Items;
-using LateStartStudio.Hero6.Repositories;
-using LateStartStudio.Hero6.Rooms;
-using LateStartStudio.Hero6.Verbs;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 
 namespace LateStartStudio.Hero6.Scripts;
 
@@ -38,6 +28,10 @@ internal partial class Designer(IServiceProvider serviceProvider, ILogger<Design
             items.Push((new ItemData { Name = name }, []));
         else if (typeof(T) == typeof(IRoomDesigner))
             rooms.Push((new RoomData { Name = name }, serviceProvider.CreateInstance<HotspotsDesigner>()));
+        else if (typeof(T) == typeof(ICursorDesigner))
+            cursors.Push(new CursorData { Name = name });
+        else if (typeof(T) == typeof(IWindowDesigner))
+            windows.Push(new WindowData { Name = name });
         else
             throw new ArgumentException("Unsupported builder.", typeof(T).Name);
 
@@ -362,6 +356,97 @@ internal class HotspotsDesigner(IServiceProvider serviceProvider) : IHotspotsDes
             {
                 yield return (interaction.Event, hotspot.Key, interaction.Delegate);
             }
+        }
+    }
+}
+
+internal partial class Designer : ICursorDesigner, IBuilder<ICursor>
+{
+    private readonly Stack<CursorData> cursors = [];
+
+    ICursorDesigner ICursorDesigner.WithSprite(string sprite)
+    {
+        cursors.Peek().Sprite = sprite;
+        return this;
+    }
+
+    IEnumerable<ICursor> IBuilder<ICursor>.Build()
+    {
+        while (cursors.TryPop(out var c))
+        {
+            var visible = serviceProvider.CreateInstance<VisibleComponent>();
+            var position = serviceProvider.CreateInstance<MousePositionComponent>();
+            var spriteRenderer = serviceProvider.CreateInstance<SpriteRendererComponent>();
+
+            yield return serviceProvider.CreateInstance<Cursor>(c, visible, position, spriteRenderer);
+        }
+    }
+}
+
+internal partial class Designer : IWindowDesigner, IBuilder<IWindow>
+{
+    private readonly Stack<WindowData> windows = new();
+
+    IWindowDesigner IWindowDesigner.IsDialog(bool isDialog)
+    {
+        windows.Peek().IsDialog = isDialog;
+        return this;
+    }
+
+    IWindowDesigner IUserInterfaceDesigner<IWindow, IWindowDesigner>.OnMouseButtonUp(Func<IWindow, MouseButtonInteraction, Task> interaction)
+    {
+        windows.Peek().OnMouseButtonUp = interaction;
+        return this;
+    }
+
+    IWindowDesigner IUserInterfaceDesigner<IWindow, IWindowDesigner>.OnMouseEnter(Func<IWindow, EventArgs, Task> interaction)
+    {
+        return this;
+    }
+
+    IWindowDesigner IUserInterfaceDesigner<IWindow, IWindowDesigner>.OnMouseLeave(Func<IWindow, EventArgs, Task> interaction)
+    {
+        return this;
+    }
+
+    IWindowDesigner IWithChildDesigner<IWindowDesigner>.WithButton(Action<IButtonDesigner> designer)
+    {
+        windows.Peek().ChildType = UIComponentType.Button;
+        return this;
+    }
+
+    IWindowDesigner IWithChildDesigner<IWindowDesigner>.WithImage(string sprite, Action<IImageDesigner> designer)
+    {
+        windows.Peek().ChildType = UIComponentType.Image;
+        return this;
+    }
+
+    IWindowDesigner IWithChildDesigner<IWindowDesigner>.WithStackPanel(Action<IStackPanelDesigner> designer)
+    {
+        windows.Peek().ChildType = UIComponentType.StackPanel;
+        return this;
+    }
+
+    IWindowDesigner IWithChildDesigner<IWindowDesigner>.WithText(string text)
+    {
+        windows.Peek().ChildType = UIComponentType.Text;
+        return this;
+    }
+
+    IEnumerable<IWindow> IBuilder<IWindow>.Build()
+    {
+        while (windows.TryPop(out var w))
+        {
+            var uiComponent = w.ChildType switch
+            {
+                UIComponentType.Text => serviceProvider.CreateInstance<LabelComponent>(true),
+                UIComponentType.StackPanel => serviceProvider.CreateInstance<LabelComponent>(true),
+                UIComponentType.Button => serviceProvider.CreateInstance<LabelComponent>(true),
+                UIComponentType.Image => serviceProvider.CreateInstance<LabelComponent>(true),
+                _ => throw new ArgumentException("Unrecognized enum.", nameof(w.ChildType))
+            };
+
+            yield return serviceProvider.CreateInstance<Window>(w, uiComponent);
         }
     }
 }
